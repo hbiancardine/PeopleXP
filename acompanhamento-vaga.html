@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhamento de Vaga - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html" style="display: flex; align-items: center;"><img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;"></a>
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'64'%20height%3D'64'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20fill%3D'%23fff'%2F%3E%3Ctext%20x%3D'32'%20y%3D'41'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'24'%20font-weight%3D'700'%20fill%3D'%237b1fa2'%20text-anchor%3D'middle'%3EAT%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-briefcase"></i> Vagas
+        <div class="dropdown-menu" style="min-width: 260px;">
+          <a href="cadastro-vagas.html" class="dropdown-item">Cadastro de Vagas</a>
+          <a href="#" class="dropdown-item">Cadastro de Departamentos</a>
+          <a href="#" class="dropdown-item">Cadastro de Job Descriptions</a>
+          <a href="#" class="dropdown-item">Validação de Documentos</a>
+          <a href="#" class="dropdown-item">Código Vagas Indisponíveis</a>
+          <a href="beneficios-tipo-vaga.html" class="dropdown-item">Benefícios por Tipo de Vaga</a>
+          <a href="bem-estar-tp.html" class="dropdown-item">Texto Bem Estar TP</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <a href="minhas-vagas.html">Minhas Vagas</a> &gt; <span>Acompanhamento de Vaga</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Acompanhamento de Vaga</h1>
+    </div>
+
+    <!-- Resumo da Vaga -->
+    <div class="card">
+      <div class="vaga-resumo">
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Nome da Vaga</div>
+          <div class="vaga-resumo-value">ANALISTA DE WFM JUNIOR</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">ID da Vaga</div>
+          <div class="vaga-resumo-value">2248</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Tipo</div>
+          <div class="vaga-resumo-value">Presencial</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Status</div>
+          <div class="vaga-resumo-value"><span class="badge badge-active">EM ANDAMENTO</span></div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Perfil</div>
+          <div class="vaga-resumo-value">BKO</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Total</div>
+          <div class="vaga-resumo-value" style="font-size: 18px;">420</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Avaliações</div>
+          <div class="vaga-resumo-value" style="font-size: 18px;">15</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Entrevista</div>
+          <div class="vaga-resumo-value" style="font-size: 18px;">42</div>
+        </div>
+        <div class="vaga-resumo-item">
+          <div class="vaga-resumo-label">Finalistas</div>
+          <div class="vaga-resumo-value" style="font-size: 18px;">8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abas -->
+    <div class="tabs">
+      <div class="tab active" data-target="tab-candidatos">Candidatos</div>
+      <div class="tab" data-target="tab-avaliacoes">Avaliações</div>
+      <div class="tab" data-target="tab-entrevista">Entrevista</div>
+      <div class="tab" data-target="tab-finalistas">Finalistas</div>
+    </div>
+
+    <!-- Aba: Candidatos -->
+    <div id="tab-candidatos" class="tab-content active card">
+      <div class="filter-bar-container form-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">Data da Candidatura</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="date" class="form-control">
+            <span style="align-self: center; font-size: 13px; color: var(--text-muted);">até</span>
+            <input type="date" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Etapa Atual</label>
+          <select class="form-control"><option>Todas</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status da Etapa</label>
+          <select class="form-control"><option>Todas</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status da Candidatura</label>
+          <select class="form-control"><option>Todas</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dinâmica</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Indicação</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group" style="display: flex; align-items: flex-end; justify-content: flex-end; gap: 8px;">
+          <button class="btn btn-secondary">Limpar</button>
+          <button class="btn btn-primary"><i class="fa-solid fa-search"></i> Pesquisar</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px; display: flex; justify-content: flex-start; align-items: center;">
+        <button id="btn-mass-reprove" class="btn btn-danger" disabled onclick="openModal('modal-reprovar-massa')">
+          <i class="fa-solid fa-times"></i> Reprovar Selecionados (<span id="mass-reprove-count">0</span>)
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="tbl-candidatos" class="data-table interviews-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all-cand"></th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Idade</th>
+              <th>Cidade/UF</th>
+              <th>Data</th>
+              <th>Etapa Atual</th>
+              <th>Status Etapa</th>
+              <th>Status Candidatura</th>
+              <th>Dinâmica</th>
+              <th>Indicação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Mock 1: Em Avaliações -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>João Silva<br><small style="color:var(--text-muted)">Joãozinho</small></td>
+              <td>111.222.333-44</td>
+              <td>28 anos</td>
+              <td>São Paulo/SP</td>
+              <td>10/05/2026</td>
+              <td>Avaliações</td>
+              <td>Pendente</td>
+              <td>Em andamento</td>
+              <td>Sim</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 2: Em Multitelas -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Maria Oliveira<br><small style="color:var(--text-muted)">Maria</small></td>
+              <td>222.333.444-55</td>
+              <td>33 anos</td>
+              <td>Belo Horizonte/MG</td>
+              <td>11/05/2026</td>
+              <td>Multitelas</td>
+              <td>Aprovado</td>
+              <td>Em andamento</td>
+              <td>Não</td>
+              <td>Sim</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 3: Em Syscheck -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Pedro Santos<br><small style="color:var(--text-muted)">Pedro</small></td>
+              <td>333.444.555-66</td>
+              <td>25 anos</td>
+              <td>Curitiba/PR</td>
+              <td>12/05/2026</td>
+              <td>Syscheck</td>
+              <td>Aprovado</td>
+              <td>Em andamento</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 4: Em Entrevista -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Ana Costa<br><small style="color:var(--text-muted)">Ana</small></td>
+              <td>444.555.666-77</td>
+              <td>41 anos</td>
+              <td>Natal/RN</td>
+              <td>13/05/2026</td>
+              <td>Entrevista</td>
+              <td>Pendente</td>
+              <td>Em andamento</td>
+              <td>Sim</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 5: Finalista -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Lucas Pereira<br><small style="color:var(--text-muted)">Lucas</small></td>
+              <td>555.666.777-88</td>
+              <td>29 anos</td>
+              <td>Rio de Janeiro/RJ</td>
+              <td>14/05/2026</td>
+              <td>Entrevista</td>
+              <td>Aprovado</td>
+              <td>Finalista</td>
+              <td>Sim</td>
+              <td>Sim</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 6: Reprovado -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Beatriz Almeida<br><small style="color:var(--text-muted)">Bia</small></td>
+              <td>666.777.888-99</td>
+              <td>22 anos</td>
+              <td>Porto Alegre/RS</td>
+              <td>15/05/2026</td>
+              <td>Triagem</td>
+              <td>Reprovado</td>
+              <td>
+                <div class="status-final-wrapper" style="margin: 0;">
+                  <span class="badge badge-inactive">Reprovado</span>
+                  <small style="color: var(--text-muted);">Motivo: Perfil incompatível<br>Submotivo: Experiência insuficiente</small>
+                </div>
+              </td>
+              <td>Não</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Cadastro" onclick="showToast('Abrindo dados cadastrais', 'success')"><i class="fa-regular fa-id-card"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Histórico de Avaliações" onclick="showToast('Abrindo histórico', 'success')"><i class="fa-solid fa-chart-bar"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Aba: Avaliações -->
+    <!-- Aba: Avaliações -->
+    <div id="tab-avaliacoes" class="tab-content card">
+      <div class="filter-bar-container form-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">Data da Candidatura</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="date" class="form-control">
+            <span style="align-self: center; font-size: 13px; color: var(--text-muted);">até</span>
+            <input type="date" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Etapa Atual</label>
+          <select class="form-control">
+            <option>Todas</option>
+            <option>Avaliações</option>
+            <option>Multitelas</option>
+            <option>Syscheck</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Indicação</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group" style="grid-column: span 4; display: flex; align-items: flex-end; justify-content: flex-end; gap: 8px;">
+          <button class="btn btn-secondary">Limpar</button>
+          <button class="btn btn-primary"><i class="fa-solid fa-search"></i> Pesquisar</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px; display: flex; justify-content: flex-start; align-items: center;">
+        <button id="btn-mass-reprove-aval" class="btn btn-danger" disabled onclick="openModal('modal-reprovar-massa')">
+          <i class="fa-solid fa-times"></i> Reprovar Selecionados (<span id="mass-reprove-count-aval">0</span>)
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="tbl-avaliacoes" class="data-table interviews-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all-aval"></th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Idade</th>
+              <th>Cidade/UF</th>
+              <th>Data</th>
+              <th>Etapa Atual</th>
+              <th>Indicação</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Mock 1: Avaliações -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Juliana Ferreira<br><small style="color:var(--text-muted)">Ju</small></td>
+              <td>123.456.789-00</td>
+              <td>24 anos</td>
+              <td>Goiânia/GO</td>
+              <td>16/05/2026</td>
+              <td>Avaliações</td>
+              <td>Sim</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 2: Avaliações -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Ricardo Mendes</td>
+              <td>987.654.321-11</td>
+              <td>31 anos</td>
+              <td>Recife/PE</td>
+              <td>16/05/2026</td>
+              <td>Avaliações</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 3: Multitelas -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Mariana Souza<br><small style="color:var(--text-muted)">Mari</small></td>
+              <td>222.333.444-55</td>
+              <td>28 anos</td>
+              <td>Belo Horizonte/MG</td>
+              <td>11/05/2026</td>
+              <td>Multitelas</td>
+              <td>Sim</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 4: Multitelas -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Fábio Castro</td>
+              <td>555.444.333-22</td>
+              <td>20 anos</td>
+              <td>Manaus/AM</td>
+              <td>17/05/2026</td>
+              <td>Multitelas</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 5: Syscheck -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Paula Nogueira<br><small style="color:var(--text-muted)">Paulinha</small></td>
+              <td>111.999.888-77</td>
+              <td>35 anos</td>
+              <td>Fortaleza/CE</td>
+              <td>18/05/2026</td>
+              <td>Syscheck</td>
+              <td>Não</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 6: Syscheck -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Henrique Rocha</td>
+              <td>444.777.222-11</td>
+              <td>27 anos</td>
+              <td>São Paulo/SP</td>
+              <td>18/05/2026</td>
+              <td>Syscheck</td>
+              <td>Sim</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Avaliações" onclick="showToast('Histórico de Avaliações', 'success')"><i class="fa-solid fa-file-signature"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Multitelas" onclick="showToast('Resultado Multitelas', 'success')"><i class="fa-solid fa-desktop"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Syscheck" onclick="showToast('Resultado Syscheck', 'success')"><i class="fa-solid fa-laptop-code"></i></button>
+                    <button class="btn btn-secondary btn-action" title="FollowUp" onclick="showToast('Registrando FollowUp', 'success')"><i class="fa-solid fa-comment-dots"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Aba: Entrevista -->
+    <div id="tab-entrevista" class="tab-content card">
+      <div class="filter-bar-container form-grid" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="form-group">
+          <label class="form-label">Entrevista Finalizada</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">Data da Candidatura</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="date" class="form-control">
+            <span style="align-self: center; font-size: 13px; color: var(--text-muted);">até</span>
+            <input type="date" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Indicação</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resultado Hallo</label>
+          <select class="form-control"><option>Todas</option><option>Alta Aderência</option><option>Média Aderência</option><option>Baixa Aderência</option><option>Pendente</option><option>Não iniciada</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Faixa de Pontuação Hallo</label>
+          <select class="form-control"><option>Todas</option><option>Maior que 80</option><option>Maior que 60</option></select>
+        </div>
+        <div class="form-group" style="grid-column: span 4; display: flex; align-items: flex-end; gap: 8px; justify-content: flex-end;">
+          <button class="btn btn-secondary">Limpar</button>
+          <button class="btn btn-primary"><i class="fa-solid fa-search"></i> Pesquisar</button>
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 16px; display: flex; justify-content: flex-start; align-items: center; gap: 8px;">
+        <button id="btn-mass-aprovar-ent" class="btn btn-primary" disabled onclick="openModal('modal-aprovar')">
+          <i class="fa-solid fa-check"></i> Aprovar Selecionados (<span id="mass-aprovar-count-ent">0</span>)
+        </button>
+        <button id="btn-mass-finalista-ent" class="btn btn-secondary" disabled onclick="openModal('modal-finalista')">
+          <i class="fa-solid fa-star"></i> Finalista Selecionados (<span id="mass-finalista-count-ent">0</span>)
+        </button>
+        <button id="btn-mass-reprove-ent" class="btn btn-danger" disabled onclick="openModal('modal-reprovar-massa')">
+          <i class="fa-solid fa-times"></i> Reprovar Selecionados (<span id="mass-reprove-count-ent">0</span>)
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="tbl-entrevista" class="data-table interviews-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all-ent"></th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Cidade/UF</th>
+              <th>Data</th>
+              <th>Fim Entrevista</th>
+              <th>Indicação</th>
+              <th>Avaliação Hallo</th>
+              <th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th><th>VI</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Mock 1: Não Iniciada -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Amanda Silva<br><small style="color:var(--text-muted)">Amandinha</small></td>
+              <td>111.222.333-44</td>
+              <td>Recife/PE</td>
+              <td>01/05/2026</td>
+              <td>-</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-nao-iniciada"><i class="fa-solid fa-minus"></i> Não iniciada</span></td>
+              <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('111.222.333-44')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Enviar Lembrete" onclick="showToast('Lembrete enviado', 'success')"><i class="fa-solid fa-bell"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 2: Pendente -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Juliana Ferreira</td>
+              <td>123.456.789-00</td>
+              <td>Goiânia/GO</td>
+              <td>02/05/2026</td>
+              <td>-</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-pendente"><i class="fa-solid fa-clock"></i> Pendente</span></td>
+              <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('123.456.789-00')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Enviar Lembrete" onclick="showToast('Lembrete enviado', 'success')"><i class="fa-solid fa-bell"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 3: Alta Aderência -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox" data-concluded="true"></td>
+              <td>Carlos Mendes<br><small style="color:var(--text-muted)">Carlinhos</small></td>
+              <td>333.444.555-66</td>
+              <td>Belo Horizonte/MG</td>
+              <td>03/05/2026</td>
+              <td>12/06/2026</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-alta"><i class="fa-solid fa-circle-check"></i> Alta Ad.</span></td>
+              <td>80</td><td>75</td><td>90</td><td>85</td><td>70</td><td>88</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('333.444.555-66')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Finalista" onclick="openModal('modal-finalista')"><i class="fa-solid fa-star"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 4: Média Aderência -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox" data-concluded="true"></td>
+              <td>Roberto Alves</td>
+              <td>444.555.666-77</td>
+              <td>Manaus/AM</td>
+              <td>04/05/2026</td>
+              <td>15/06/2026</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-media"><i class="fa-solid fa-circle-exclamation"></i> Média Ad.</span></td>
+              <td>60</td><td>65</td><td>70</td><td>55</td><td>60</td><td>68</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('444.555.666-77')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Finalista" onclick="openModal('modal-finalista')"><i class="fa-solid fa-star"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 5: Baixa Aderência -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox" data-concluded="true"></td>
+              <td>Fernanda Costa<br><small style="color:var(--text-muted)">Nanda</small></td>
+              <td>555.666.777-88</td>
+              <td>Florianópolis/SC</td>
+              <td>05/05/2026</td>
+              <td>16/06/2026</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-baixa"><i class="fa-solid fa-circle-xmark"></i> Baixa Ad.</span></td>
+              <td>40</td><td>45</td><td>30</td><td>50</td><td>40</td><td>35</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('555.666.777-88')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Finalista" onclick="openModal('modal-finalista')"><i class="fa-solid fa-star"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 6: Aprovado -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox" data-concluded="true"></td>
+              <td>Thiago Gomes</td>
+              <td>777.888.999-00</td>
+              <td>São Paulo/SP</td>
+              <td>06/05/2026</td>
+              <td>10/06/2026</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-alta"><i class="fa-solid fa-circle-check"></i> Alta Ad.</span></td>
+              <td>95</td><td>90</td><td>85</td><td>95</td><td>90</td><td>88</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="status-final-wrapper">
+                    <span class="badge-hallo badge-hallo-aprovado"><i class="fa-solid fa-check"></i> Aprovado</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('777.888.999-00')"><i class="fa-solid fa-file-lines"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 7: Reprovado -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox" data-concluded="true"></td>
+              <td>Mariana Souza</td>
+              <td>888.999.000-11</td>
+              <td>Campinas/SP</td>
+              <td>07/05/2026</td>
+              <td>11/06/2026</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-baixa"><i class="fa-solid fa-circle-xmark"></i> Baixa Ad.</span></td>
+              <td>30</td><td>25</td><td>40</td><td>35</td><td>20</td><td>30</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="status-final-wrapper">
+                    <span class="badge-hallo badge-hallo-reprovado"><i class="fa-solid fa-times"></i> Reprovado</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('888.999.000-11')"><i class="fa-solid fa-file-lines"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Aba: Finalistas -->
+    <div id="tab-finalistas" class="tab-content card">
+      <div class="filter-bar-container form-grid" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="form-group" style="grid-column: span 2;">
+          <label class="form-label">Data da Candidatura</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="date" class="form-control">
+            <span style="align-self: center; font-size: 13px; color: var(--text-muted);">até</span>
+            <input type="date" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Indicação</label>
+          <select class="form-control"><option>Todas</option><option>Sim</option><option>Não</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resultado Hallo</label>
+          <select class="form-control"><option>Todas</option><option>Alta Aderência</option><option>Média Aderência</option><option>Baixa Aderência</option><option>Não disponível</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status do Candidato</label>
+          <select class="form-control"><option>Todos</option><option>Aguardando Definição</option></select>
+        </div>
+        <div class="form-group" style="grid-column: span 5; display: flex; align-items: flex-end; gap: 8px; justify-content: flex-end;">
+          <button class="btn btn-secondary">Limpar</button>
+          <button class="btn btn-primary"><i class="fa-solid fa-search"></i> Pesquisar</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px; display: flex; justify-content: flex-start; align-items: center; gap: 8px;">
+        <button id="btn-mass-aprovar-fin" class="btn btn-primary" disabled onclick="openModal('modal-aprovar')">
+          <i class="fa-solid fa-check"></i> Aprovar Selecionados (<span id="mass-aprovar-count-fin">0</span>)
+        </button>
+        <button id="btn-mass-dinamica-fin" class="btn btn-secondary" disabled onclick="openModal('modal-dinamica')">
+          <i class="fa-solid fa-users-viewfinder"></i> Adicionar Dinâmica (<span id="mass-dinamica-count-fin">0</span>)
+        </button>
+        <button id="btn-mass-reprove-fin" class="btn btn-danger" disabled onclick="openModal('modal-reprovar-massa')">
+          <i class="fa-solid fa-times"></i> Reprovar Selecionados (<span id="mass-reprove-count-fin">0</span>)
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table id="tbl-finalistas" class="data-table interviews-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="check-all-fin"></th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Cidade/UF</th>
+              <th>Data Cand.</th>
+              <th>Fim Hallo</th>
+              <th>Indicação</th>
+              <th>Avaliação Hallo</th>
+              <th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th><th>VI</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Mock 1: Alta Aderência, Sim, Sem social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Tiago Gomes</td>
+              <td>111.000.222-33</td>
+              <td>Natal/RN</td>
+              <td>01/05/2026</td>
+              <td>05/05/2026</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-alta"><i class="fa-solid fa-circle-check"></i> Alta Ad.</span></td>
+              <td>90</td><td>85</td><td>95</td><td>80</td><td>88</td><td>92</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('111.000.222-33')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 2: Média Aderência, Não, Com social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Leonardo Silva<br><small style="color:var(--text-muted)">Léo</small></td>
+              <td>222.111.333-44</td>
+              <td>São Paulo/SP</td>
+              <td>02/05/2026</td>
+              <td>06/05/2026</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-media"><i class="fa-solid fa-circle-exclamation"></i> Média Ad.</span></td>
+              <td>65</td><td>70</td><td>60</td><td>75</td><td>68</td><td>62</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('222.111.333-44')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 3: Baixa Aderência, Sim, Com social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Camila Santos<br><small style="color:var(--text-muted)">Mila</small></td>
+              <td>333.222.444-55</td>
+              <td>Rio de Janeiro/RJ</td>
+              <td>03/05/2026</td>
+              <td>07/05/2026</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-baixa"><i class="fa-solid fa-circle-xmark"></i> Baixa Ad.</span></td>
+              <td>40</td><td>45</td><td>50</td><td>35</td><td>42</td><td>48</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('333.222.444-55')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 4: Sem Hallo, Não, Sem social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Fernanda Lima</td>
+              <td>444.333.555-66</td>
+              <td>Curitiba/PR</td>
+              <td>04/05/2026</td>
+              <td>-</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-nao-iniciada"><i class="fa-solid fa-minus"></i> Não disponível</span></td>
+              <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 5: Alta Aderência, Sim, Com social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Rafael Costa<br><small style="color:var(--text-muted)">Rafa</small></td>
+              <td>555.444.666-77</td>
+              <td>Porto Alegre/RS</td>
+              <td>05/05/2026</td>
+              <td>09/05/2026</td>
+              <td>Sim</td>
+              <td><span class="badge-hallo badge-hallo-alta"><i class="fa-solid fa-circle-check"></i> Alta Ad.</span></td>
+              <td>85</td><td>90</td><td>88</td><td>92</td><td>84</td><td>89</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('555.444.666-77')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!-- Mock 6: Média Aderência, Não, Sem social -->
+            <tr>
+              <td><input type="checkbox" class="row-checkbox"></td>
+              <td>Lucas Alves</td>
+              <td>666.555.777-88</td>
+              <td>Fortaleza/CE</td>
+              <td>06/05/2026</td>
+              <td>10/05/2026</td>
+              <td>Não</td>
+              <td><span class="badge-hallo badge-hallo-media"><i class="fa-solid fa-circle-exclamation"></i> Média Ad.</span></td>
+              <td>62</td><td>68</td><td>71</td><td>65</td><td>60</td><td>66</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+                    <button class="btn btn-secondary btn-action" title="Ver resultado Hallo" onclick="openHalloDrawer('666.555.777-88')"><i class="fa-solid fa-file-lines"></i></button>
+                    <button class="btn btn-primary btn-action" title="Aprovar" onclick="openModal('modal-aprovar')"><i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-secondary btn-action" title="Adicionar Dinâmica" onclick="openModal('modal-dinamica')"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    <button class="btn btn-danger btn-action" title="Reprovar" onclick="openModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div> <!-- container -->
+
+  <!-- Drawer Hallo -->
+  <div class="drawer-overlay" id="drawer-hallo">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2 class="drawer-title">Resultado Hallo</h2>
+        <button class="drawer-close" onclick="closeDrawer('drawer-hallo')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="drawer-body">
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 16px; margin-bottom: 4px;" id="dh-nome"></h3>
+          <p style="color: var(--text-muted); font-size: 13px;" id="dh-cpf-data"></p>
+          <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Status: <span id="dh-status" style="font-weight: 600; color: var(--text-main);"></span></p>
+        </div>
+        
+        <div class="hallo-score-card">
+          <div style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-weight: 600;">Aderência Geral</span>
+            <span id="dh-badge" class="badge-hallo"></span>
+          </div>
+          <div class="hallo-score-grid">
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação I</span><span class="hallo-score-value" id="dh-p1"></span></div>
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação II</span><span class="hallo-score-value" id="dh-p2"></span></div>
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação III</span><span class="hallo-score-value" id="dh-p3"></span></div>
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação IV</span><span class="hallo-score-value" id="dh-p4"></span></div>
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação V</span><span class="hallo-score-value" id="dh-p5"></span></div>
+            <div class="hallo-score-item"><span class="hallo-score-label">Pontuação VI</span><span class="hallo-score-value" id="dh-p6"></span></div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 8px;">Resumo Interpretativo</h4>
+          <p style="font-size: 13px; line-height: 1.5; color: var(--text-muted);" id="dh-resumo"></p>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; border-top: 1px dashed var(--border-color); padding-top: 12px;" id="dh-desfecho"></p>
+        </div>
+      </div>
+      <div id="dh-acoes" class="hallo-drawer-actions">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Reprovar Massa -->
+  <div class="modal-overlay" id="modal-reprovar-massa">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Reprovar Candidatos Selecionados</h2>
+        <button class="modal-close" onclick="closeModal('modal-reprovar-massa')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert" style="background: #fff3f3; color: #c62828; padding: 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #ffcdd2;">
+          <i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i> Você está prestes a reprovar <strong id="modal-mass-count">0</strong> candidato(s). Esta ação não pode ser desfeita.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Motivo *</label>
+          <select class="form-control"><option>Selecione um motivo</option><option>Perfil incompatível</option><option>Não compareceu</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submotivo *</label>
+          <select class="form-control"><option>Selecione um submotivo</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Observação (opcional)</label>
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-reprovar-massa')">Cancelar</button>
+        <button class="btn btn-danger" onclick="closeModal('modal-reprovar-massa'); showToast('Candidatos reprovados em massa com sucesso', 'success')">Confirmar Reprovação em Massa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Reprovar Individual -->
+  <div class="modal-overlay" id="modal-reprovar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Reprovar Candidato</h2>
+        <button class="modal-close" onclick="closeModal('modal-reprovar')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Motivo *</label>
+          <select class="form-control"><option>Selecione um motivo</option><option>Perfil incompatível</option><option>Não compareceu</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submotivo *</label>
+          <select class="form-control"><option>Selecione um submotivo</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Observação (opcional)</label>
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-reprovar')">Cancelar</button>
+        <button class="btn btn-danger" onclick="closeModal('modal-reprovar'); showToast('Candidato reprovado', 'success')">Confirmar Reprovação</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Aprovar -->
+  <div class="modal-overlay" id="modal-aprovar">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Aprovar Candidato</h2>
+        <button class="modal-close" onclick="closeModal('modal-aprovar')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Preencha os dados de alocação para aprovar o candidato.</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Demanda *</label>
+            <select class="form-control"><option>Selecione</option><option>Operação SP</option></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Turno *</label>
+            <select class="form-control"><option>Selecione</option><option>Manhã</option><option>Tarde</option></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data de Início *</label>
+          <input type="date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Observação</label>
+          <textarea class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-aprovar')">Cancelar</button>
+        <button class="btn btn-primary" onclick="closeModal('modal-aprovar'); showToast('Candidato aprovado', 'success')">Confirmar Aprovação</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-finalista">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Adicionar Finalista</h2>
+        <button class="modal-close" onclick="closeModal('modal-finalista')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 14px; color: var(--text-main);">Tem certeza que deseja marcar este(s) candidato(s) como finalista da vaga?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-finalista')">Cancelar</button>
+        <button class="btn btn-primary" onclick="closeModal('modal-finalista'); showToast('Candidato(s) enviado(s) para finalistas', 'success')">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-dinamica">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Adicionar à Dinâmica</h2>
+        <button class="modal-close" onclick="closeModal('modal-dinamica')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 14px; color: var(--text-main); margin-bottom: 16px;">Selecione a dinâmica na qual deseja incluir o(s) candidato(s) selecionado(s).</p>
+        <div class="form-group">
+          <label class="form-label">Dinâmicas Disponíveis *</label>
+          <select class="form-control">
+            <option>Selecione uma dinâmica agendada</option>
+            <option>Dinâmica de Vendas - 20/06/2026 às 14:00</option>
+            <option>Dinâmica de Suporte - 22/06/2026 às 09:00</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-dinamica')">Cancelar</button>
+        <button class="btn btn-primary" onclick="closeModal('modal-dinamica'); showToast('Candidato(s) adicionado(s) à dinâmica', 'success')">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    (fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn):fn())( () => {
+      if (typeof setupMassAction === 'function') {
+        setupMassAction('tbl-candidatos', 'check-all-cand', 'btn-mass-reprove', 'mass-reprove-count');
+        setupMassAction('tbl-avaliacoes', 'check-all-aval', 'btn-mass-reprove-aval', 'mass-reprove-count-aval');
+        setupMassActionMultipleEntrevista('tbl-entrevista', 'check-all-ent');
+        setupMassActionMultipleFinalista('tbl-finalistas', 'check-all-fin');
+      } else {
+        setupTableSelection('tbl-candidatos', 'check-all-cand');
+        setupTableSelection('tbl-avaliacoes', 'check-all-aval');
+        setupTableSelection('tbl-entrevista', 'check-all-ent');
+        setupTableSelection('tbl-finalistas', 'check-all-fin');
+      }
+    });
+  </script>
+</body>
+</html>

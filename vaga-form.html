@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vaga - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <style>
+    .vf-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
+    .vf-nav { position: sticky; top: 16px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 8px; }
+    .vf-nav a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 500; }
+    .vf-nav a:hover { background: var(--hover-bg); color: var(--text-main); }
+    .vf-nav a.active { background: #f3e5f5; color: var(--primary-purple); font-weight: 600; }
+    .vf-nav .n { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border-color); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; background: #fff; }
+    .vf-nav a.active .n { border-color: var(--primary-purple); background: var(--primary-purple); color: #fff; }
+    .vf-nav a.has-error .n { border-color: var(--error); background: var(--error); color: #fff; }
+    .vf-section { scroll-margin-top: 16px; }
+    .vf-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; }
+    .vf-section-head h2 { font-size: 16px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+    .vf-section-head h2 .n { color: var(--primary-purple); font-size: 13px; font-weight: 700; }
+    .vf-section-head p { font-size: 12px; color: var(--text-muted); }
+    .fgrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px 20px; }
+    .fgrid .form-group { margin-bottom: 0; min-width: 0; }
+    .s3 { grid-column: span 3; } .s4 { grid-column: span 4; } .s6 { grid-column: span 6; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+    .req { color: var(--error); margin-left: 2px; }
+    .form-control.is-invalid, .mp-control.is-invalid, .rte.is-invalid { border-color: var(--error) !important; }
+    .err-msg { display: none; font-size: 12px; color: var(--error); margin-top: 4px; }
+    .form-group.invalid .err-msg { display: block; }
+    .hint-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+    .hint-row .counter { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .hint-row .counter.warn { color: #e65100; font-weight: 600; }
+    textarea.form-control { resize: vertical; font-family: inherit; line-height: 1.5; }
+    .input-icon { position: relative; }
+    .input-icon > i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; pointer-events: none; }
+    .input-icon .form-control { padding-left: 34px; }
+    .sub-title { font-size: 13px; font-weight: 600; color: var(--text-main); margin: 8px 0 0; padding-top: 16px; border-top: 1px dashed var(--border-color); }
+
+    /* Editor de texto controlado */
+    .rte { border: 1px solid var(--border-color); border-radius: 4px; background: #fff; transition: border-color .2s; }
+    .rte:focus-within { border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.1); }
+    .rte-toolbar { display: flex; align-items: center; gap: 2px; padding: 4px 6px; border-bottom: 1px solid #f0f0f0; background: #fafafb; border-radius: 4px 4px 0 0; }
+    .rte-toolbar button { background: none; border: none; height: 28px; min-width: 28px; padding: 0 8px; border-radius: 4px; color: var(--text-muted); cursor: pointer; font-size: 13px; font-family: inherit; display: inline-flex; align-items: center; gap: 6px; }
+    .rte-toolbar button:hover { background: var(--hover-bg); color: var(--primary-purple); }
+    .rte-toolbar button.on { background: #f3e5f5; color: var(--primary-purple); }
+    .rte-toolbar .sep { width: 1px; height: 18px; background: var(--border-color); margin: 0 4px; }
+    .rte-toolbar .spacer { flex: 1; }
+    .rte-body { min-height: 140px; max-height: 360px; overflow-y: auto; padding: 12px 14px; font-size: 14px; line-height: 1.6; color: var(--text-main); outline: none; }
+    .rte-body p { margin: 0 0 8px; }
+    .rte-body ul { margin: 0 0 8px 20px; }
+    .rte-body:empty::before { content: attr(data-placeholder); color: #9e9e9e; }
+
+    /* Multi-picker */
+    .mp { position: relative; }
+    .mp-control { min-height: 42px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 5px 34px 5px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: #fff; cursor: text; position: relative; transition: border-color .2s; }
+    .mp.open .mp-control, .mp-control:focus-within { border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.1); }
+    .mp-control > .fa-chevron-down { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--text-muted); pointer-events: none; }
+    .mp-input { border: none; outline: none; flex: 1; min-width: 120px; font-size: 14px; padding: 4px; font-family: inherit; color: var(--text-main); background: transparent; }
+    .sal-sug { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+    .sal-sug button { font-family: inherit; font-size: 12px; background: #fff; border: 1px solid var(--border-color); border-radius: 14px; padding: 4px 10px; color: var(--text-main); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .sal-sug button:hover { border-color: var(--primary-purple); color: var(--primary-purple); }
+    .sal-sug button.on { background: #f3e5f5; border-color: #ce93d8; color: var(--primary-purple); }
+    .tag { display: inline-flex; align-items: center; gap: 6px; background: #f3e5f5; color: var(--primary-purple); border-radius: 12px; padding: 3px 6px 3px 10px; font-size: 12px; font-weight: 500; max-width: 100%; }
+    .tag span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tag button { background: none; border: none; color: inherit; cursor: pointer; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; opacity: .7; padding: 0; }
+    .tag button:hover { opacity: 1; background: rgba(123,31,162,.12); }
+    .mp-menu { display: none; position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 50; max-height: 260px; overflow-y: auto; padding: 4px; }
+    .mp.open .mp-menu { display: block; }
+    .mp-opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+    .mp-opt:hover, .mp-opt.hl { background: var(--hover-bg); }
+    .mp-opt .box { width: 16px; height: 16px; border: 1px solid #bdbdbd; border-radius: 3px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; flex-shrink: 0; }
+    .mp-opt.sel .box { background: var(--primary-purple); border-color: var(--primary-purple); }
+    .mp-opt mark { background: none; color: var(--primary-purple); font-weight: 600; }
+    .mp-empty { padding: 12px 10px; font-size: 13px; color: var(--text-muted); }
+    .mp-meta { padding: 6px 10px 4px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+
+    /* Toggle */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 6px; background: #fff; }
+    .toggle-row .t-label { font-size: 13px; font-weight: 600; color: var(--text-main); }
+    .toggle-row .t-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .switch .track { position: absolute; inset: 0; background: #d6d6d6; border-radius: 11px; cursor: pointer; transition: background .2s; }
+    .switch .track::after { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .2s; }
+    .switch input:checked + .track { background: var(--primary-purple); }
+    .switch input:checked + .track::after { transform: translateX(18px); }
+    .switch input:focus-visible + .track { box-shadow: 0 0 0 3px rgba(123,31,162,.2); }
+
+    /* Benefícios */
+    .auto-box { border: 1px solid var(--border-color); border-radius: 6px; background: #fafafb; padding: 16px 18px; }
+    .auto-note { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .auto-note .tipo-pill { background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 1px 8px; font-weight: 600; color: var(--text-main); font-size: 11px; }
+    .ben-list { columns: 2; column-gap: 32px; margin: 0 0 0 18px; font-size: 14px; line-height: 1.9; color: var(--text-main); }
+    .ben-empty { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+
+    /* PcD */
+    .pcd-summary { border: 1px solid var(--border-color); border-radius: 6px; padding: 14px; background: #fff; display: flex; flex-direction: column; gap: 12px; }
+    .pcd-summary-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .pcd-summary-head .t { font-size: 13px; color: var(--text-muted); }
+    .pcd-summary-head .t strong { color: var(--text-main); }
+    .pcd-group { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; align-items: start; }
+    .pcd-group .cat { font-size: 12px; font-weight: 600; color: var(--text-main); padding-top: 4px; }
+    .pcd-group .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pcd-empty { font-size: 13px; color: var(--text-muted); }
+    .pcd-modal .modal-content { max-width: 720px; }
+    .pcd-search { margin-bottom: 12px; }
+    .pcd-cat { border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 8px; overflow: hidden; }
+    .pcd-cat-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #fafafb; cursor: pointer; user-select: none; }
+    .pcd-cat-head .chev { color: var(--text-muted); font-size: 11px; width: 12px; transition: transform .15s; }
+    .pcd-cat.open .chev { transform: rotate(90deg); }
+    .pcd-cat-head .lbl { font-weight: 600; font-size: 14px; flex: 1; }
+    .pcd-cat-head .cnt { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+    .pcd-cat-head .cnt.on { color: var(--primary-purple); font-weight: 600; }
+    .pcd-items { display: none; grid-template-columns: 1fr 1fr; gap: 2px 16px; padding: 8px 12px 12px 44px; }
+    .pcd-cat.open .pcd-items { display: grid; }
+    .pcd-items label { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; cursor: pointer; }
+    input[type="checkbox"] { accent-color: var(--primary-purple); width: 16px; height: 16px; cursor: pointer; }
+
+    /* Campos em avaliação */
+    .eval-box { border: 1px dashed #cfcfcf; border-radius: 6px; padding: 14px; background: #fcfcfd; }
+    .eval-box .eval-head { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .eval-box .eval-head .pill { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; background: #fff8e1; color: #e65100; border: 1px solid #ffecb3; border-radius: 10px; padding: 1px 8px; }
+
+    /* Barra de ações */
+    .vf-actions { position: sticky; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--border-color); box-shadow: 0 -4px 16px rgba(0,0,0,.06); margin-top: 8px; }
+    .vf-actions-inner { max-width: 1440px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .vf-actions .state { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .vf-actions .state .dot { width: 8px; height: 8px; border-radius: 50%; background: #bdbdbd; }
+    .vf-actions .state.dirty .dot { background: #f57c00; }
+    .vf-actions .btns { display: flex; gap: 8px; }
+    .page-sub { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 13px; color: var(--text-muted); }
+    .badge-st { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid; }
+    .badge-st::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .badge-st.publicada { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+    .badge-st.bloqueada { background: #fff8e1; color: #e65100; border-color: #ffecb3; }
+    .badge-st.encerrada { background: #eceff1; color: #455a64; border-color: #cfd8dc; }
+    .badge-st.rascunho { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+    @media (max-width: 1100px) { .vf-layout { grid-template-columns: minmax(0, 1fr); } .vf-nav { display: none; } .s3 { grid-column: span 6; } .s4 { grid-column: span 6; } }
+    @media (max-width: 720px) { .s3, .s4, .s6, .s8 { grid-column: span 12; } .ben-list { columns: 1; } .pcd-items { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html" style="display: flex; align-items: center;"><img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;"></a>
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'64'%20height%3D'64'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20fill%3D'%23fff'%2F%3E%3Ctext%20x%3D'32'%20y%3D'41'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'24'%20font-weight%3D'700'%20fill%3D'%237b1fa2'%20text-anchor%3D'middle'%3EAT%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-briefcase"></i> Vagas
+        <div class="dropdown-menu" style="min-width: 260px;">
+          <a href="cadastro-vagas.html" class="dropdown-item">Cadastro de Vagas</a>
+          <a href="#" class="dropdown-item">Cadastro de Departamentos</a>
+          <a href="#" class="dropdown-item">Cadastro de Job Descriptions</a>
+          <a href="#" class="dropdown-item">Validação de Documentos</a>
+          <a href="#" class="dropdown-item">Código Vagas Indisponíveis</a>
+          <a href="beneficios-tipo-vaga.html" class="dropdown-item">Benefícios por Tipo de Vaga</a>
+          <a href="bem-estar-tp.html" class="dropdown-item">Texto Bem Estar TP</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <span>Vagas</span> &gt; <a href="cadastro-vagas.html">Cadastro de Vagas</a> &gt; <span id="bc-current">Nova Vaga</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header" style="margin-bottom: 16px; align-items: flex-end;">
+      <div>
+        <h1 class="page-title" id="page-title">Nova Vaga</h1>
+        <div class="page-sub" id="page-sub" style="display: none;"></div>
+      </div>
+      <a href="cadastro-vagas.html" class="btn btn-secondary" id="btn-voltar"><i class="fa-solid fa-arrow-left"></i> Voltar para Cadastro de Vagas</a>
+    </div>
+
+    <div class="vf-layout">
+      <nav class="vf-nav" id="vf-nav">
+        <a href="#sec-identificacao"><span class="n">1</span> Identificação</a>
+        <a href="#sec-conteudo"><span class="n">2</span> Conteúdo da Vaga</a>
+        <a href="#sec-informacoes"><span class="n">3</span> Informações da Vaga</a>
+        <a href="#sec-beneficios"><span class="n">4</span> Benefícios</a>
+        <a href="#sec-bemestar"><span class="n">5</span> Bem Estar TP</a>
+        <a href="#sec-publicacao"><span class="n">6</span> Publicação e Configurações</a>
+        <a href="#sec-publico"><span class="n">7</span> Público e Inclusão</a>
+        <a href="#sec-adicionais"><span class="n">8</span> Configurações adicionais</a>
+      </nav>
+
+      <form id="vaga-form" novalidate autocomplete="off">
+        <!-- 1. Identificação -->
+        <section class="card vf-section" id="sec-identificacao">
+          <div class="vf-section-head"><h2><span class="n">01</span> Identificação</h2></div>
+          <div class="fgrid">
+            <div class="form-group s4">
+              <label class="form-label" for="f-codigo">Código<span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-codigo" data-required placeholder="Ex.: SUPERVISOR PCD">
+              <div class="err-msg">Informe o código da vaga.</div>
+            </div>
+            <div class="form-group s8">
+              <label class="form-label" for="f-nome">Nome<span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-nome" data-required placeholder="Ex.: Supervisor de atendimento PCD">
+              <div class="err-msg">Informe o nome da vaga.</div>
+            </div>
+            <div class="form-group s12">
+              <label class="form-label" for="f-descricao">Descrição da Vaga<span class="req">*</span></label>
+              <textarea class="form-control" id="f-descricao" data-required rows="2" maxlength="155" placeholder="Resumo da oportunidade exibido na listagem de vagas"></textarea>
+              <div class="hint-row"><span>Resuma a oportunidade em até 155 caracteres.</span><span class="counter" id="desc-counter">0 / 155</span></div>
+              <div class="err-msg">Informe a descrição da vaga.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-tipo">Tipo de Vaga<span class="req">*</span></label>
+              <select class="form-control" id="f-tipo" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione o tipo de vaga.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-perfil">Perfil do Candidato<span class="req">*</span></label>
+              <select class="form-control" id="f-perfil" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione o perfil do candidato.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-cargo">Cargo<span class="req">*</span></label>
+              <select class="form-control" id="f-cargo" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione o cargo.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-gestao">Gestão RS<span class="req">*</span></label>
+              <select class="form-control" id="f-gestao" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione a gestão RS.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-status">Status da Vaga<span class="req">*</span></label>
+              <select class="form-control" id="f-status" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione o status da vaga.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-confid">Confidencialidade</label>
+              <select class="form-control" id="f-confid"></select>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Conteúdo -->
+        <section class="card vf-section" id="sec-conteudo">
+          <div class="vf-section-head"><h2><span class="n">02</span> Conteúdo da Vaga</h2></div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Sobre a vaga</label>
+            <div class="rte" data-rte="sobre" data-placeholder="Apresente a oportunidade: contexto, atividades e o que a pessoa vai encontrar no dia a dia."></div>
+            <div class="form-hint">Use parágrafos e listas com marcadores. Formatação adicional e HTML não são permitidos.</div>
+          </div>
+        </section>
+
+        <!-- 3. Informações -->
+        <section class="card vf-section" id="sec-informacoes">
+          <div class="vf-section-head"><h2><span class="n">03</span> Informações da Vaga</h2></div>
+          <div class="fgrid">
+            <div class="form-group s12">
+              <label class="form-label" for="f-salario">Salário<span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-salario" data-required placeholder="Ex.: R$ 1.897,50 + RV até 18% + Benefícios + Plano de carreira">
+              <div class="sal-sug" id="sal-sug"></div>
+              <div class="err-msg">Informe o salário.</div>
+            </div>
+            <div class="form-group s6">
+              <label class="form-label" for="f-horarios">Horários<span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-horarios" data-required placeholder="Ex.: 09:00 às 15:20 | 15:20 às 21:40">
+              <div class="err-msg">Informe os horários.</div>
+            </div>
+            <div class="form-group s3">
+              <label class="form-label" for="f-jornada">Jornada<span class="req">*</span></label>
+              <input type="text" class="form-control" id="f-jornada" data-required placeholder="Ex.: 06h20">
+              <div class="err-msg">Informe a jornada.</div>
+            </div>
+            <div class="form-group s3">
+              <label class="form-label" for="f-escala">Escala<span class="req">*</span></label>
+              <select class="form-control" id="f-escala" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione a escala.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-modalidade">Modalidade<span class="req">*</span></label>
+              <select class="form-control" id="f-modalidade" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione a modalidade.</div>
+            </div>
+            <div class="form-group s8">
+              <label class="form-label" for="f-local">Local<span class="req">*</span></label>
+              <div class="input-icon"><i class="fa-solid fa-location-dot"></i><input type="text" class="form-control" id="f-local" data-required placeholder="Ex.: Água Branca – São Paulo/SP" role="combobox" aria-autocomplete="list"></div>
+              <div class="err-msg">Informe o local.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Benefícios -->
+        <section class="card vf-section" id="sec-beneficios">
+          <div class="vf-section-head"><h2><span class="n">04</span> Benefícios</h2></div>
+          <div class="auto-box" id="beneficios-box"></div>
+        </section>
+
+        <!-- 5. Bem Estar TP -->
+        <section class="card vf-section" id="sec-bemestar">
+          <div class="vf-section-head"><h2><span class="n">05</span> Bem Estar TP</h2></div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <div class="rte" data-rte="bemEstar" data-restore="true"></div>
+            <div class="form-hint">Texto padrão pré-preenchido. Você pode ajustá-lo para esta vaga.</div>
+          </div>
+        </section>
+
+        <!-- 6. Publicação -->
+        <section class="card vf-section" id="sec-publicacao">
+          <div class="vf-section-head"><h2><span class="n">06</span> Publicação e Configurações</h2></div>
+          <div class="fgrid">
+            <div class="form-group s12" id="grp-perfis">
+              <label class="form-label">Selecione o(s) Perfil(is) que pode visualizar a Vaga<span class="req">*</span></label>
+              <div class="mp" id="mp-perfis"></div>
+              <div class="err-msg">Selecione ao menos um perfil.</div>
+            </div>
+            <div class="form-group s12">
+              <label class="form-label">Selecione o(s) parceiro(s) da Vaga</label>
+              <div class="mp" id="mp-parceiros"></div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-inicio">Data Início<span class="req">*</span></label>
+              <input type="date" class="form-control" id="f-inicio" data-required>
+              <div class="err-msg">Informe a data de início.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-fim">Data Fim</label>
+              <input type="date" class="form-control" id="f-fim">
+              <div class="err-msg">A data fim deve ser posterior à data de início.</div>
+            </div>
+            <div class="form-group s4">
+              <label class="form-label" for="f-nivel">Nível da Vaga</label>
+              <select class="form-control" id="f-nivel"><option value="">Selecione</option></select>
+            </div>
+            <div class="form-group s12">
+              <div class="toggle-row">
+                <div><div class="t-label">Aceitar candidatos que possam mudar de localidade</div></div>
+                <label class="switch"><input type="checkbox" id="f-mudanca"><span class="track"></span></label>
+              </div>
+            </div>
+            <!-- Campos em avaliação: remover este bloco para descontinuar Idade Mínima/Máxima -->
+            <div class="form-group s12" id="blk-idade">
+              <div class="eval-box">
+                <div class="eval-head"><span class="pill">Em avaliação</span> Campos mantidos do sistema atual, com permanência em análise.</div>
+                <div class="fgrid">
+                  <div class="form-group s3">
+                    <label class="form-label" for="f-idade-min">Idade Mínima</label>
+                    <input type="number" class="form-control" id="f-idade-min" min="0">
+                  </div>
+                  <div class="form-group s3">
+                    <label class="form-label" for="f-idade-max">Idade Máxima</label>
+                    <input type="number" class="form-control" id="f-idade-max" min="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Público e Inclusão -->
+        <section class="card vf-section" id="sec-publico">
+          <div class="vf-section-head"><h2><span class="n">07</span> Público e Inclusão</h2></div>
+          <div class="fgrid">
+            <div class="form-group s6">
+              <label class="form-label" for="f-publico">Público da Vaga<span class="req">*</span></label>
+              <select class="form-control" id="f-publico" data-required><option value="">Selecione</option></select>
+              <div class="err-msg">Selecione o público da vaga.</div>
+            </div>
+            <div class="form-group s12">
+              <label class="form-label">PCD</label>
+              <div class="pcd-summary" id="pcd-summary"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Configurações adicionais (bloco isolado: pode ser removido sem impacto) -->
+        <section class="card vf-section" id="sec-adicionais">
+          <div class="vf-section-head"><h2><span class="n">08</span> Configurações adicionais</h2></div>
+          <div class="toggle-row" id="blk-pesquisa">
+            <div><div class="t-label">Enviar Pesquisa de Satisfação para Candidatos Após Validação Final?</div></div>
+            <label class="switch"><input type="checkbox" id="f-pesquisa"><span class="track"></span></label>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+
+  <div class="vf-actions">
+    <div class="vf-actions-inner">
+      <div class="state" id="save-state"><span class="dot"></span><span id="save-state-text">Nenhuma alteração</span></div>
+      <div class="btns">
+        <button type="button" class="btn btn-secondary" id="btn-cancelar">Cancelar</button>
+        <button type="button" class="btn btn-secondary" id="btn-rascunho"><i class="fa-regular fa-floppy-disk"></i> Salvar rascunho</button>
+        <button type="button" class="btn btn-primary" id="btn-salvar"><i class="fa-solid fa-check"></i> Salvar vaga</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal PcD -->
+  <div class="modal-overlay pcd-modal" id="modal-pcd">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Condições PCD</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-pcd')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-icon pcd-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" class="form-control" id="pcd-search" placeholder="Buscar condição"></div>
+        <div id="pcd-tree"></div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-secondary" type="button" id="pcd-clear">Limpar seleção</button>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span id="pcd-temp-count" style="font-size: 13px; color: var(--text-muted);"></span>
+          <button class="btn btn-secondary" type="button" onclick="closeModal('modal-pcd')">Cancelar</button>
+          <button class="btn btn-primary" type="button" id="pcd-apply">Aplicar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal descartar -->
+  <div class="modal-overlay" id="modal-descartar">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Descartar alterações?</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-descartar')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body"><p style="font-size: 14px; line-height: 1.5;">As alterações feitas nesta vaga não foram salvas e serão perdidas.</p></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-descartar')">Continuar editando</button>
+        <a class="btn btn-danger" href="cadastro-vagas.html">Descartar e sair</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal restaurar texto padrão -->
+  <div class="modal-overlay" id="modal-restaurar">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Restaurar texto padrão?</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-restaurar')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body"><p style="font-size: 14px; line-height: 1.5;">O conteúdo atual de Bem Estar TP será substituído pelo texto padrão cadastrado em <a href="bem-estar-tp.html" target="_blank">Texto Bem Estar TP</a>.</p></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-restaurar')">Cancelar</button>
+        <button class="btn btn-primary" type="button" id="btn-restaurar-ok">Restaurar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="vagas-data.js"></script>
+  <script>
+    const O = TPVagas.OPTIONS;
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    // ---------- Modo ----------
+    const params = new URLSearchParams(location.search);
+    const editId = params.has('id') ? +params.get('id') : null;
+    const copyId = params.has('copy') ? +params.get('copy') : null;
+    let data = editId != null ? TPVagas.get(editId) : null;
+    const isEdit = !!data;
+    let copySrc = null;
+    if (!isEdit && copyId != null) {
+      copySrc = TPVagas.get(copyId);
+      if (copySrc) {
+        const { id, inclusao, status, statusVaga, ...rest } = copySrc;
+        data = { ...TPVagas.defaults(), ...rest, status: status === 'Rascunho' ? (statusVaga || 'Publicada') : status, dataInicio: '', dataFim: '' };
+      } else setTimeout(() => showToast('Vaga ' + copyId + ' não encontrada. Abrindo formulário de nova vaga.', 'error'), 200);
+    }
+    if (editId != null && !data) setTimeout(() => showToast('Vaga ' + editId + ' não encontrada. Abrindo formulário de nova vaga.', 'error'), 200);
+    if (!data) data = TPVagas.defaults();
+    const modeLabel = isEdit ? 'Editar Vaga' : 'Nova Vaga';
+    document.title = modeLabel + ' - People Experience';
+    $('page-title').textContent = modeLabel;
+    $('bc-current').textContent = modeLabel;
+    if (copySrc) {
+      const sub = $('page-sub');
+      sub.style.display = 'flex';
+      sub.innerHTML = '<span><i class="fa-regular fa-copy"></i> Copiada da vaga ' + copySrc.id + ' · ' + esc(copySrc.codigo) + '. Revise os dados e defina as datas de publicação.</span>';
+    }
+    if (isEdit) {
+      const sub = $('page-sub');
+      sub.style.display = 'flex';
+      sub.innerHTML = '<span>ID ' + data.id + ' · ' + esc(data.codigo) + ' · Incluída em ' + esc((data.inclusao || '').split(' ')[0]) + '</span><span class="badge-st ' + data.status.toLowerCase() + '">' + data.status + '</span>';
+    }
+
+    // ---------- Selects ----------
+    const fill = (id, list, fmt) => list.forEach(v => $(id).insertAdjacentHTML('beforeend', '<option value="' + esc(v) + '">' + esc(fmt ? fmt(v) : v) + '</option>'));
+    const cargos = [...new Set(TPVagas.load().map(v => v.cargo).concat(data.cargo ? [data.cargo] : []))].sort();
+    fill('f-tipo', O.tipos); fill('f-perfil', O.perfisCandidato); fill('f-cargo', cargos); fill('f-gestao', O.gestaoRS);
+    fill('f-status', O.status); fill('f-confid', O.confidencialidade); fill('f-modalidade', O.modalidades);
+    fill('f-nivel', O.niveis); fill('f-escala', O.escalas); fill('f-publico', O.publicos);
+
+    // ---------- Editor de texto controlado ----------
+    function sanitize(html) {
+      const tmp = document.createElement('div'); tmp.innerHTML = html;
+      const out = [];
+      const inline = n => {
+        if (n.nodeType === 3) return esc(n.textContent);
+        if (n.nodeName === 'BR') return '<br>';
+        return [...n.childNodes].map(inline).join('');
+      };
+      let buf = '';
+      const flush = () => { if (buf.replace(/<br>/g, '').trim()) out.push('<p>' + buf.trim() + '</p>'); buf = ''; };
+      [...tmp.childNodes].forEach(n => {
+        if (n.nodeName === 'UL' || n.nodeName === 'OL') { flush(); const lis = [...n.querySelectorAll('li')].map(li => inline(li).trim()).filter(Boolean); if (lis.length) out.push('<ul>' + lis.map(l => '<li>' + l + '</li>').join('') + '</ul>'); }
+        else if (/^(P|DIV|H\d|BLOCKQUOTE|LI)$/.test(n.nodeName)) { flush(); buf = inline(n); flush(); }
+        else buf += inline(n);
+      });
+      flush();
+      return out.join('');
+    }
+    const editors = {};
+    document.querySelectorAll('[data-rte]').forEach(el => {
+      const key = el.dataset.rte;
+      el.innerHTML = '<div class="rte-toolbar">' +
+        '<button type="button" data-cmd="p" title="Parágrafo"><i class="fa-solid fa-paragraph"></i></button>' +
+        '<button type="button" data-cmd="ul" title="Lista com marcadores"><i class="fa-solid fa-list-ul"></i></button>' +
+        '<span class="sep"></span>' +
+        '<button type="button" data-cmd="clear" title="Limpar formatação"><i class="fa-solid fa-text-slash"></i></button>' +
+        '<span class="spacer"></span>' +
+        (el.dataset.restore ? '<button type="button" data-cmd="restore" title="Restaurar texto padrão"><i class="fa-solid fa-rotate-left"></i> Restaurar texto padrão</button>' : '') +
+        '</div><div class="rte-body" contenteditable="true" data-placeholder="' + esc(el.dataset.placeholder || '') + '"></div>';
+      const body = el.querySelector('.rte-body');
+      body.innerHTML = sanitize(data[key] || '');
+      const updateState = () => { const inList = document.queryCommandState && document.queryCommandState('insertUnorderedList'); el.querySelector('[data-cmd="ul"]').classList.toggle('on', !!inList && el.contains(document.activeElement)); };
+      el.querySelector('.rte-toolbar').addEventListener('mousedown', e => e.preventDefault());
+      el.querySelector('.rte-toolbar').addEventListener('click', e => {
+        const b = e.target.closest('[data-cmd]'); if (!b) return;
+        const cmd = b.dataset.cmd;
+        if (cmd === 'restore') { openModal('modal-restaurar'); return; }
+        body.focus();
+        if (cmd === 'ul') document.execCommand('insertUnorderedList');
+        if (cmd === 'p') { if (document.queryCommandState('insertUnorderedList')) document.execCommand('insertUnorderedList'); document.execCommand('formatBlock', false, 'p'); }
+        if (cmd === 'clear') body.innerHTML = sanitize(body.innerHTML);
+        updateState(); markDirty();
+      });
+      body.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && /^[biu]$/i.test(e.key)) e.preventDefault(); });
+      body.addEventListener('paste', e => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        const html = text.split(/\r?\n/).map(l => l.trim() ? '<p>' + esc(l) + '</p>' : '').join('');
+        document.execCommand('insertHTML', false, html);
+      });
+      body.addEventListener('drop', e => e.preventDefault());
+      body.addEventListener('input', () => { if (!body.textContent.trim() && !body.querySelector('li')) body.innerHTML = ''; markDirty(); });
+      body.addEventListener('keyup', updateState); body.addEventListener('mouseup', updateState);
+      editors[key] = { get: () => sanitize(body.innerHTML), set: h => { body.innerHTML = sanitize(h); } };
+    });
+    document.execCommand('defaultParagraphSeparator', false, 'p');
+    $('btn-restaurar-ok').addEventListener('click', () => { editors.bemEstar.set(TPVagas.getBemEstar().html); closeModal('modal-restaurar'); markDirty(); showToast('Texto padrão restaurado.', 'success'); });
+
+    // ---------- Multi-picker ----------
+    function MultiPicker(root, opts) {
+      let value = [...(opts.value || [])];
+      let hl = 0;
+      root.innerHTML = '<div class="mp-control"><input class="mp-input" type="text" placeholder="' + esc(opts.placeholder || 'Pesquisar') + '"><i class="fa-solid fa-chevron-down"></i></div><div class="mp-menu"></div>';
+      const control = root.querySelector('.mp-control'), input = root.querySelector('.mp-input'), menu = root.querySelector('.mp-menu');
+      const renderTags = () => {
+        control.querySelectorAll('.tag').forEach(t => t.remove());
+        value.forEach(v => {
+          const t = document.createElement('span'); t.className = 'tag';
+          t.innerHTML = '<span>' + esc(v) + '</span><button type="button" title="Remover"><i class="fa-solid fa-xmark"></i></button>';
+          t.querySelector('button').addEventListener('click', e => { e.stopPropagation(); toggle(v); });
+          control.insertBefore(t, input);
+        });
+        input.placeholder = value.length ? '' : (opts.placeholder || 'Pesquisar');
+      };
+      const filtered = () => { const q = input.value.trim().toLowerCase(); return opts.options.filter(o => !q || o.toLowerCase().includes(q)); };
+      const renderMenu = () => {
+        const list = filtered(); const q = input.value.trim();
+        if (hl >= list.length) hl = Math.max(0, list.length - 1);
+        const mark = o => { if (!q) return esc(o); const i = o.toLowerCase().indexOf(q.toLowerCase()); return esc(o.slice(0, i)) + '<mark>' + esc(o.slice(i, i + q.length)) + '</mark>' + esc(o.slice(i + q.length)); };
+        menu.innerHTML = '<div class="mp-meta">' + value.length + ' de ' + opts.options.length + ' selecionado(s)</div>' + (list.length ? list.map((o, i) => '<div class="mp-opt' + (value.includes(o) ? ' sel' : '') + (i === hl ? ' hl' : '') + '" data-v="' + esc(o) + '"><span class="box"><i class="fa-solid fa-check"></i></span>' + mark(o) + '</div>').join('') : '<div class="mp-empty">Nenhum resultado para "' + esc(q) + '"</div>');
+      };
+      const toggle = v => { value = value.includes(v) ? value.filter(x => x !== v) : [...value, v]; renderTags(); renderMenu(); root.closest('.form-group')?.classList.remove('invalid'); control.classList.remove('is-invalid'); markDirty(); };
+      const open = () => { root.classList.add('open'); renderMenu(); };
+      const close = () => { root.classList.remove('open'); input.value = ''; hl = 0; };
+      control.addEventListener('click', () => { input.focus(); open(); });
+      input.addEventListener('focus', open);
+      input.addEventListener('input', () => { hl = 0; open(); });
+      input.addEventListener('keydown', e => {
+        const list = filtered();
+        if (e.key === 'ArrowDown') { e.preventDefault(); hl = Math.min(hl + 1, list.length - 1); renderMenu(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); hl = Math.max(hl - 1, 0); renderMenu(); }
+        else if (e.key === 'Enter') { e.preventDefault(); if (list[hl]) toggle(list[hl]); }
+        else if (e.key === 'Escape') { close(); input.blur(); }
+        else if (e.key === 'Backspace' && !input.value && value.length) toggle(value[value.length - 1]);
+      });
+      menu.addEventListener('mousedown', e => e.preventDefault());
+      menu.addEventListener('click', e => { const o = e.target.closest('.mp-opt'); if (o) toggle(o.dataset.v); });
+      document.addEventListener('click', e => { if (!root.contains(e.target)) close(); });
+      renderTags();
+      return { get: () => [...value], control };
+    }
+    const mpPerfis = MultiPicker($('mp-perfis'), { options: O.perfisVisualizar, value: data.perfisVisualizar, placeholder: 'Pesquisar perfis' });
+    const mpParc = MultiPicker($('mp-parceiros'), { options: O.parceiros, value: data.parceiros, placeholder: 'Pesquisar parceiros' });
+
+    // ---------- Benefícios ----------
+    function renderBeneficios() {
+      const t = $('f-tipo').value, list = TPVagas.getBeneficios()[t];
+      $('beneficios-box').innerHTML = t && list
+        ? '<div class="auto-note"><i class="fa-solid fa-circle-info"></i> Benefícios definidos automaticamente de acordo com o Tipo de Vaga <span class="tipo-pill">' + esc(t) + '</span><a href="beneficios-tipo-vaga.html?tipo=' + encodeURIComponent(t) + '" target="_blank" style="margin-left: auto; font-weight: 600; text-decoration: none;">Gerenciar benefícios <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i></a></div><ul class="ben-list">' + list.map(b => '<li>' + esc(b) + '</li>').join('') + '</ul>'
+        : '<div class="ben-empty"><i class="fa-solid fa-circle-info"></i> Selecione o Tipo de Vaga em Identificação para exibir os benefícios correspondentes.</div>';
+    }
+    $('f-tipo').addEventListener('change', renderBeneficios);
+
+    // ---------- PcD ----------
+    const TREE = TPVagas.PCD_TREE;
+    let pcd = new Set(data.pcd || []);
+    let pcdTemp = new Set();
+    const openCats = new Set();
+    const keyOf = (c, i) => c.id + '::' + i;
+    function renderPcdSummary() {
+      const el = $('pcd-summary');
+      const groups = TREE.map(c => ({ c, sel: c.items.filter(i => pcd.has(keyOf(c, i))) })).filter(g => g.sel.length);
+      const total = groups.reduce((a, g) => a + g.sel.length, 0);
+      el.innerHTML = '<div class="pcd-summary-head"><div class="t">' + (total ? '<strong>' + total + '</strong> condição(ões) selecionada(s) em <strong>' + groups.length + '</strong> categoria(s)' : 'Nenhuma condição PCD selecionada.') + '</div><button type="button" class="btn btn-secondary" id="btn-pcd-open"><i class="fa-solid fa-list-check"></i> ' + (total ? 'Editar seleção' : 'Selecionar condições') + '</button></div>' +
+        groups.map(g => '<div class="pcd-group"><div class="cat">' + g.c.label + '</div><div class="tags">' +
+          (g.sel.length === g.c.items.length && g.c.items.length > 1
+            ? '<span class="tag"><span>Todas (' + g.sel.length + ')</span><button type="button" data-rm-cat="' + g.c.id + '" title="Remover"><i class="fa-solid fa-xmark"></i></button></span>'
+            : g.sel.map(i => '<span class="tag"><span>' + esc(i) + '</span><button type="button" data-rm="' + esc(keyOf(g.c, i)) + '" title="Remover"><i class="fa-solid fa-xmark"></i></button></span>').join('')) +
+          '</div></div>').join('');
+      $('btn-pcd-open').addEventListener('click', openPcd);
+      el.querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', () => { pcd.delete(b.dataset.rm); renderPcdSummary(); markDirty(); }));
+      el.querySelectorAll('[data-rm-cat]').forEach(b => b.addEventListener('click', () => { const c = TREE.find(x => x.id === b.dataset.rmCat); c.items.forEach(i => pcd.delete(keyOf(c, i))); renderPcdSummary(); markDirty(); }));
+    }
+    function renderPcdTree() {
+      const q = $('pcd-search').value.trim().toLowerCase();
+      $('pcd-tree').innerHTML = TREE.map(c => {
+        const items = c.items.filter(i => !q || i.toLowerCase().includes(q) || c.label.toLowerCase().includes(q));
+        if (!items.length) return '';
+        const n = c.items.filter(i => pcdTemp.has(keyOf(c, i))).length;
+        const open = q || openCats.has(c.id);
+        return '<div class="pcd-cat' + (open ? ' open' : '') + '" data-cat="' + c.id + '"><div class="pcd-cat-head"><i class="fa-solid fa-chevron-right chev"></i><input type="checkbox" data-all="' + c.id + '"' + (n === c.items.length ? ' checked' : '') + '><span class="lbl">' + c.label + '</span><span class="cnt' + (n ? ' on' : '') + '">' + n + ' / ' + c.items.length + '</span></div>' +
+          '<div class="pcd-items">' + items.map(i => '<label><input type="checkbox" data-k="' + esc(keyOf(c, i)) + '"' + (pcdTemp.has(keyOf(c, i)) ? ' checked' : '') + '> ' + esc(i) + '</label>').join('') + '</div></div>';
+      }).join('') || '<div class="mp-empty">Nenhuma condição encontrada.</div>';
+      TREE.forEach(c => { const cb = document.querySelector('[data-all="' + c.id + '"]'); if (cb) { const n = c.items.filter(i => pcdTemp.has(keyOf(c, i))).length; cb.indeterminate = n > 0 && n < c.items.length; } });
+      $('pcd-temp-count').textContent = pcdTemp.size + ' selecionada(s)';
+    }
+    function openPcd() { pcdTemp = new Set(pcd); $('pcd-search').value = ''; openCats.clear(); TREE.forEach(c => { if (c.items.some(i => pcd.has(keyOf(c, i)))) openCats.add(c.id); }); renderPcdTree(); openModal('modal-pcd'); }
+    $('pcd-tree').addEventListener('click', e => {
+      const head = e.target.closest('.pcd-cat-head');
+      if (head && e.target.type !== 'checkbox') { const id = head.parentElement.dataset.cat; openCats.has(id) ? openCats.delete(id) : openCats.add(id); renderPcdTree(); }
+    });
+    $('pcd-tree').addEventListener('change', e => {
+      const t = e.target;
+      if (t.dataset.all) { const c = TREE.find(x => x.id === t.dataset.all); c.items.forEach(i => t.checked ? pcdTemp.add(keyOf(c, i)) : pcdTemp.delete(keyOf(c, i))); openCats.add(c.id); }
+      if (t.dataset.k) t.checked ? pcdTemp.add(t.dataset.k) : pcdTemp.delete(t.dataset.k);
+      renderPcdTree();
+    });
+    $('pcd-search').addEventListener('input', renderPcdTree);
+    $('pcd-clear').addEventListener('click', () => { pcdTemp.clear(); renderPcdTree(); });
+    $('pcd-apply').addEventListener('click', () => { pcd = new Set(pcdTemp); closeModal('modal-pcd'); renderPcdSummary(); markDirty(); });
+
+    // ---------- Preenchimento ----------
+    const statusForm = data.status === 'Rascunho' ? (data.statusVaga || '') : data.status;
+    const setVal = (id, v) => { $(id).value = v == null ? '' : v; };
+    setVal('f-codigo', data.codigo); setVal('f-nome', data.nome); setVal('f-descricao', data.descricao);
+    setVal('f-tipo', data.tipo); setVal('f-perfil', data.perfilCandidato); setVal('f-cargo', data.cargo); setVal('f-gestao', data.gestaoRS);
+    setVal('f-status', statusForm); setVal('f-confid', data.confidencialidade || 'Pública');
+    setVal('f-salario', data.salario); setVal('f-horarios', data.horarios); setVal('f-jornada', data.jornada);
+    setVal('f-escala', Array.isArray(data.escala) ? (data.escala[0] || '') : data.escala); setVal('f-modalidade', data.modalidade); setVal('f-local', data.local);
+    setVal('f-inicio', data.dataInicio); setVal('f-fim', data.dataFim); setVal('f-nivel', data.nivel);
+    $('f-mudanca').checked = !!data.aceitaMudanca;
+    setVal('f-idade-min', data.idadeMin); setVal('f-idade-max', data.idadeMax);
+    setVal('f-publico', data.publico);
+    $('f-pesquisa').checked = !!data.pesquisaSatisfacao;
+    renderBeneficios(); renderPcdSummary();
+
+    // ---------- Sugestões de salário ----------
+    const salSug = $('sal-sug');
+    salSug.innerHTML = '<span>Mais utilizados:</span>' + TPVagas.topSalarios(3).map(s => '<button type="button" data-sal="' + esc(s) + '">' + esc(s) + '</button>').join('');
+    const syncSal = () => salSug.querySelectorAll('[data-sal]').forEach(b => b.classList.toggle('on', b.dataset.sal === $('f-salario').value.trim()));
+    salSug.addEventListener('click', e => { const b = e.target.closest('[data-sal]'); if (!b) return; $('f-salario').value = b.dataset.sal; clearError($('f-salario')); markDirty(); syncSal(); });
+    $('f-salario').addEventListener('input', syncSal);
+    syncSal();
+
+    // ---------- Descrição da Vaga ----------
+    const desc = $('f-descricao');
+    const updateCounter = () => { const n = desc.value.length; const c = $('desc-counter'); c.textContent = n + ' / 155'; c.classList.toggle('warn', n >= 140); };
+    desc.addEventListener('input', () => { const clean = desc.value.replace(/[\r\n]+/g, ' ').replace(/[<>]/g, ''); if (clean !== desc.value) desc.value = clean; updateCounter(); });
+    desc.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); });
+    updateCounter();
+
+    // ---------- Estado de alterações ----------
+    let dirty = false;
+    function markDirty() {
+      if (dirty) return; dirty = true;
+      $('save-state').classList.add('dirty'); $('save-state-text').textContent = 'Alterações não salvas';
+    }
+    $('vaga-form').addEventListener('input', e => { if (!e.target.closest('.rte') && !e.target.classList.contains('mp-input') && e.target.id !== 'pcd-search') markDirty(); clearError(e.target); });
+    $('vaga-form').addEventListener('change', e => { markDirty(); clearError(e.target); });
+    function clearError(el) { const g = el.closest && el.closest('.form-group'); if (g && g.classList.contains('invalid')) { g.classList.remove('invalid'); el.classList.remove('is-invalid'); updateNavErrors(); } }
+
+    // ---------- Navegação por seções ----------
+    const navLinks = [...document.querySelectorAll('#vf-nav a')];
+    navLinks.forEach(a => a.addEventListener('click', e => { e.preventDefault(); const s = document.querySelector(a.getAttribute('href')); window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 16, behavior: 'smooth' }); }));
+    function updateActive() {
+      let cur = navLinks[0];
+      navLinks.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s.getBoundingClientRect().top < 140) cur = a; });
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) cur = navLinks[navLinks.length - 1];
+      navLinks.forEach(a => a.classList.toggle('active', a === cur));
+    }
+    window.addEventListener('scroll', updateActive, { passive: true }); updateActive();
+    function updateNavErrors() { navLinks.forEach(a => { const s = document.querySelector(a.getAttribute('href')); a.classList.toggle('has-error', !!s.querySelector('.form-group.invalid')); }); }
+
+    // ---------- Coleta, validação e salvamento ----------
+    function collect() {
+      return {
+        id: isEdit ? data.id : null,
+        codigo: $('f-codigo').value.trim(), nome: $('f-nome').value.trim(), descricao: desc.value.trim(),
+        tipo: $('f-tipo').value, perfilCandidato: $('f-perfil').value, cargo: $('f-cargo').value, gestaoRS: $('f-gestao').value,
+        status: $('f-status').value, confidencialidade: $('f-confid').value,
+        sobre: editors.sobre.get(),
+        salario: $('f-salario').value.trim(), horarios: $('f-horarios').value.trim(), escala: $('f-escala').value, jornada: $('f-jornada').value.trim(),
+        modalidade: $('f-modalidade').value, local: $('f-local').value.trim(),
+        bemEstar: editors.bemEstar.get(),
+        perfisVisualizar: mpPerfis.get(), parceiros: mpParc.get(),
+        dataInicio: $('f-inicio').value, dataFim: $('f-fim').value, nivel: $('f-nivel').value, aceitaMudanca: $('f-mudanca').checked,
+        idadeMin: $('f-idade-min') ? $('f-idade-min').value : '', idadeMax: $('f-idade-max') ? $('f-idade-max').value : '',
+        publico: $('f-publico').value, pcd: [...pcd],
+        pesquisaSatisfacao: $('f-pesquisa') ? $('f-pesquisa').checked : undefined,
+      };
+    }
+    function validate() {
+      let first = null;
+      const fail = (el, groupEl) => { const g = groupEl || el.closest('.form-group'); g.classList.add('invalid'); el.classList.add('is-invalid'); if (!first) first = g; };
+      document.querySelectorAll('.form-group.invalid').forEach(g => g.classList.remove('invalid'));
+      document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      document.querySelectorAll('[data-required]').forEach(el => { if (!el.value.trim()) fail(el); });
+      if (!mpPerfis.get().length) fail(mpPerfis.control, $('grp-perfis'));
+      const ini = $('f-inicio').value, fim = $('f-fim').value;
+      if (ini && fim && fim < ini) fail($('f-fim'));
+      updateNavErrors();
+      if (first) { window.scrollTo({ top: first.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); const f = first.querySelector('input, select, textarea'); setTimeout(() => f && f.focus({ preventScroll: true }), 350); }
+      return !first;
+    }
+    function persist(payload, message, statusFlash) {
+      const row = TPVagas.upsert(payload);
+      TPVagas.setFlash({ message: message.replace('{id}', row.id), id: row.id, isNew: !isEdit, status: statusFlash || row.status });
+      location.href = 'cadastro-vagas.html';
+    }
+    $('btn-salvar').addEventListener('click', () => {
+      if (!validate()) { showToast('Preencha todos os campos obrigatórios (*)', 'error'); return; }
+      const p = collect(); p.statusVaga = p.status;
+      persist(p, isEdit ? 'Vaga {id} atualizada com sucesso.' : 'Vaga {id} cadastrada com sucesso.');
+    });
+    $('btn-rascunho').addEventListener('click', () => {
+      const p = collect();
+      if (!p.codigo && !p.nome) { const g = $('f-nome').closest('.form-group'); g.classList.add('invalid'); $('f-nome').classList.add('is-invalid'); updateNavErrors(); $('f-nome').focus(); showToast('Informe ao menos o Código ou o Nome para salvar o rascunho.', 'error'); return; }
+      p.statusVaga = p.status; p.status = 'Rascunho';
+      if (!p.nome) p.nome = p.codigo; if (!p.codigo) p.codigo = '—';
+      persist(p, 'Rascunho da vaga {id} salvo.', 'Rascunho');
+    });
+    $('btn-cancelar').addEventListener('click', () => { if (dirty) openModal('modal-descartar'); else location.href = 'cadastro-vagas.html'; });
+    $('btn-voltar').addEventListener('click', e => { if (dirty) { e.preventDefault(); openModal('modal-descartar'); } });
+  </script>
+</body>
+</html>

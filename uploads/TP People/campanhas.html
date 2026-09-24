@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campanhas - People Experience</title>
+  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;">
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="https://ui-avatars.com/api/?name=Admin+TP&background=fff&color=7b1fa2" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-briefcase"></i> Vagas</li>
+      <li class="nav-item dropdown active">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item" style="color: var(--primary-purple); background: var(--hover-bg); font-weight: 600;">Campanhas</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <a href="#">Cadastros</a> &gt; <span>Campanhas</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header" style="margin-bottom: 8px;">
+      <h1 class="page-title">Campanhas</h1>
+    </div>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Cadastre campanhas, gerencie links de divulgação e acompanhe os resultados de atração, conversão e admissão.</p>
+
+    <div class="tabs" style="display: flex; gap: 32px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px;">
+      <div class="tab-btn active" data-tab="tab-cadastro" style="padding: 12px 0; cursor: pointer; font-weight: 600; color: var(--primary-purple); border-bottom: 2px solid var(--primary-purple);">Cadastro de Campanhas</div>
+      <div class="tab-btn" data-tab="tab-metricas" style="padding: 12px 0; cursor: pointer; font-weight: 500; color: var(--text-muted);">Métricas de Campanhas</div>
+    </div>
+
+    <!-- ABA CADASTRO DE CAMPANHAS -->
+    <div id="tab-cadastro" class="tab-content" style="display: block;">
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Nova Campanha</button>
+      </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div style="font-size: 14px; color: var(--text-muted);">
+          Mostrar <select class="form-control" style="width: auto; display: inline-block; padding: 6px; margin: 0 4px;"><option>10</option></select> Registros
+        </div>
+        <div>
+          <input type="text" class="form-control" placeholder="Pesquisar campanha..." style="width: 250px;">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome da Campanha</th>
+              <th>Status</th>
+              <th>Quantidade de Vagas</th>
+              <th>UTMs Geradas</th>
+              <th>Última UTM Criada</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>15</td>
+              <td><strong>Vagas BCO Talentos PCD</strong></td>
+              <td><span class="badge badge-active">Ativo</span></td>
+              <td><a href="#" style="color: var(--primary-purple); text-decoration: none;"><i class="fa-solid fa-briefcase"></i> Vagas (3)</a></td>
+              <td><span class="badge" style="background:#f0f0f0; color:#333; font-size: 13px;">2</span></td>
+              <td style="color: var(--text-muted); font-size: 13px;">21/05/2026</td>
+              <td class="actions">
+                <button class="btn-icon" title="Ver vagas"><i class="fa-solid fa-briefcase"></i></button>
+                <button class="btn-icon" title="Editar campanha"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-icon" title="Copiar campanha"><i class="fa-solid fa-copy"></i></button>
+                <a href="detalhe-campanha.html" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; margin: 0 4px;"><i class="fa-solid fa-link"></i> Gerenciar UTMs</a>
+                <button class="btn-icon" style="color: var(--error);" title="Inativar"><i class="fa-solid fa-ban"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td><strong>Diversidade - Trans ou Travestis</strong></td>
+              <td><span class="badge badge-active">Ativo</span></td>
+              <td><a href="#" style="color: var(--primary-purple); text-decoration: none;"><i class="fa-solid fa-briefcase"></i> Vagas (1)</a></td>
+              <td><span class="badge" style="background:#f0f0f0; color:#333; font-size: 13px;">0</span></td>
+              <td style="color: var(--text-muted); font-size: 13px;">-</td>
+              <td class="actions">
+                <button class="btn-icon" title="Ver vagas"><i class="fa-solid fa-briefcase"></i></button>
+                <button class="btn-icon" title="Editar campanha"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-icon" title="Copiar campanha"><i class="fa-solid fa-copy"></i></button>
+                <a href="detalhe-campanha.html" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; margin: 0 4px;"><i class="fa-solid fa-link"></i> Gerenciar UTMs</a>
+                <button class="btn-icon" style="color: var(--error);" title="Inativar"><i class="fa-solid fa-ban"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><strong>Whatsapp - Qui</strong></td>
+              <td><span class="badge badge-active">Ativo</span></td>
+              <td><a href="#" style="color: var(--primary-purple); text-decoration: none;"><i class="fa-solid fa-briefcase"></i> Vagas (10)</a></td>
+              <td><span class="badge" style="background:#f0f0f0; color:#333; font-size: 13px;">5</span></td>
+              <td style="color: var(--text-muted); font-size: 13px;">20/05/2026</td>
+              <td class="actions">
+                <button class="btn-icon" title="Ver vagas"><i class="fa-solid fa-briefcase"></i></button>
+                <button class="btn-icon" title="Editar campanha"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-icon" title="Copiar campanha"><i class="fa-solid fa-copy"></i></button>
+                <a href="detalhe-campanha.html" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; margin: 0 4px;"><i class="fa-solid fa-link"></i> Gerenciar UTMs</a>
+                <button class="btn-icon" style="color: var(--error);" title="Inativar"><i class="fa-solid fa-ban"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>19</td>
+              <td><strong>Banner do Metro</strong></td>
+              <td><span class="badge badge-active">Ativo</span></td>
+              <td><a href="#" style="color: var(--primary-purple); text-decoration: none;"><i class="fa-solid fa-briefcase"></i> Vagas (4)</a></td>
+              <td><span class="badge" style="background:#f0f0f0; color:#333; font-size: 13px;">1</span></td>
+              <td style="color: var(--text-muted); font-size: 13px;">18/05/2026</td>
+              <td class="actions">
+                <button class="btn-icon" title="Ver vagas"><i class="fa-solid fa-briefcase"></i></button>
+                <button class="btn-icon" title="Editar campanha"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-icon" title="Copiar campanha"><i class="fa-solid fa-copy"></i></button>
+                <a href="detalhe-campanha.html" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; margin: 0 4px;"><i class="fa-solid fa-link"></i> Gerenciar UTMs</a>
+                <button class="btn-icon" style="color: var(--error);" title="Inativar"><i class="fa-solid fa-ban"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 13px; color: var(--text-muted);">
+        <div>Exibindo página 1 de 19</div>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn-icon" disabled>&laquo;</button>
+          <button class="btn-icon" disabled>Anterior</button>
+          <button class="btn-icon" style="background: var(--primary-purple); color: #fff;">1</button>
+          <button class="btn-icon">2</button>
+          <button class="btn-icon">3</button>
+          <button class="btn-icon">Seguinte</button>
+          <button class="btn-icon">&raquo;</button>
+        </div>
+      </div>
+    </div>
+    </div> <!-- END TAB CADASTRO -->
+
+    <!-- ABA MÉTRICAS DE CAMPANHAS -->
+    <div id="tab-metricas" class="tab-content" style="display: none;">
+      <div class="metrics-layout">
+        <!-- SIDEBAR -->
+        <aside class="metrics-sidebar" id="metrics-sidebar">
+          <div class="sidebar-header">
+            <button class="btn-icon" id="toggle-sidebar"><i class="fa-solid fa-bars"></i></button>
+          </div>
+          <nav class="sidebar-nav">
+            <a href="#" class="sidebar-link active" data-view="visao-geral" onclick="navigateMacro('visao-geral')"><i class="fa-solid fa-gauge-high"></i> <span class="link-text">Visão Geral</span></a>
+            <a href="#" class="sidebar-link" data-view="aquisicao" onclick="navigateMacro('aquisicao')"><i class="fa-solid fa-users-viewfinder"></i> <span class="link-text">Aquisição</span></a>
+            <a href="#" class="sidebar-link" data-view="funil-people" onclick="navigateMacro('funil-people')"><i class="fa-solid fa-filter"></i> <span class="link-text">Funil People</span></a>
+            <a href="#" class="sidebar-link" data-view="conversoes" onclick="navigateMacro('conversoes')"><i class="fa-solid fa-arrow-right-arrow-left"></i> <span class="link-text">Conversões</span></a>
+            <a href="#" class="sidebar-link" data-view="ranking" onclick="navigateMacro('ranking')"><i class="fa-solid fa-ranking-star"></i> <span class="link-text">Ranking de Campanhas</span></a>
+            <a href="#" class="sidebar-link" data-view="usuarios" onclick="navigateMacro('usuarios')"><i class="fa-solid fa-users"></i> <span class="link-text">Usuários / Candidatos</span></a>
+          </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="metrics-main">
+          <!-- FILTER BAR -->
+          <!-- FILTER BAR -->
+          <div class="card filter-bar-container" style="padding-bottom: 0;">
+            <div class="filter-row">
+              <div class="filter-group" style="position: relative;">
+                <label>Período</label>
+                <div class="custom-date-trigger" onclick="toggleDatePicker()" id="period-display">
+                  Últimos 30 dias <i class="fa-solid fa-calendar-days" style="margin-left: 8px;"></i>
+                </div>
+                <!-- Custom Date Picker Popover -->
+                <div id="custom-date-popover" class="date-popover" style="display: none;">
+                   <div class="popover-body">
+                      <div class="date-shortcuts">
+                         <ul>
+                            <li>Hoje</li>
+                            <li>Ontem</li>
+                            <li>Esta semana</li>
+                            <li>Últimos 7 dias</li>
+                            <li>Semana passada</li>
+                            <li>Últimos 28 dias</li>
+                            <li class="active">Últimos 30 dias</li>
+                            <li>Este mês</li>
+                            <li>Mês passado</li>
+                            <li>Últimos 90 dias</li>
+                            <li>Acumulado no trimestre</li>
+                            <li>Este ano</li>
+                            <li>Ano passado</li>
+                         </ul>
+                      </div>
+                      <div class="date-custom-area">
+                         <div class="date-inputs" style="display:flex; gap:16px; margin-bottom:16px;">
+                            <div style="flex:1"><label>Data de início</label><input type="date" class="form-control" value="2026-05-01"></div>
+                            <div style="flex:1"><label>Data de término</label><input type="date" class="form-control" value="2026-05-31"></div>
+                         </div>
+                         <div class="calendar-placeholder" style="border:1px dashed #cbd5e1; height: 200px; display:flex; align-items:center; justify-content:center; color:#94a3b8; border-radius:8px; margin-bottom:16px;">
+                            [Calendário visual para seleção do intervalo]
+                         </div>
+                         <div class="compare-toggle">
+                            <input type="checkbox" id="compare-period"> <label for="compare-period">Comparar com período anterior</label>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="popover-footer">
+                      <button class="btn btn-secondary btn-sm" onclick="closeDatePicker()">Cancelar</button>
+                      <button class="btn btn-primary btn-sm" onclick="closeDatePicker()">Aplicar</button>
+                   </div>
+                </div>
+              </div>
+              <div class="filter-group">
+                <label>Campanha</label>
+                <select class="form-control">
+                  <option>Todas as campanhas</option>
+                  <option>Vagas BCO Talentos PCD</option>
+                  <option>Jovem Aprendiz</option>
+                  <option>Banner de Metrô</option>
+                  <option>Diversidade 50+</option>
+                  <option>WhatsApp - Quinta</option>
+                  <option>Atendimento Bilíngue Home Office</option>
+                  <option>Mutirão Zona Leste</option>
+                  <option>Operação Suporte Técnico</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Macroetapa</label>
+                <select class="form-control">
+                  <option>Todas</option>
+                  <option>Seleção</option>
+                  <option>Documentação</option>
+                  <option>Admissão</option>
+                </select>
+              </div>
+              <div class="filter-group filter-actions" style="margin-left: auto;">
+                <button class="btn btn-secondary btn-sm" onclick="clearFilters()">Limpar</button>
+                <button class="btn btn-primary btn-sm" onclick="applyFilters()">Aplicar</button>
+              </div>
+            </div>
+            
+            <div class="advanced-filters-toggle">
+               <a href="#" onclick="toggleAdvancedFilters(event)" id="btn-adv-filters">Filtros avançados <i class="fa-solid fa-chevron-down"></i></a>
+            </div>
+
+            <!-- ADVANCED FILTERS -->
+            <div class="advanced-filters-area" id="advanced-filters-area" style="display: none; padding-top: 16px; border-top: 1px solid var(--border-color); margin-top: 8px;">
+               <div class="filter-row" style="flex-wrap: wrap;">
+                  <div class="filter-group"><label>Fonte</label><select class="form-control"><option>Todas</option></select></div>
+                  <div class="filter-group"><label>Meio</label><select class="form-control"><option>Todos</option></select></div>
+                  <div class="filter-group"><label>Status da candidatura</label><select class="form-control"><option>Todos</option></select></div>
+                  <div class="filter-group"><label>UTM Source</label><select class="form-control"><option>Todas</option></select></div>
+                  <div class="filter-group"><label>UTM Medium</label><select class="form-control"><option>Todos</option></select></div>
+                  <div class="filter-group"><label>UTM Campaign</label><select class="form-control"><option>Todas</option></select></div>
+                  <div class="filter-group"><label>UTM Content</label><select class="form-control"><option>Todos</option></select></div>
+                  <div class="filter-group"><label>Vaga</label><select class="form-control"><option>Todas</option></select></div>
+               </div>
+            </div>
+
+            <div class="active-filters" style="border-top: none; padding-top: 8px; padding-bottom: 16px;">
+              <span class="chip">Últimos 30 dias <i class="fa-solid fa-xmark"></i></span>
+              <span class="chip">Todas as campanhas <i class="fa-solid fa-xmark"></i></span>
+              <a href="#" class="clear-filters">Limpar todos</a>
+            </div>
+          </div>
+
+          <!-- BREADCRUMB INTERNO DE DRILLDOWN -->
+          <div id="drilldown-bar" class="drilldown-context" style="display: none;">
+             <button class="btn-back" onclick="navigateBack()"><i class="fa-solid fa-chevron-left"></i> Voltar</button>
+             <div id="drilldown-path">
+                <a href="#" onclick="navigateMacro('visao-geral')">Visão Geral</a> <span class="separator">/</span> <span class="current">Campanha</span>
+             </div>
+          </div>
+
+          <!-- VIEWS CONTAINER -->
+          <div class="views-container" id="metrics-views-container">
+            <!-- 1. VISÃO GERAL (MACRO) -->
+            <div id="view-visao-geral" class="metrics-view active">
+              <div class="kpi-grid">
+                 <div class="kpi-card card">
+                    <div class="metric-label">Cliques Totais</div>
+                    <div class="metric-value">63.420</div>
+                    <div class="metric-trend neutral">Originados das campanhas</div>
+                 </div>
+                 <div class="kpi-card card">
+                    <div class="metric-label">Total de Candidaturas</div>
+                    <div class="metric-value">15.300</div>
+                    <div class="metric-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</div>
+                 </div>
+                 <div class="kpi-card card highlight">
+                    <div class="metric-label">Conversão Visita → Cand.</div>
+                    <div class="metric-value">24,12%</div>
+                    <div class="metric-trend neutral">Visitas p/ Candidatura</div>
+                 </div>
+                 
+                 <div class="kpi-card card">
+                    <div class="metric-label">Contratações</div>
+                    <div class="metric-value">1.292</div>
+                    <div class="metric-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +5%</div>
+                 </div>
+                 <div class="kpi-card card highlight-pink">
+                    <div class="metric-label">Conversão Cand. → Contrat.</div>
+                    <div class="metric-value">8,44%</div>
+                    <div class="metric-trend neutral">Cand. p/ Contratação</div>
+                 </div>
+                 <div class="kpi-card card" style="border-left: 4px solid var(--primary-purple);">
+                    <div class="metric-label">Cliques p/ contratação</div>
+                    <div class="metric-value text-purple" style="font-size: 24px; padding-top: 4px;">49</div>
+                    <div class="metric-trend neutral">Cliques necessários</div>
+                 </div>
+              </div>
+
+              <div class="grid-12">
+                <div class="col-12 card chart-card">
+                  <div class="chart-header">
+                    <h3 class="chart-title">Tendência Temporal</h3>
+                    <select class="form-control input-sm" style="width:auto;"><option>Cliques x Cand. x Contrat.</option></select>
+                  </div>
+                  <div class="canvas-wrapper" style="height: 320px; max-height: 320px;"><canvas id="chartTrend"></canvas></div>
+                </div>
+              </div>
+
+              <div class="grid-12">
+                <div class="col-6 card chart-card">
+                   <h3 class="chart-title">Comparativo de Conversão</h3>
+                   <div class="canvas-wrapper" style="height: 280px; max-height: 280px;"><canvas id="chartCanalOverview"></canvas></div>
+                </div>
+                <div class="col-6 card chart-card">
+                  <h3 class="chart-title">Distribuição nas Macroetapas</h3>
+                  <div class="canvas-wrapper" style="height: 280px; max-height: 280px;"><canvas id="chartDistribution"></canvas></div>
+                </div>
+              </div>
+
+              <div class="grid-12">
+                 <div class="col-12 card chart-card overflow-x">
+                   <div class="chart-header">
+                     <h3 class="chart-title">Campanhas em Destaque</h3>
+                   </div>
+                   <table class="ranking-table">
+                     <thead><tr><th>Pos</th><th>Campanha</th><th>Fonte / Meio</th><th>Cliques</th><th>Cand.</th><th>Contrat.</th><th>Conv V->C</th><th>Conv C->C</th><th>Score</th></tr></thead>
+                     <tbody id="ranking-tbody"></tbody>
+                   </table>
+                 </div>
+              </div>
+
+              <div class="grid-12">
+                 <div class="col-12 card chart-card">
+                   <h3 class="chart-title">Funil Agregado</h3>
+                   <div id="funnel-container" class="funnel-container"></div>
+                 </div>
+              </div>
+            </div>
+
+            <!-- 2. AQUISIÇÃO -->
+            <div id="view-aquisicao" class="metrics-view" style="display: none;">
+              <div class="view-header"><h2>Aquisição</h2><p>Análise de tráfego, fontes e meios.</p></div>
+              <div class="grid-12">
+                 <div class="col-6 card chart-card"><h3 class="chart-title">Cliques por Campanha</h3><div class="canvas-wrapper"><canvas id="chartAcqCampanhas"></canvas></div></div>
+                 <div class="col-6 card chart-card"><h3 class="chart-title">Distribuição por Fonte / Meio</h3><div class="canvas-wrapper"><canvas id="chartAcqFonte"></canvas></div></div>
+              </div>
+              <div class="card overflow-x"><h3 class="chart-title">Tabela de Fontes e Meios</h3><table class="ranking-table"><thead><tr><th>Fonte</th><th>Meio</th><th>Cliques</th><th>Candidaturas</th><th>Contratações</th><th>Conv V->C</th><th>Conv C->C</th></tr></thead><tbody id="acq-source-tbody"></tbody></table></div>
+            </div>
+
+            <!-- 3. FUNIL PEOPLE -->
+            <div id="view-funil-people" class="metrics-view" style="display: none;">
+              <div class="view-header"><h2>Funil People</h2><p>Performance do processo seletivo por etapas.</p></div>
+              <div class="grid-12"><div class="col-12 card chart-card"><h3 class="chart-title">Funil Completo</h3><div id="funnel-people-container" class="funnel-container"></div></div></div>
+              <div class="card overflow-x"><h3 class="chart-title">Microetapas Detalhadas</h3><table class="ranking-table"><thead><tr><th>Macroetapa</th><th>Microetapa</th><th>Candidatos</th><th>Tempo Médio</th><th>Ação</th></tr></thead><tbody id="funil-micro-tbody"></tbody></table></div>
+            </div>
+
+            <!-- 4. CONVERSÕES -->
+            <div id="view-conversoes" class="metrics-view" style="display: none;">
+              <div class="view-header"><h2>Conversões</h2><p>Taxas de conversão por campanha e fonte.</p></div>
+              <div class="grid-12">
+                 <div class="col-6 card chart-card"><h3 class="chart-title">Conversão Visita → Candidatura</h3><div class="canvas-wrapper"><canvas id="chartConvVC"></canvas></div></div>
+                 <div class="col-6 card chart-card"><h3 class="chart-title">Conversão Candidatura → Contratação</h3><div class="canvas-wrapper"><canvas id="chartConvCC"></canvas></div></div>
+              </div>
+              <div class="card overflow-x"><h3 class="chart-title">Tabela Analítica de Conversões</h3><table class="ranking-table"><thead><tr><th>Campanha</th><th>Cliques</th><th>Candidaturas</th><th>Contratações</th><th>Conv V->C</th><th>Conv C->C</th></tr></thead><tbody id="conv-table-tbody"></tbody></table></div>
+            </div>
+
+            <!-- 5. RANKING -->
+            <div id="view-ranking" class="metrics-view" style="display: none;">
+              <div class="view-header" style="display: flex; justify-content: space-between;">
+                 <div><h2>Ranking de Campanhas</h2><p>Visão completa baseada no Campaign Score.</p></div>
+                 <button class="btn btn-secondary btn-sm" onclick="openPesosModal()"><i class="fa-solid fa-sliders"></i> Ajustar Pesos</button>
+              </div>
+              <div class="card overflow-x">
+                 <table class="ranking-table">
+                   <thead><tr><th>Pos</th><th>Campanha</th><th>Fonte / Meio</th><th>Cliques</th><th>Cand.</th><th>Contrat.</th><th>Conv V->C</th><th>Conv C->C</th><th>Score</th></tr></thead>
+                   <tbody id="ranking-full-tbody"></tbody>
+                 </table>
+              </div>
+            </div>
+
+            <!-- 6. USUÁRIOS -->
+            <div id="view-usuarios" class="metrics-view" style="display: none;">
+               <div class="view-header"><h2 id="ul-title">Usuários / Candidatos</h2><p>Lista completa de candidatos.</p></div>
+               <div class="card overflow-x">
+                  <table class="ranking-table"><thead><tr><th>Nome</th><th>CID</th><th>App ID</th><th>Campanha</th><th>Source/Medium</th><th>Vaga</th><th>Macroetapa</th><th>Microetapa</th><th>Status</th><th>Data Cand.</th><th>Data Contrat.</th><th>Ação</th></tr></thead><tbody id="users-tbody"></tbody></table>
+               </div>
+            </div>
+
+            <!-- 7. DRILL-DOWN: CAMPANHA -->
+            <div id="view-campanha-detalhe" class="metrics-view" style="display: none;">
+              <div class="view-header">
+                <h2 id="cd-title">Campanha</h2>
+                <p id="cd-subtitle">Detalhes da campanha.</p>
+              </div>
+              <div id="cd-kpis" class="kpi-grid"></div>
+              <div class="grid-12">
+                <div class="col-6 card chart-card"><h3 class="chart-title">Tendência Temporal</h3><div class="canvas-wrapper"><canvas id="chartCampaignTrend"></canvas></div></div>
+                <div class="col-6 card chart-card"><h3 class="chart-title">Funil da Campanha</h3><div class="canvas-wrapper"><canvas id="chartCampaignFunnel"></canvas></div></div>
+              </div>
+              <div class="grid-12">
+                <div class="col-6 card chart-card"><h3 class="chart-title">Distribuição por Macroetapa</h3><div class="canvas-wrapper"><canvas id="chartCampaignMacro"></canvas></div></div>
+                <div class="col-6 card chart-card"><h3 class="chart-title">Conversão por UTM</h3><div class="canvas-wrapper"><canvas id="chartCampaignUtmConv"></canvas></div></div>
+              </div>
+              <div class="card overflow-x">
+                <h3 class="chart-title" style="margin-bottom:16px;">UTMs da Campanha</h3>
+                <table class="ranking-table"><thead><tr><th>Source</th><th>Medium</th><th>Campaign</th><th>Content</th><th>Cliques</th><th>Cand.</th><th>Contrat.</th><th>Conv V->C</th><th>Conv C->C</th><th>Ação</th></tr></thead><tbody id="cd-utms-tbody"></tbody></table>
+              </div>
+              <div class="card overflow-x" style="margin-top:16px;">
+                <h3 class="chart-title" style="margin-bottom:16px;">Etapas do People</h3>
+                <table class="ranking-table"><thead><tr><th>Macroetapa</th><th>Microetapa</th><th>Candidatos</th><th>% da Campanha</th><th>Tempo Médio</th><th>Ação</th></tr></thead><tbody id="cd-stages-tbody"></tbody></table>
+              </div>
+            </div>
+
+            <!-- 8. DRILL-DOWN: UTM -->
+            <div id="view-utm-detalhe" class="metrics-view" style="display: none;">
+              <div class="view-header">
+                <h2 id="ud-title">UTM</h2>
+                <p id="ud-subtitle">Detalhes da UTM.</p>
+              </div>
+              <div id="ud-kpis" class="kpi-grid"></div>
+              <div class="grid-12">
+                <div class="col-6 card chart-card"><h3 class="chart-title">Tendência da UTM</h3><div class="canvas-wrapper"><canvas id="chartUtmTrend"></canvas></div></div>
+                <div class="col-6 card chart-card"><h3 class="chart-title">Funil da UTM</h3><div class="canvas-wrapper"><canvas id="chartUtmFunnel"></canvas></div></div>
+              </div>
+              <div class="grid-12">
+                <div class="col-6 card chart-card"><h3 class="chart-title">Candidatos por Macroetapa</h3><div class="canvas-wrapper"><canvas id="chartUtmMacro"></canvas></div></div>
+                <div class="col-6 card chart-card"><h3 class="chart-title">Candidatos por Status</h3><div class="canvas-wrapper"><canvas id="chartUtmStatus"></canvas></div></div>
+              </div>
+              <div class="card overflow-x">
+                <h3 class="chart-title" style="margin-bottom:16px;">Candidatos desta UTM</h3>
+                <table class="ranking-table"><thead><tr><th>Nome</th><th>CID</th><th>App ID</th><th>Vaga</th><th>Macroetapa</th><th>Microetapa</th><th>Status</th><th>Data Cand.</th><th>Data Contrat.</th><th>Ação</th></tr></thead><tbody id="ud-candidates-tbody"></tbody></table>
+              </div>
+            </div>
+
+            <!-- 9. DRILL-DOWN: MACROETAPA -->
+            <div id="view-macroetapa-detalhe" class="metrics-view" style="display: none;">
+              <div class="view-header">
+                <h2 id="md-title">Macroetapa</h2>
+                <p id="md-subtitle">Detalhamento por microetapa.</p>
+              </div>
+              <div class="card overflow-x">
+                <table class="ranking-table"><thead><tr><th>Microetapa</th><th>Candidatos</th><th>Tempo Médio</th><th>Ação</th></tr></thead><tbody id="md-micro-tbody"></tbody></table>
+              </div>
+            </div>
+
+            <!-- 10. JORNADA INDIVIDUAL -->
+            <div id="view-jornada" class="metrics-view" style="display: none;">
+               <div class="view-header">
+                 <h2 id="journey-title">Jornada Individual</h2>
+                 <p id="journey-subtitle">...</p>
+               </div>
+               <div class="grid-12">
+                  <div class="col-8 card"><h3 class="chart-title">Linha do Tempo</h3><div class="journey-timeline" id="journey-timeline-container"></div></div>
+                  <div class="col-4">
+                     <div class="card" style="margin-bottom:16px;"><h3 class="chart-title">Origem</h3><ul id="journey-origin" class="journey-attrs"></ul></div>
+                     <div class="card"><h3 class="chart-title">People</h3><ul id="journey-people" class="journey-attrs"></ul></div>
+                  </div>
+               </div>
+            </div>
+
+          </div> <!-- /views-container -->
+        </main>
+      </div>
+    </div> <!-- END TAB METRICAS -->
+  </div>
+
+  <!-- Modal Configurar Pesos -->
+  <div id="modal-pesos" class="modal-overlay" style="display: none;">
+    <div class="modal-content" style="max-width: 400px; padding: 24px; border-radius: 8px; background: #fff;">
+      <h3 style="margin-bottom: 16px; font-size: 18px;">Configurar Pesos do Ranking</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Ajuste os pesos para recalcular o Score das campanhas. A soma deve ser 100%.</p>
+      
+      <div style="margin-bottom: 16px;">
+        <label style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">Volume de Candidaturas <span>30%</span></label>
+        <input type="range" min="0" max="100" value="30" style="width: 100%;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">Volume de Contratações <span>35%</span></label>
+        <input type="range" min="0" max="100" value="35" style="width: 100%;">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">Taxa de Conversão <span>20%</span></label>
+        <input type="range" min="0" max="100" value="20" style="width: 100%;">
+      </div>
+      <div style="margin-bottom: 24px;">
+        <label style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">Eficiência de Custo <span>15%</span></label>
+        <input type="range" min="0" max="100" value="15" style="width: 100%;">
+      </div>
+      
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closePesosModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="closePesosModal()">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=2"></script>
+  <script src="dashboard.js?v=2"></script>
+</body>
+</html>

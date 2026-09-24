@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>People Experience — Protótipo Original</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>html,body{margin:0;padding:0;height:100%;background:#f5f6f8;font-family:'Inter',sans-serif;}a{color:#7b1fa2;}a:hover{color:#51007a;}</style>
+</helmet>
+<div style="height:100vh;display:flex;flex-direction:column;font-family:'Inter',sans-serif;color:#333;font-size:14px;">
+  <sc-if value="{{ showBar }}" hint-placeholder-val="{{ true }}">
+    <div style="flex:0 0 auto;min-height:44px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:6px 16px;background:#1d1a22;color:#fff;">
+      <div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px;white-space:nowrap;">
+        <i class="fa-solid fa-layer-group" style="color:#d81b60;"></i>
+        <span>Protótipo original</span>
+        <span style="font-weight:400;color:#b9b3c2;">· {{ countLabel }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1 1 320px;min-width:0;">
+        <button onClick="{{ prev }}" title="Tela anterior" style="height:30px;width:30px;border:1px solid #3a3542;background:#2a2630;color:#fff;border-radius:4px;cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
+        <select value="{{ currentKey }}" onChange="{{ onSelect }}" style="height:30px;flex:1 1 auto;min-width:0;max-width:420px;border:1px solid #3a3542;background:#2a2630;color:#fff;border-radius:4px;padding:0 8px;font-family:inherit;font-size:13px;">
+          <sc-for list="{{ screens }}" as="s" hint-placeholder-count="1">
+            <option value="{{ s.key }}">{{ s.optionLabel }}</option>
+          </sc-for>
+        </select>
+        <button onClick="{{ next }}" title="Próxima tela" style="height:30px;width:30px;border:1px solid #3a3542;background:#2a2630;color:#fff;border-radius:4px;cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button onClick="{{ showViewer }}" style="{{ viewerBtnStyle }}"><i class="fa-solid fa-display"></i> Protótipo</button>
+        <button onClick="{{ showMap }}" style="{{ mapBtnStyle }}"><i class="fa-solid fa-sitemap"></i> Mapa de telas</button>
+        <a href="{{ currentHref }}" target="_blank" title="Abrir em nova aba" style="height:30px;display:flex;align-items:center;padding:0 10px;border:1px solid #3a3542;border-radius:4px;color:#fff;text-decoration:none;font-size:13px;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="{{ viewerWrapStyle }}">
+    <iframe ref="{{ frameRef }}" src="{{ initialSrc }}" onLoad="{{ onFrameLoad }}" title="Protótipo" style="border:0;width:100%;height:100%;display:block;background:#f5f6f8;"></iframe>
+  </div>
+
+  <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1 1 auto;overflow:auto;background:#f5f6f8;">
+      <div style="max-width:1280px;margin:0 auto;padding:28px 24px 48px;display:flex;flex-direction:column;gap:28px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <h1 style="margin:0;font-size:22px;font-weight:700;color:#333;">Mapa de telas</h1>
+          <p style="margin:0;color:#666;max-width:760px;line-height:1.5;text-wrap:pretty;">Todas as páginas da pasta original, agrupadas como no menu Avaliações e Cadastros. Cada tela roda com o HTML, CSS e JavaScript originais, sem alterações. Clique em um card para abrir a tela no protótipo.</p>
+        </div>
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7b1fa2;">{{ g.name }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
+              <sc-for list="{{ g.items }}" as="s" hint-placeholder-count="3">
+                <div onClick="{{ s.open }}" style="background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:10px;" style-hover="border-color:#7b1fa2;box-shadow:0 2px 8px rgba(123,31,162,.12);">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                    <div style="font-weight:600;font-size:15px;color:#333;">{{ s.title }}</div>
+                    <span style="font-size:11px;color:#666;background:#f5f6f8;border:1px solid #e0e0e0;border-radius:4px;padding:2px 6px;white-space:nowrap;">{{ s.num }}</span>
+                  </div>
+                  <div style="font-size:12px;color:#666;font-family:ui-monospace,Menlo,monospace;word-break:break-all;">{{ s.path }}</div>
+                  <div style="font-size:12px;color:#666;">{{ s.bc }}</div>
+                  <sc-if value="{{ s.hasFeatures }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                      <sc-for list="{{ s.features }}" as="f" hint-placeholder-count="2">
+                        <span style="font-size:11px;color:#7b1fa2;background:#f3e5f5;border-radius:10px;padding:2px 8px;">{{ f }}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ s.hasLinks }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:12px;color:#666;border-top:1px solid #f0f0f0;padding-top:8px;"><i class="fa-solid fa-link" style="margin-right:4px;"></i>{{ s.linksLabel }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div style="font-size:12px;color:#666;border-top:1px solid #e0e0e0;padding-top:16px;line-height:1.6;">Todas as páginas compartilham o header, o menu principal (dropdowns Avaliações e Cadastros), <code>style.css</code> e <code>script.js</code>. A tela de Campanhas também carrega <code>dashboard.js</code> e Chart.js. Os scripts auxiliares <code>fix_styles.py</code> e <code>fix_tables.py</code> são de manutenção e não fazem parte da interface.</div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;index.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;index.html&quot;,&quot;minhas-vagas.html&quot;,&quot;acompanhamento-vaga.html&quot;,&quot;entrevistas-hallo.html&quot;,&quot;finalistas.html&quot;,&quot;realizar-dinamica.html&quot;,&quot;reagendar-dinamica.html&quot;,&quot;tipo-sala-dinamica.html&quot;,&quot;cadastro-avaliacoes.html&quot;,&quot;parametrizacao-teste-multitelas.html&quot;,&quot;banco-provas-teste-multitelas.html&quot;,&quot;agendamento-exame-medico.html&quot;,&quot;resultado-exame-medico.html&quot;,&quot;campanhas.html&quot;,&quot;campanhas.html?tab=metricas&quot;,&quot;detalhe-campanha.html&quot;]}}">
+const BASE = '';
+const SCREENS = [
+  { group: 'Início', title: 'Home — Visão Geral', path: 'index.html', bc: 'Home > Visão Geral' },
+  { group: 'Vagas', title: 'Cadastro de Vagas', path: 'cadastro-vagas.html', bc: 'Home > Vagas > Cadastro de Vagas', features: ['Filtro de status (badges)', 'Busca', 'Filtros avançados', 'Ordenação', 'Paginação'] },
+  { group: 'Vagas', title: 'Nova Vaga', path: 'vaga-form.html', bc: 'Home > Vagas > Cadastro de Vagas > Nova Vaga', features: ['8 seções', 'Editor controlado', 'Multi-picker', 'Seleção PCD', 'Validação'], links: ['Cadastro de Vagas'] },
+  { group: 'Vagas', title: 'Editar Vaga', path: 'vaga-form.html?id=2166', bc: 'Home > Vagas > Cadastro de Vagas > Editar Vaga', features: ['Mesmo formulário, preenchido'], links: ['Cadastro de Vagas'] },
+  { group: 'Vagas', title: 'Benefícios por Tipo de Vaga', path: 'beneficios-tipo-vaga.html', bc: 'Home > Vagas > Benefícios por Tipo de Vaga', features: ['Lista por tipo', 'Adicionar/editar/remover', 'Reordenar', 'Pré-visualização'] },
+  { group: 'Vagas', title: 'Texto Bem Estar TP', path: 'bem-estar-tp.html', bc: 'Home > Vagas > Texto Bem Estar TP', features: ['Editor controlado', 'Restaurar original'] },
+  { group: 'Avaliações · Operação', title: 'Minhas Vagas', path: 'minhas-vagas.html', bc: 'Home > Minhas Vagas', features: ['Tabela', 'Paginação'], links: ['Acompanhamento de Vaga'] },
+  { group: 'Avaliações · Operação', title: 'Acompanhamento de Vaga', path: 'acompanhamento-vaga.html', bc: 'Home > Minhas Vagas > Acompanhamento de Vaga', features: ['4 abas', 'Seleção em massa', '5 modais', 'Drawer Hallo', 'Toasts'], links: ['Minhas Vagas'] },
+  { group: 'Avaliações · Operação', title: 'Entrevistas Hallo', path: 'entrevistas-hallo.html', bc: 'Home > Avaliações > Entrevistas Hallo', features: ['Seleção em massa', '3 modais', 'Drawer Hallo'] },
+  { group: 'Avaliações · Operação', title: 'Finalistas', path: 'finalistas.html', bc: 'Home > Avaliações > Finalistas', features: ['Seleção em massa', '2 modais', 'Drawer Hallo'], links: ['Acompanhamento de Vaga'] },
+  { group: 'Avaliações · Dinâmicas', title: 'Realizar Dinâmica', path: 'realizar-dinamica.html', bc: 'Home > Avaliações > Realizar Dinâmica', features: ['Drawer participantes'] },
+  { group: 'Avaliações · Dinâmicas', title: 'Reagendar Dinâmica', path: 'reagendar-dinamica.html', bc: 'Home > Avaliações > Reagendar Dinâmica', features: ['Modal confirmação', 'Drawer histórico'] },
+  { group: 'Avaliações · Dinâmicas', title: 'Tipo Sala Dinâmica', path: 'tipo-sala-dinamica.html', bc: 'Home > Tipo Sala Dinâmica', features: ['Modal sala', 'Modal horários'] },
+  { group: 'Avaliações · Configurações', title: 'Cadastro de Avaliações', path: 'cadastro-avaliacoes.html', bc: 'Home > Avaliações > Cadastro de Avaliações', features: ['Tabela'] },
+  { group: 'Avaliações · Configurações', title: 'Parametrização Teste Multitelas', path: 'parametrizacao-teste-multitelas.html', bc: 'Home > Avaliações > Parametrização Teste Multitelas', features: ['Tabela'] },
+  { group: 'Avaliações · Configurações', title: 'Banco de Provas Teste Multitelas', path: 'banco-provas-teste-multitelas.html', bc: 'Home > Avaliações > Banco de Provas Teste Multitelas', features: ['Tabela'] },
+  { group: 'Avaliações · Configurações', title: 'Agendamento Exame Médico', path: 'agendamento-exame-medico.html', bc: 'Home > Avaliações > Agendamento Exame Médico', features: ['Tabela'] },
+  { group: 'Avaliações · Configurações', title: 'Resultado Exame Médico', path: 'resultado-exame-medico.html', bc: 'Home > Avaliações > Resultado Exame Médico', features: ['Tabela'] },
+  { group: 'Cadastros · Campanhas', title: 'Cadastro de Campanha', path: 'campanhas.html', bc: 'Home > Cadastros > Campanhas', features: ['Abas', 'Tabela'], links: ['Detalhe da Campanha'] },
+  { group: 'Cadastros · Campanhas', title: 'Métricas de Campanhas (Analytics)', path: 'campanhas.html?tab=metricas', bc: 'Home > Cadastros > Campanhas > Métricas', features: ['Sidebar recolhível', 'Gráficos Chart.js', 'Filtros', 'Drill-down', 'Funil', 'Ranking', 'Jornada'] },
+  { group: 'Cadastros · Campanhas', title: 'Detalhe da Campanha', path: 'detalhe-campanha.html', bc: 'Home > Cadastros > Cadastro de Campanha > Vagas BCO Talentos PCD', features: ['4 abas', 'Gerador UTM', 'Histórico', 'Toasts'], links: ['Campanhas'] },
+];
+const LS = 'tp-proto-current';
+const norm = p => (p || '').replace(/^.*\/prototipo\//, '').replace(/^\//, '').replace(/#.*$/, '');
+
+class Component extends DCLogic {
+  frameRef = React.createRef();
+  constructor(props) {
+    super(props);
+    let saved = null;
+    try { saved = localStorage.getItem(LS); } catch (e) {}
+    const start = saved || props.startScreen || 'index.html';
+    this.state = { current: start, view: 'viewer' };
+    this.initialSrc = BASE + start;
+  }
+  findIndex(path) {
+    let i = SCREENS.findIndex(s => s.path === path);
+    if (i < 0) i = SCREENS.findIndex(s => s.path === path.split('?')[0]);
+    return i;
+  }
+  go(path) {
+    const f = this.frameRef.current;
+    this.setState({ current: path, view: 'viewer' });
+    try { localStorage.setItem(LS, path); } catch (e) {}
+    if (f && f.contentWindow) f.contentWindow.location.href = BASE + path;
+  }
+  step(d) {
+    const i = Math.max(0, this.findIndex(this.state.current));
+    this.go(SCREENS[(i + d + SCREENS.length) % SCREENS.length].path);
+  }
+  onFrameLoad = () => {
+    try {
+      const loc = this.frameRef.current.contentWindow.location;
+      const p = norm(loc.pathname) + (loc.search || '');
+      if (p && p !== this.state.current) {
+        this.setState({ current: p });
+        localStorage.setItem(LS, p);
+      }
+    } catch (e) {}
+  };
+  renderVals() {
+    const cur = this.state.current;
+    const idx = this.findIndex(cur);
+    const isMap = this.state.view === 'map';
+    const btn = on => ({ height: '30px', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 10px', border: '1px solid ' + (on ? '#d81b60' : '#3a3542'), background: on ? '#d81b60' : '#2a2630', color: '#fff', borderRadius: '4px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '13px' });
+    const screens = SCREENS.map((s, i) => ({
+      ...s,
+      key: s.path,
+      num: String(i + 1).padStart(2, '0'),
+      optionLabel: `${String(i + 1).padStart(2, '0')} · ${s.group} — ${s.title}`,
+      features: s.features || [],
+      hasFeatures: !!(s.features && s.features.length),
+      hasLinks: !!(s.links && s.links.length),
+      linksLabel: 'Leva a: ' + (s.links || []).join(', '),
+      open: () => this.go(s.path),
+    }));
+    const groups = [];
+    screens.forEach(s => {
+      let g = groups.find(x => x.name === s.group);
+      if (!g) groups.push(g = { name: s.group, items: [] });
+      g.items.push(s);
+    });
+    return {
+      showBar: this.props.showBar ?? true,
+      countLabel: `${idx >= 0 ? idx + 1 : '—'} de ${SCREENS.length} telas`,
+      screens, groups,
+      currentKey: idx >= 0 ? SCREENS[idx].path : cur,
+      currentHref: BASE + cur,
+      initialSrc: this.initialSrc,
+      frameRef: this.frameRef,
+      onFrameLoad: this.onFrameLoad,
+      onSelect: e => this.go(e.target.value),
+      prev: () => this.step(-1),
+      next: () => this.step(1),
+      isMap,
+      showViewer: () => this.setState({ view: 'viewer' }),
+      showMap: () => this.setState({ view: 'map' }),
+      viewerBtnStyle: btn(!isMap),
+      mapBtnStyle: btn(isMap),
+      viewerWrapStyle: { flex: '1 1 auto', minHeight: 0, display: isMap ? 'none' : 'block' },
+    };
+  }
+}
+</script>
+</body>
+</html>

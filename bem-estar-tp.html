@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Texto Bem Estar TP - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <style>
+    .page-sub-text { font-size: 13px; color: var(--text-muted); margin-top: 6px; max-width: 760px; line-height: 1.5; }
+    .meta-line { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .info-note { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: #1565c0; background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 6px; padding: 10px 14px; line-height: 1.5; }
+    .actions-row { display: flex; justify-content: flex-end; gap: 8px; padding-top: 16px; margin-top: 20px; border-top: 1px solid #f0f0f0; }
+    .dirty-state { margin-right: auto; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .dirty-state .dot { width: 8px; height: 8px; border-radius: 50%; background: #bdbdbd; }
+    .dirty-state.dirty .dot { background: #f57c00; }
+
+    .be-wrap { max-width: 960px; }
+    .rte { border: 1px solid var(--border-color); border-radius: 4px; background: #fff; transition: border-color .2s; }
+    .rte:focus-within { border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.1); }
+    .rte.is-invalid { border-color: var(--error); }
+    .rte-toolbar { display: flex; align-items: center; gap: 2px; padding: 4px 6px; border-bottom: 1px solid #f0f0f0; background: #fafafb; border-radius: 4px 4px 0 0; }
+    .rte-toolbar button { background: none; border: none; height: 28px; min-width: 28px; padding: 0 8px; border-radius: 4px; color: var(--text-muted); cursor: pointer; font-size: 13px; font-family: inherit; display: inline-flex; align-items: center; gap: 6px; }
+    .rte-toolbar button:hover { background: var(--hover-bg); color: var(--primary-purple); }
+    .rte-toolbar .sep { width: 1px; height: 18px; background: var(--border-color); margin: 0 4px; }
+    .rte-toolbar .spacer { flex: 1; }
+    .rte-body { min-height: 260px; max-height: 520px; overflow-y: auto; padding: 14px 16px; font-size: 14px; line-height: 1.6; color: var(--text-main); outline: none; }
+    .rte-body p { margin: 0 0 8px; }
+    .rte-body ul { margin: 0 0 8px 20px; }
+    .rte-body:empty::before { content: 'Escreva o texto de Bem Estar TP'; color: #9e9e9e; }
+    .hint-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html" style="display: flex; align-items: center;"><img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;"></a>
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'64'%20height%3D'64'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20fill%3D'%23fff'%2F%3E%3Ctext%20x%3D'32'%20y%3D'41'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'24'%20font-weight%3D'700'%20fill%3D'%237b1fa2'%20text-anchor%3D'middle'%3EAT%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-briefcase"></i> Vagas
+        <div class="dropdown-menu" style="min-width: 260px;">
+          <a href="cadastro-vagas.html" class="dropdown-item">Cadastro de Vagas</a>
+          <a href="#" class="dropdown-item">Cadastro de Departamentos</a>
+          <a href="#" class="dropdown-item">Cadastro de Job Descriptions</a>
+          <a href="#" class="dropdown-item">Validação de Documentos</a>
+          <a href="#" class="dropdown-item">Código Vagas Indisponíveis</a>
+          <a href="beneficios-tipo-vaga.html" class="dropdown-item">Benefícios por Tipo de Vaga</a>
+          <a href="bem-estar-tp.html" class="dropdown-item">Texto Bem Estar TP</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <span>Vagas</span> &gt; <span>Texto Bem Estar TP</span>
+  </div>
+
+  <div class="container">
+    <div class="be-wrap">
+      <div class="page-header" style="margin-bottom: 16px;">
+        <div>
+          <h1 class="page-title">Texto Bem Estar TP</h1>
+          <p class="page-sub-text">Texto padrão da seção Bem Estar TP, carregado automaticamente ao cadastrar uma nova vaga.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="info-note" style="margin-bottom: 20px;"><i class="fa-solid fa-circle-info" style="margin-top: 3px;"></i><span>Alterações valem para as próximas vagas cadastradas. Vagas já existentes mantêm o texto salvo em cada uma delas.</span></div>
+
+        <label class="form-label">Texto padrão<span style="color: var(--error); margin-left: 2px;">*</span></label>
+        <div class="rte" id="rte">
+          <div class="rte-toolbar">
+            <button type="button" data-cmd="p" title="Parágrafo"><i class="fa-solid fa-paragraph"></i></button>
+            <button type="button" data-cmd="ul" title="Lista com marcadores"><i class="fa-solid fa-list-ul"></i></button>
+            <span class="sep"></span>
+            <button type="button" data-cmd="clear" title="Limpar formatação"><i class="fa-solid fa-text-slash"></i></button>
+            <span class="spacer"></span>
+            <button type="button" data-cmd="original" title="Restaurar texto original"><i class="fa-solid fa-rotate-left"></i> Restaurar texto original</button>
+          </div>
+          <div class="rte-body" id="rte-body" contenteditable="true"></div>
+        </div>
+        <div class="hint-row"><span>Use parágrafos e listas com marcadores. Formatação adicional e HTML não são permitidos.</span><span id="char-count"></span></div>
+
+        <div class="actions-row">
+          <div class="dirty-state" id="dirty-state"><span class="dot"></span><span id="dirty-text"></span></div>
+          <button class="btn btn-secondary" id="btn-descartar" type="button">Descartar alterações</button>
+          <button class="btn btn-primary" id="btn-salvar" type="button"><i class="fa-solid fa-check"></i> Salvar texto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-original">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Restaurar texto original?</h2>
+        <button class="modal-close" type="button" onclick="closeModal('modal-original')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body"><p style="font-size: 14px; line-height: 1.5;">O conteúdo do editor será substituído pelo texto original de Bem Estar TP. A alteração só vale depois de salvar.</p></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" onclick="closeModal('modal-original')">Cancelar</button>
+        <button class="btn btn-primary" type="button" id="original-ok">Restaurar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="vagas-data.js"></script>
+  <script>
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    function sanitize(html) {
+      const tmp = document.createElement('div'); tmp.innerHTML = html;
+      const out = []; let buf = '';
+      const inline = n => n.nodeType === 3 ? esc(n.textContent) : n.nodeName === 'BR' ? '<br>' : [...n.childNodes].map(inline).join('');
+      const flush = () => { if (buf.replace(/<br>/g, '').trim()) out.push('<p>' + buf.trim() + '</p>'); buf = ''; };
+      [...tmp.childNodes].forEach(n => {
+        if (n.nodeName === 'UL' || n.nodeName === 'OL') { flush(); const lis = [...n.querySelectorAll('li')].map(li => inline(li).trim()).filter(Boolean); if (lis.length) out.push('<ul>' + lis.map(l => '<li>' + l + '</li>').join('') + '</ul>'); }
+        else if (/^(P|DIV|H\d|BLOCKQUOTE|LI)$/.test(n.nodeName)) { flush(); buf = inline(n); flush(); }
+        else buf += inline(n);
+      });
+      flush(); return out.join('');
+    }
+    const body = $('rte-body');
+    let saved = TPVagas.getBemEstar();
+    body.innerHTML = sanitize(saved.html);
+    document.execCommand('defaultParagraphSeparator', false, 'p');
+    const isDirty = () => sanitize(body.innerHTML) !== sanitize(saved.html);
+    function refresh() {
+      const d = isDirty();
+      $('dirty-state').classList.toggle('dirty', d);
+      $('dirty-text').textContent = d ? 'Alterações não salvas' : (saved.at ? 'Última atualização em ' + saved.at + ' por ' + saved.by : 'Texto original, ainda não alterado');
+      $('btn-descartar').disabled = !d;
+      $('char-count').textContent = body.textContent.trim().length + ' caracteres';
+    }
+    document.querySelector('.rte-toolbar').addEventListener('mousedown', e => e.preventDefault());
+    document.querySelector('.rte-toolbar').addEventListener('click', e => {
+      const b = e.target.closest('[data-cmd]'); if (!b) return;
+      const cmd = b.dataset.cmd;
+      if (cmd === 'original') { openModal('modal-original'); return; }
+      body.focus();
+      if (cmd === 'ul') document.execCommand('insertUnorderedList');
+      if (cmd === 'p') { if (document.queryCommandState('insertUnorderedList')) document.execCommand('insertUnorderedList'); document.execCommand('formatBlock', false, 'p'); }
+      if (cmd === 'clear') body.innerHTML = sanitize(body.innerHTML);
+      refresh();
+    });
+    body.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && /^[biu]$/i.test(e.key)) e.preventDefault(); });
+    body.addEventListener('paste', e => { e.preventDefault(); const text = (e.clipboardData || window.clipboardData).getData('text/plain'); document.execCommand('insertHTML', false, text.split(/\r?\n/).map(l => l.trim() ? '<p>' + esc(l) + '</p>' : '').join('')); });
+    body.addEventListener('drop', e => e.preventDefault());
+    body.addEventListener('input', () => { if (!body.textContent.trim() && !body.querySelector('li')) body.innerHTML = ''; $('rte').classList.remove('is-invalid'); refresh(); });
+    $('original-ok').addEventListener('click', () => { body.innerHTML = '<p>' + TPVagas.BEM_ESTAR_DEFAULT + '</p>'; closeModal('modal-original'); refresh(); });
+    $('btn-descartar').addEventListener('click', () => { body.innerHTML = sanitize(saved.html); refresh(); });
+    $('btn-salvar').addEventListener('click', () => {
+      const html = sanitize(body.innerHTML);
+      if (!html) { $('rte').classList.add('is-invalid'); showToast('Informe o texto de Bem Estar TP.', 'error'); return; }
+      TPVagas.saveBemEstar(html); saved = TPVagas.getBemEstar(); body.innerHTML = html; refresh();
+      showToast('Texto Bem Estar TP salvo com sucesso.', 'success');
+    });
+    window.addEventListener('beforeunload', e => { if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
+    refresh();
+  </script>
+</body>
+</html>
