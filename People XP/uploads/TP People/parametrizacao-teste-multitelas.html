@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parametrização Teste Multitelas - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;">
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="https://ui-avatars.com/api/?name=Admin+TP&background=fff&color=7b1fa2" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item"><i class="fa-solid fa-briefcase"></i> Vagas</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <span>Avaliações</span> &gt; <span>Parametrização Teste Multitelas</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header" style="margin-bottom: 16px;">
+      <h1 class="page-title">Parametrização Teste Multitelas</h1>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Novo Parâmetro</button>
+        <div style="width: 250px;">
+          <input type="text" class="form-control" placeholder="Pesquisar">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table interviews-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Parâmetro Padrão - Call Center</td>
+              <td>Ativo</td>
+              <td class="status-actions-cell">
+                <div class="status-actions-wrapper">
+                  <div class="action-buttons">
+<button class="btn btn-secondary btn-action" ><i class="fa-solid fa-edit"></i></button>
+                <button class="btn btn-secondary btn-action" ><i class="fa-solid fa-lock-open"></i></button>
+                <button class="btn btn-secondary btn-action" ><i class="fa-solid fa-trash"></i></button>                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 13px; color: var(--text-muted);">
+        <span>Exibindo página 1 de 1</span>
+        <div style="display: flex; gap: 4px;">
+          <button class="btn btn-secondary" style="padding: 4px 10px;" disabled>&laquo; Anterior</button>
+          <button class="btn btn-primary" style="padding: 4px 10px;">1</button>
+          <button class="btn btn-secondary" style="padding: 4px 10px;" disabled>Seguinte &raquo;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

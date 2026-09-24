@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;">
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="https://ui-avatars.com/api/?name=Admin+TP&background=fff&color=7b1fa2" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item"><i class="fa-solid fa-briefcase"></i> Vagas</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <!-- Content -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <span>Visão Geral</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Bem-vindo ao People Experience</h1>
+    </div>
+    
+    <div class="card">
+      <h2 style="margin-bottom: 16px;">Novo canal de Suporte do People XP</h2>
+      <p style="margin-bottom: 8px; color: var(--text-muted);">A partir de agora, o atendimento de suporte do People XP será realizado exclusivamente via chat, diretamente dentro do sistema.</p>
+      <ul style="margin-left: 24px; margin-bottom: 16px; color: var(--text-muted); line-height: 1.6;">
+        <li><strong>Antes:</strong> o registro de dúvidas, problemas ou sugestões era feito pelo SharePoint.</li>
+        <li><strong>Agora:</strong> você poderá falar com o time especialista em tempo real pelo chat, localizado na parte inferior das páginas do sistema.</li>
+      </ul>
+      <p style="color: var(--text-muted);">Sempre que precisar de ajuda no processo de contratação dentro do People XP, basta abrir o chat e acionar nosso time de suporte.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

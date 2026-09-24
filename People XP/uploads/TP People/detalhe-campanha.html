@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhe da Campanha - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;">
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="https://ui-avatars.com/api/?name=Admin+TP&background=fff&color=7b1fa2" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-briefcase"></i> Vagas</li>
+      <li class="nav-item dropdown active">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item" style="color: var(--primary-purple); background: var(--hover-bg); font-weight: 600;">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-sliders"></i> Controle</li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <a href="#">Cadastros</a> &gt; <a href="campanhas.html">Cadastro de Campanha</a> &gt; <span>Vagas BCO Talentos PCD</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <h1 class="page-title">Vagas BCO Talentos PCD</h1>
+        <span class="badge badge-active">Ativa</span>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <a href="campanhas.html" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+        <button class="btn btn-secondary"><i class="fa-solid fa-pen"></i> Editar Campanha</button>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="tabs" style="padding: 0 24px; margin-bottom: 0; background: #fafafa;">
+        <div class="tab" data-target="tab-dados">Dados da Campanha</div>
+        <div class="tab" data-target="tab-vagas">Vagas Vinculadas <span class="badge" style="background:#e0e0e0;margin-left:4px;">3</span></div>
+        <div class="tab active" data-target="tab-gerador"><i class="fa-solid fa-link" style="margin-right:6px;"></i>Gerador de UTMs</div>
+        <div class="tab" data-target="tab-historico"><i class="fa-solid fa-clock-rotate-left" style="margin-right:6px;"></i>Histórico de UTMs</div>
+      </div>
+
+      <div style="padding: 24px;">
+        
+        <!-- Tab Gerador -->
+        <div id="tab-gerador" class="tab-content active">
+          <div class="form-grid" style="gap: 40px;">
+            <!-- Left Block: Form -->
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div style="margin-bottom: 8px;">
+                <h3 style="font-size: 18px; margin-bottom: 4px;">Gerar novo link com UTM</h3>
+                <p style="color: var(--text-muted); font-size: 13px;">Preencha os blocos abaixo para construir a sua URL rastreável.</p>
+              </div>
+
+              <!-- Card 1 -->
+              <div class="card" style="padding: 16px; margin-bottom: 0;">
+                <h4 style="margin-bottom: 12px; font-size: 14px;"><i class="fa-solid fa-globe" style="color: var(--text-muted); margin-right: 6px;"></i> Card 1 — Destino do link</h4>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">URL Base *</label>
+                  <input type="url" id="url_base" class="form-control" placeholder="Ex: https://peoplexp.teleperformance.com.br/vagas" value="https://peoplexp.teleperformance.com.br/vagas">
+                  <div class="form-hint">Informe a página de destino que receberá os parâmetros de rastreamento.</div>
+                  <div class="form-hint" id="url_error" style="color: var(--error); display: none;">Informe uma URL válida.</div>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="card" style="padding: 16px; margin-bottom: 0;">
+                <h4 style="margin-bottom: 12px; font-size: 14px;"><i class="fa-solid fa-bullseye" style="color: var(--text-muted); margin-right: 6px;"></i> Card 2 — Origem do tráfego</h4>
+                <div class="form-grid" style="gap: 16px;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">utm_source *</label>
+                    <select id="utm_source" class="form-control">
+                      <option value="">Selecione...</option>
+                      <option value="whatsapp">WhatsApp</option>
+                      <option value="telegram">Telegram</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="instagram">Instagram</option>
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="google">Google</option>
+                      <option value="email">E-mail</option>
+                      <option value="sms">SMS</option>
+                      <option value="site">Site</option>
+                      <option value="parceiro">Parceiro</option>
+                      <option value="qr_code">QR Code</option>
+                      <option value="banner">Banner</option>
+                      <option value="outros">Outros</option>
+                    </select>
+                    <div class="form-hint" style="font-size:11px;">Ex: WhatsApp — Links em conversas.</div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">utm_medium *</label>
+                    <select id="utm_medium" class="form-control">
+                      <option value="">Selecione...</option>
+                      <option value="messaging">Messaging</option>
+                      <option value="social">Social</option>
+                      <option value="cpc">CPC</option>
+                      <option value="organic">Organic</option>
+                      <option value="referral">Referral</option>
+                      <option value="email">E-mail</option>
+                      <option value="qr_code">QR Code</option>
+                      <option value="display">Display</option>
+                      <option value="offline">Offline</option>
+                      <option value="parceiro">Parceiro</option>
+                      <option value="outros">Outros</option>
+                    </select>
+                    <div class="form-hint" style="font-size:11px;">O formato ou veículo (Ex: Messaging).</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="card" style="padding: 16px; margin-bottom: 0; background: #fafafa;">
+                <h4 style="margin-bottom: 12px; font-size: 14px;"><i class="fa-solid fa-flag" style="color: var(--text-muted); margin-right: 6px;"></i> Card 3 — Campanha vinculada</h4>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">utm_campaign *</label>
+                  <input type="text" id="utm_campaign" class="form-control" value="vagas_bco_talentos_pcd" disabled>
+                  <div class="form-hint"><i class="fa-solid fa-lock" style="font-size:10px;margin-right:4px;"></i> Este valor é gerado automaticamente com base na campanha selecionada e não inclui período.</div>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="card" style="padding: 16px; margin-bottom: 0;">
+                <h4 style="margin-bottom: 12px; font-size: 14px;"><i class="fa-solid fa-sliders" style="color: var(--text-muted); margin-right: 6px;"></i> Card 4 — Variações opcionais</h4>
+                <div class="form-grid" style="gap: 16px;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">utm_content</label>
+                    <input type="text" id="utm_content" class="form-control" placeholder="Ex: banner_home">
+                    <div class="form-hint" style="font-size:11px;">Use para diferenciar peças, mensagens, criativos ou banners.</div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">utm_term</label>
+                    <input type="text" id="utm_term" class="form-control" placeholder="Ex: pcd">
+                    <div class="form-hint" style="font-size:11px;">Palavra-chave, público ou segmentação.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 16px;">
+                <button id="btn-gerar" class="btn btn-primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Link</button>
+                <button id="btn-limpar" class="btn btn-secondary"><i class="fa-solid fa-eraser"></i> Limpar Campos</button>
+              </div>
+            </div>
+
+            <!-- Right Block: Preview / Results -->
+            <div id="results-container" style="display: flex; flex-direction: column; gap: 24px;">
+              <!-- Placeholder Initial State -->
+              <div id="initial-state-box" style="background: #fdfdfd; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-muted); min-height: 400px;">
+                <i class="fa-solid fa-link" style="font-size: 32px; color: #ddd; margin-bottom: 16px;"></i>
+                Preencha os campos obrigatórios e clique em Gerar Link para visualizar as URLs.
+              </div>
+
+              <!-- Generated Links Area (Hidden by default) -->
+              <div id="generated-links-area" style="display: none; flex-direction: column; gap: 16px; height: 100%;">
+                <div style="background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1;">
+                  <h3 style="font-size: 16px; margin-bottom: 4px;">Links gerados</h3>
+                  <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 16px;">A UTM foi gerada e salva automaticamente. Copie a versão mais adequada para sua divulgação.</p>
+                  
+                  <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Card 1: Completo -->
+                    <div class="link-card" style="background: #fff; padding: 16px;">
+                      <div class="link-card-header" style="margin-bottom: 12px;">
+                        <div class="link-card-title" style="font-size: 14px;"><i class="fa-solid fa-code" style="margin-right: 8px; color: var(--text-muted);"></i>Link completo</div>
+                        <span class="badge" style="background: #f5f5f5; color: #666; font-size: 10px;">URL COM PARÂMETROS UTM</span>
+                      </div>
+                      
+                      <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: stretch;">
+                        <div class="preview-box" id="long-url-preview" style="flex: 1; margin: 0; padding: 8px 12px; font-size: 12px; text-align: left; word-break: break-all; color: var(--text-main); min-height: 38px; display: flex; align-items: center; line-height: 1.4;"></div>
+                        <button class="btn btn-secondary" style="padding: 0 16px; white-space: nowrap; height: auto;" onclick="copyLongUrl()"><i class="fa-regular fa-copy"></i> Copiar</button>
+                      </div>
+                      
+                      <div style="background: #f9f9fa; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center;">
+                          <div style="flex: 1; min-width: 200px;">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--text-main); text-transform: uppercase;">Ideal para elementos clicáveis</div>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.3;">Use em botões, banners, imagens, cards ou textos.</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                              <span class="chip">Botões</span>
+                              <span class="chip">Banners</span>
+                              <span class="chip">Cards</span>
+                              <span class="chip">Imagens</span>
+                            </div>
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding-left: 16px; border-left: 1px solid var(--border-color);">
+                            <div style="font-size: 10px; color: var(--text-muted);">Exemplo:</div>
+                            <div class="mock-btn" style="padding: 6px 12px; font-size: 11px;">Candidate-se agora</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Card 2: Encurtado -->
+                    <div class="link-card" style="background: #fff; padding: 16px;">
+                      <div class="link-card-header" style="margin-bottom: 12px;">
+                        <div class="link-card-title" style="font-size: 14px;"><i class="fa-solid fa-link" style="margin-right: 8px; color: var(--primary-purple);"></i>Link encurtado</div>
+                        <span class="badge" style="background: #eef2ff; color: #4338ca; font-size: 10px;">BITLY</span>
+                      </div>
+                      
+                      <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: stretch;">
+                        <div class="preview-box" id="short-url-preview" style="flex: 1; margin: 0; padding: 8px 12px; font-size: 13px; text-align: left; color: var(--primary-purple); font-weight: 500; min-height: 38px; display: flex; align-items: center;"></div>
+                        <button class="btn btn-secondary" style="padding: 0 16px; white-space: nowrap; height: auto;" onclick="copyShortUrl()"><i class="fa-regular fa-copy"></i> Copiar</button>
+                      </div>
+                      
+                      <div style="background: #f9f9fa; border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center;">
+                          <div style="flex: 1; min-width: 200px;">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--text-main); text-transform: uppercase;">Ideal para compartilhamento direto</div>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.3;">Use quando o endereço ficará visível para o usuário.</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                              <span class="chip">WhatsApp</span>
+                              <span class="chip">Telegram</span>
+                              <span class="chip">SMS</span>
+                              <span class="chip">Redes sociais</span>
+                            </div>
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding-left: 16px; border-left: 1px solid var(--border-color);">
+                            <div style="font-size: 10px; color: var(--text-muted);">Confira as oportunidades:</div>
+                            <div style="font-size: 11px; color: #0288d1; text-decoration: underline;">https://bit.ly/...</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Histórico -->
+        <div id="tab-historico" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div>
+              <h3 style="font-size: 18px; margin-bottom: 4px;">Histórico de UTMs</h3>
+              <p style="color: var(--text-muted); font-size: 13px;">Todas as UTMs geradas para esta campanha.</p>
+            </div>
+            <input type="text" class="form-control" placeholder="Pesquisar..." style="width: 250px;">
+          </div>
+          
+          <div class="table-responsive">
+            <table id="tabela-historico">
+              <thead>
+                <tr>
+                  <th>Data de Criação</th>
+                  <th>Criado por</th>
+                  <th>Source</th>
+                  <th>Medium</th>
+                  <th>Content</th>
+                  <th>Term</th>
+                  <th>Status Bitly</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-id="1">
+                  <td>20/05/2026 14:30</td>
+                  <td>Admin TP</td>
+                  <td><span style="font-weight: 500;">whatsapp</span></td>
+                  <td>messaging</td>
+                  <td>grupo_pcd</td>
+                  <td>pcd</td>
+                  <td><span class="badge badge-active" style="background:#eef2ff; color:#4338ca;">Gerado</span></td>
+                  <td class="actions">
+                    <button class="btn-icon" title="Visualizar Métricas" onclick="window.location.href='campanhas.html?tab=metricas&view=utm-detalhe&campaignId=c1&utmId=u1'"><i class="fa-solid fa-chart-line"></i></button>
+                    <button class="btn-icon" title="Duplicar UTM" onclick="duplicarUTM('whatsapp', 'messaging', 'grupo_pcd', 'pcd')"><i class="fa-regular fa-clone"></i></button>
+                    <button class="btn-icon" title="Inativar" style="color: var(--error);"><i class="fa-solid fa-ban"></i></button>
+                  </td>
+                </tr>
+                <tr data-id="2">
+                  <td>18/05/2026 09:15</td>
+                  <td>Admin TP</td>
+                  <td><span style="font-weight: 500;">linkedin</span></td>
+                  <td>social</td>
+                  <td>post_feed</td>
+                  <td>-</td>
+                  <td><span class="badge" style="background:#fee2e2; color:#b91c1c;">Erro ao gerar</span></td>
+                  <td class="actions">
+                    <button class="btn-icon" title="Visualizar Métricas" onclick="window.location.href='campanhas.html?tab=metricas&view=utm-detalhe&campaignId=c1&utmId=u2'"><i class="fa-solid fa-chart-line"></i></button>
+                    <button class="btn-icon" title="Duplicar UTM"><i class="fa-regular fa-clone"></i></button>
+                    <button class="btn-icon" title="Inativar" style="color: var(--error);"><i class="fa-solid fa-ban"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Outras Tabs (Mock) -->
+        <div id="tab-dados" class="tab-content">
+          <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+            <i class="fa-solid fa-circle-info" style="font-size: 32px; margin-bottom: 16px; color: #ddd;"></i>
+            <p>Dados da Campanha (Fora do escopo do protótipo)</p>
+          </div>
+        </div>
+        <div id="tab-vagas" class="tab-content">
+          <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+            <i class="fa-solid fa-briefcase" style="font-size: 32px; margin-bottom: 16px; color: #ddd;"></i>
+            <p>Vagas Vinculadas (Fora do escopo do protótipo)</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
