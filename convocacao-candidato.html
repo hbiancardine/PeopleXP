@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convocação de Candidato - People Experience</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fontawesome/css/all.min.css">
+  <style>
+    .cv-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .cv-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.4fr) auto; gap: 12px; align-items: end; }
+    .cv-filters .form-group, .cv-adv .form-group { margin-bottom: 0; }
+    .cv-filters .form-label, .cv-adv .form-label { font-size: 12px; margin-bottom: 6px; }
+    .cv-filters .form-control, .cv-adv .form-control { padding: 8px 10px; font-size: 13px; }
+    .search-box { position: relative; }
+    .search-box i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px; }
+    .search-box .form-control { padding-left: 32px; }
+    .btn-sm { padding: 7px 12px; font-size: 13px; }
+    .btn-more.on { border-color: var(--primary-purple); color: var(--primary-purple); background: #faf5fc; }
+    .cv-adv { display: none; margin-top: 12px; padding: 16px; background: #fafafb; border: 1px solid var(--border-color); border-radius: 8px; }
+    .cv-adv.open { display: block; }
+    .cv-adv-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 16px; }
+    .cv-adv-sec { grid-column: 1 / -1; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
+    .cv-adv-sec:first-child { margin-top: 0; }
+    .cv-adv .range { display: flex; gap: 6px; }
+    .cv-adv-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    .cv-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
+    .cv-chips:empty { display: none; }
+    .cv-chips .chip { background: #f3e5f5; color: #6a1b9a; font-size: 12px; padding: 4px 10px; }
+    .cv-chips .chip strong { font-weight: 600; }
+    .cv-chips .clear { font-size: 12px; color: var(--primary-purple); background: none; border: none; cursor: pointer; font-weight: 600; padding: 4px 6px; }
+    .cv-chips .clear:hover { text-decoration: underline; }
+
+    .kpi-wrap { display: grid; grid-template-columns: 3fr 2fr 3fr 3fr 2fr; gap: 12px; }
+    .kpi-group { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; min-width: 0; }
+    .kpi-group-h { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--primary-purple); padding: 8px 12px 7px; border-bottom: 1px solid var(--border-color); background: #fafafb; display: flex; justify-content: space-between; align-items: center; }
+    .kpi-items { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+    .kpi { background: none; border: none; border-right: 1px solid #f0f0f0; padding: 10px 12px 11px; text-align: left; font-family: inherit; cursor: pointer; position: relative; min-width: 0; transition: background .15s; }
+    .kpi:last-child { border-right: none; }
+    .kpi:hover { background: #faf5fc; }
+    .kpi.static { cursor: default; }
+    .kpi.static:hover { background: none; }
+    .kpi-v { font-size: 22px; font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; line-height: 1.15; }
+    .kpi-l { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.3; min-height: 2.6em; white-space: normal; overflow-wrap: normal; word-break: normal; hyphens: none; text-wrap: balance; }
+    .kpi { display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 10px 11px !important; }
+    .kpi-group-h { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+    .kpi-l .assum { border-bottom: 1px dashed #b0b0b0; cursor: help; }
+    .kpi.on { background: #f3e5f5; }
+    .kpi.on .kpi-v, .kpi.on .kpi-l { color: var(--primary-purple); }
+    .kpi.on::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--primary-purple); }
+    .kpi.on .kpi-l::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 10px; margin-right: 4px; }
+    .kpi-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; gap: 6px; align-items: center; }
+
+    .cv-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; min-height: 40px; margin-bottom: 12px; }
+    .cv-bar .grp { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .cv-count { font-size: 14px; font-weight: 600; }
+    .cv-count span { font-weight: 400; color: var(--text-muted); font-size: 13px; }
+    .sel-bar { display: none; flex: 1; align-items: center; gap: 10px; flex-wrap: wrap; background: #f3e5f5; border: 1px solid #e1bee7; border-radius: 6px; padding: 6px 8px 6px 14px; }
+    .sel-bar.on { display: flex; }
+    .sel-bar .lbl { font-size: 13px; font-weight: 600; color: #6a1b9a; margin-right: 6px; }
+    .sel-bar .link { background: none; border: none; color: var(--primary-purple); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .sel-bar .link:hover { text-decoration: underline; }
+    .sel-bar .spacer { flex: 1; }
+
+    .cv-table-wrap { width: 100%; overflow: hidden; border: 1px solid var(--border-color); border-radius: 8px; }
+    .cv-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+    .cv-table th { font-size: 11px; font-weight: 600; letter-spacing: .3px; color: var(--text-muted); background: #fafafb; padding: 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; user-select: none; }
+    .cv-table th.ns { cursor: default; }
+    .cv-table th .sort { margin-left: 4px; opacity: .35; font-size: 10px; }
+    .cv-table th.sorted .sort { opacity: 1; color: var(--primary-purple); }
+    .cv-table td { font-size: 13px; padding: 9px 12px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cv-table tbody tr:last-child td { border-bottom: none; }
+    .cv-table tbody tr:hover td { background: #faf5fc; }
+    .cv-table tbody tr.sel td { background: #fbf6fd; }
+    .cv-table .ck { width: 44px; text-align: center; padding-left: 14px; padding-right: 6px; }
+    .cv-table .ac { width: 52px; text-align: center; padding: 0 8px; }
+    .cv-table input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--primary-purple); cursor: pointer; vertical-align: middle; }
+    .cand-n { background: none; border: none; padding: 0; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: block; text-align: left; }
+    .cand-n:hover { color: var(--primary-purple); text-decoration: underline; }
+    .sub { display: block; font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+    .muted { color: #9e9e9e; }
+    @keyframes rowFlash { 0%, 40% { background: #e8f5e9; } 100% { background: transparent; } }
+    tr.flash td { animation: rowFlash 2.6s ease-out; }
+
+    .st { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 12px; font-size: 12px; font-weight: 500; border: 1px solid; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .st::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+    .st.ok { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+    .st.info { background: #e3f2fd; color: #1565c0; border-color: #bbdefb; }
+    .st.warn { background: #fff8e1; color: #b45309; border-color: #ffecb3; }
+    .st.err { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
+    .st.neu { background: #f5f5f5; color: #616161; border-color: #e0e0e0; }
+    .st.pur { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+
+    .row-menu-btn { width: 30px; height: 30px; border-radius: 4px; border: 1px solid transparent; background: none; cursor: pointer; color: var(--text-muted); font-size: 14px; }
+    .row-menu-btn:hover, .row-menu-btn.on { background: var(--white); border-color: var(--border-color); color: var(--primary-purple); }
+    .pop { position: fixed; background: var(--white); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.12); z-index: 900; display: none; }
+    .pop.on { display: block; }
+    .menu { padding: 6px 0; min-width: 200px; }
+    .menu button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 8px 14px; background: none; border: none; font-family: inherit; font-size: 13px; color: var(--text-main); cursor: pointer; text-align: left; }
+    .menu button i { width: 14px; color: var(--text-muted); font-size: 12px; }
+    .menu button:hover { background: var(--hover-bg); color: var(--primary-purple); }
+    .menu button:hover i { color: var(--primary-purple); }
+    .menu hr { border: none; border-top: 1px solid #f0f0f0; margin: 6px 0; }
+
+    .cols-pop { width: 560px; max-width: calc(100vw - 32px); }
+    .cols-h { padding: 14px 16px 10px; border-bottom: 1px solid var(--border-color); }
+    .cols-h strong { font-size: 14px; }
+    .cols-h p { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
+    .cols-meter { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted); }
+    .cols-meter .track { flex: 1; height: 4px; border-radius: 2px; background: #eee; overflow: hidden; }
+    .cols-meter .fill { height: 100%; background: var(--primary-purple); transition: width .2s; }
+    .cols-meter.full { color: #b45309; }
+    .cols-meter.full .fill { background: #f59e0b; }
+    .cols-body { padding: 12px 16px; max-height: 360px; overflow-y: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px; }
+    .cols-g h6 { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
+    .cols-g label { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 3px 0; cursor: pointer; }
+    .cols-g label.dis { color: #aaa; cursor: not-allowed; }
+    .cols-g input { accent-color: var(--primary-purple); }
+    .cols-f { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--border-color); background: #fafafb; border-radius: 0 0 6px 6px; font-size: 12px; color: var(--text-muted); }
+
+    .table-footer { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
+    .table-footer .per-page { display: flex; align-items: center; gap: 8px; }
+    .table-footer .per-page select { width: auto; padding: 5px 8px; }
+    .pager { display: flex; gap: 4px; }
+    .pager .btn { padding: 4px 10px; min-width: 32px; font-size: 13px; justify-content: center; }
+
+    #drawer-cand .drawer-content { width: 540px; right: -600px; max-width: 100vw; }
+    #drawer-cand.active .drawer-content { right: 0; }
+    .dw-head { display: flex; flex-direction: column; gap: 6px; }
+    .dw-head small { font-size: 12px; color: var(--text-muted); }
+    .dw-badges { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 24px; border-bottom: 1px solid var(--border-color); }
+    .dw-sec { margin-bottom: 20px; }
+    .dw-sec h4 { font-size: 11px; font-weight: 700; color: var(--primary-purple); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0f0f0; }
+    .dw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+    .dw-grid .full { grid-column: 1 / -1; }
+    .dw-k { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+    .dw-v { font-size: 13px; color: var(--text-main); word-break: break-word; }
+    .dw-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 14px 24px; border-top: 1px solid var(--border-color); background: #fdfdfd; }
+
+    #modal-troca .modal-content { max-width: 780px; }
+    .tv-steps { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .tv-steps b { color: var(--primary-purple); font-weight: 600; }
+    .tv-steps .sep { color: #ccc; }
+    .tv-pane { display: none; }
+    .tv-pane.on { display: block; }
+    .tv-count { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .tv-count strong { color: var(--text-main); }
+    .tv-names { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tv-names .chip { background: #f5f5f5; }
+    .tv-modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .tv-mode { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px; cursor: pointer; }
+    .tv-mode:hover { border-color: #ce93d8; }
+    .tv-mode.on { border-color: var(--primary-purple); background: #faf5fc; box-shadow: 0 0 0 1px var(--primary-purple) inset; }
+    .tv-mode input { margin-top: 2px; accent-color: var(--primary-purple); }
+    .tv-mode strong { font-size: 13px; display: block; }
+    .tv-mode small { font-size: 12px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 2px; }
+    .vg-card { margin-top: 12px; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px; background: #fafafb; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 14px; }
+    .vg-card .dw-v { font-weight: 500; }
+    .vg-card .full2 { grid-column: span 2; }
+    .ind-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .ind-table th { font-size: 11px; padding: 8px 10px; background: #fafafb; }
+    .ind-table td { font-size: 13px; padding: 8px 10px; vertical-align: top; border-bottom: 1px solid #f0f0f0; }
+    .ind-table tr:hover td { background: none; }
+    .ind-table select { padding: 7px 8px; font-size: 13px; }
+    .ind-table .apply { display: inline-block; margin-top: 5px; font-size: 12px; color: var(--primary-purple); background: none; border: none; cursor: pointer; font-weight: 600; padding: 0; font-family: inherit; }
+    .ind-table .apply:hover { text-decoration: underline; }
+    .rv-list { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+    .rv-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 28px minmax(0, 1fr); gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+    .rv-row:last-child { border-bottom: none; }
+    .rv-row.h { background: #fafafb; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; padding: 8px 14px; }
+    .rv-row .arr { color: var(--primary-purple); text-align: center; }
+    .rv-row .new { color: var(--primary-purple); font-weight: 600; }
+    .rv-note { display: flex; gap: 10px; background: #fff8e1; border: 1px solid #ffecb3; color: #8a5300; border-radius: 8px; padding: 10px 12px; font-size: 13px; line-height: 1.45; margin-top: 14px; }
+    .fb-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+    .fb-ico { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex: none; }
+    .fb-ico.ok { background: #e8f5e9; color: #2e7d32; }
+    .fb-ico.part { background: #fff8e1; color: #b45309; }
+    .fb-head strong { font-size: 15px; display: block; }
+    .fb-head p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+    .fb-row { display: grid; grid-template-columns: 20px minmax(0, 1.3fr) minmax(0, 1fr); gap: 10px; padding: 9px 14px; border-bottom: 1px solid #f0f0f0; font-size: 13px; align-items: center; }
+    .fb-row:last-child { border-bottom: none; }
+    .fb-row .fa-circle-check { color: #2e7d32; }
+    .fb-row .fa-circle-xmark { color: #c62828; }
+    .fb-row .why { color: #c62828; font-size: 12px; }
+
+    .proto-states { position: fixed; left: 16px; bottom: 16px; z-index: 1200; font-size: 13px; }
+    .proto-states > button { background: #333; color: #fff; border: none; border-radius: 18px; padding: 8px 14px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; gap: 8px; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+    .proto-states .list { display: none; position: absolute; bottom: 44px; left: 0; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 6px 0; width: 300px; }
+    .proto-states.open .list { display: block; }
+    .proto-states .list div { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; padding: 6px 14px; }
+    .proto-states .list button { display: flex; gap: 10px; width: 100%; background: none; border: none; padding: 7px 14px; font-family: inherit; font-size: 13px; cursor: pointer; text-align: left; color: var(--text-main); }
+    .proto-states .list button:hover { background: #faf5fc; color: var(--primary-purple); }
+    .proto-states .list button b { color: var(--primary-purple); font-variant-numeric: tabular-nums; width: 22px; flex: none; }
+
+    @media (max-width: 1200px) { .kpi-wrap { grid-template-columns: repeat(6, minmax(0, 1fr)); } .kpi-group:nth-child(1), .kpi-group:nth-child(3), .kpi-group:nth-child(4) { grid-column: span 2; } .kpi-group:nth-child(2) { grid-column: span 3; } .kpi-group:nth-child(5) { grid-column: span 3; } .cv-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 800px) { .kpi-wrap { grid-template-columns: 1fr; } .kpi-group { grid-column: auto !important; } .cv-filters, .cv-adv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cols-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vg-card { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tv-modes { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <a href="index.html" style="display: flex; align-items: center;"><img src="tptopo.png" alt="People Experience" style="height: 40px; width: auto;"></a>
+    </div>
+    <div class="user-profile">
+      <div class="avatar">
+        <img src="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'64'%20height%3D'64'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20fill%3D'%23fff'%2F%3E%3Ctext%20x%3D'32'%20y%3D'41'%20font-family%3D'Arial%2Csans-serif'%20font-size%3D'24'%20font-weight%3D'700'%20fill%3D'%237b1fa2'%20text-anchor%3D'middle'%3EAT%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu -->
+  <nav class="main-nav">
+    <ul class="nav-list">
+      <li class="nav-item"><i class="fa-solid fa-users"></i> Usuários</li>
+      <li class="nav-item"><i class="fa-solid fa-file-contract"></i> Contratos</li>
+      <li class="nav-item"><i class="fa-solid fa-file-invoice"></i> FPW</li>
+      <li class="nav-item"><i class="fa-solid fa-thumbs-down"></i> Não Recomendações</li>
+      <li class="nav-item"><i class="fa-solid fa-poll"></i> Survey</li>
+      <li class="nav-item"><i class="fa-solid fa-chart-line"></i> Capacity</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-briefcase"></i> Vagas
+        <div class="dropdown-menu" style="min-width: 260px;">
+          <a href="cadastro-vagas.html" class="dropdown-item">Cadastro de Vagas</a>
+          <a href="#" class="dropdown-item">Cadastro de Departamentos</a>
+          <a href="#" class="dropdown-item">Cadastro de Job Descriptions</a>
+          <a href="#" class="dropdown-item">Validação de Documentos</a>
+          <a href="#" class="dropdown-item">Código Vagas Indisponíveis</a>
+          <a href="beneficios-tipo-vaga.html" class="dropdown-item">Benefícios por Tipo de Vaga</a>
+          <a href="bem-estar-tp.html" class="dropdown-item">Texto Bem Estar TP</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-star"></i> Avaliações
+        <div class="dropdown-menu dropdown-avalia" style="min-width: 280px; max-height: 500px; overflow-y: auto; padding: 0;">
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Operação</div>
+          <a href="minhas-vagas.html" class="dropdown-item">Minhas Vagas</a>
+          <a href="acompanhamento-vaga.html" class="dropdown-item">Acompanhamento de Vaga</a>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Avaliações</a>
+          <a href="entrevistas-hallo.html" class="dropdown-item">Entrevistas Hallo</a>
+          <a href="finalistas.html" class="dropdown-item">Finalistas</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Dinâmicas</div>
+          <a href="realizar-dinamica.html" class="dropdown-item">Realizar Dinâmica</a>
+          <a href="reagendar-dinamica.html" class="dropdown-item">Reagendar Dinâmica</a>
+          <a href="tipo-sala-dinamica.html" class="dropdown-item">Tipo Sala Dinâmica</a>
+          
+          <div style="padding: 12px 16px; background: #f5f6f8; font-weight: 700; color: var(--primary-purple); border-bottom: 1px solid var(--border-color); border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Configurações</div>
+          <a href="cadastro-avaliacoes.html" class="dropdown-item">Cadastro de Avaliações</a>
+          <a href="parametrizacao-teste-multitelas.html" class="dropdown-item">Parametrização Teste Multitelas</a>
+          <a href="banco-provas-teste-multitelas.html" class="dropdown-item">Banco de Provas Teste Multitelas</a>
+          <a href="agendamento-exame-medico.html" class="dropdown-item">Agendamento Exame Médico</a>
+          <a href="resultado-exame-medico.html" class="dropdown-item">Resultado Exame Médico</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Treinamentos</li>
+      <li class="nav-item"><i class="fa-solid fa-link"></i> Links Vem Ser TP</li>
+      <li class="nav-item dropdown">
+        <i class="fa-solid fa-list"></i> Cadastros
+        <div class="dropdown-menu" style="min-width: 250px; max-height: 400px; overflow-y: auto;">
+          <a href="#" class="dropdown-item">FIA</a>
+          <a href="#" class="dropdown-item">Cadastro de Case</a>
+          <a href="#" class="dropdown-item">Cadastro de Carta Proposta</a>
+          <a href="#" class="dropdown-item">Cadastro de FRP</a>
+          <a href="#" class="dropdown-item">Painel Portal de Treinamento</a>
+          <a href="#" class="dropdown-item">CheckList</a>
+          <a href="#" class="dropdown-item">Cadastro de Parceiro</a>
+          <a href="#" class="dropdown-item">Cadastro de Candidato</a>
+          <a href="#" class="dropdown-item">Termo de Responsabilidade</a>
+          <a href="campanhas.html" class="dropdown-item">Cadastro de Campanha</a>
+          <a href="#" class="dropdown-item">Cadastro de FAQ</a>
+          <a href="#" class="dropdown-item">Tela de Tipos de Etapas</a>
+          <a href="#" class="dropdown-item">Cadastro Dúvidas</a>
+          <a href="#" class="dropdown-item">Cadastro de Treinamento Staff</a>
+          <a href="#" class="dropdown-item">Cadastro Fonte Vaga</a>
+          <a href="#" class="dropdown-item">Cadastro de Formulários</a>
+          <a href="#" class="dropdown-item">Termo Aceite - Seu Amigo Na TP</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active">
+        <i class="fa-solid fa-sliders"></i> Controle
+        <div class="dropdown-menu" style="min-width: 240px;">
+          <a href="convocacao-candidato.html" class="dropdown-item">Convocação de Candidato</a>
+        </div>
+      </li>
+      <li class="nav-item"><i class="fa-solid fa-plane"></i> Onboarding</li>
+      <li class="nav-item"><i class="fa-solid fa-robot"></i> Automações BMS</li>
+    </ul>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> &gt; <span>Controle</span> &gt; <span>Convocação de Candidato</span>
+  </div>
+
+  <div class="container">
+    <div class="page-header" style="margin-bottom: 16px;">
+      <div>
+        <h1 class="page-title">Convocação de Candidato</h1>
+        <p class="cv-sub">Gestão e acompanhamento dos candidatos em processo de admissão.</p>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card" style="padding: 16px 20px; margin-bottom: 16px;">
+      <div class="cv-filters">
+        <div class="form-group"><label class="form-label" for="f-capacity">Capacity</label><select class="form-control" id="f-capacity"><option value="">Todas</option></select></div>
+        <div class="form-group"><label class="form-label" for="f-operacao">Operação</label><select class="form-control" id="f-operacao"><option value="">Todas</option></select></div>
+        <div class="form-group"><label class="form-label" for="f-celula">Célula</label><select class="form-control" id="f-celula"><option value="">Todas</option></select></div>
+        <div class="form-group"><label class="form-label" for="f-status">Status Convocação</label><select class="form-control" id="f-status"><option value="">Todos</option></select></div>
+        <div class="form-group"><label class="form-label" for="f-busca">Candidato ou CPF</label><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" class="form-control" id="f-busca" placeholder="Nome ou 000.000.000-00"></div></div>
+        <button class="btn btn-secondary btn-sm btn-more" id="btn-more" style="height: 36px; justify-self: start;"><i class="fa-solid fa-plus"></i> Filtros <span id="adv-count"></span></button>
+      </div>
+
+      <div class="cv-adv" id="cv-adv">
+        <div class="cv-adv-grid">
+          <div class="cv-adv-sec">Status por etapa</div>
+          <div class="form-group"><label class="form-label" for="a-exame">Status Exame Médico</label><select class="form-control" id="a-exame"><option value="">Todos</option></select></div>
+          <div class="form-group"><label class="form-label" for="a-doc">Status Documentação</label><select class="form-control" id="a-doc"><option value="">Todos</option></select></div>
+          <div class="form-group"><label class="form-label" for="a-trein">Status Treinamento</label><select class="form-control" id="a-trein"><option value="">Todos</option></select></div>
+          <div class="form-group"><label class="form-label" for="a-indic">Possui indicação</label><select class="form-control" id="a-indic"><option value="">Todos</option><option>Sim</option><option>Não</option></select></div>
+          <div class="cv-adv-sec">Período de validação</div>
+          <div class="form-group" style="grid-column: span 2;"><label class="form-label">Data início / fim (Dt. Validação)</label><div class="range"><input type="date" class="form-control" id="a-de" title="Data início"><input type="date" class="form-control" id="a-ate" title="Data fim"></div></div>
+          <div></div><div></div>
+          <div class="cv-adv-sec">Exibição</div>
+          <div class="form-group"><label class="form-label" for="a-reprov">Exibir candidatos reprovados</label><select class="form-control" id="a-reprov"><option>Sim</option><option>Não</option></select></div>
+          <div class="form-group"><label class="form-label" for="a-admit">Exibir candidatos admitidos</label><select class="form-control" id="a-admit"><option>Sim</option><option>Não</option></select></div>
+          <div class="form-group"><label class="form-label" for="a-hist">Histórico completo</label><select class="form-control" id="a-hist"><option>Não</option><option>Sim</option></select></div>
+        </div>
+        <div class="cv-adv-actions">
+          <button class="btn btn-secondary btn-sm" id="adv-limpar">Limpar</button>
+          <button class="btn btn-primary btn-sm" id="adv-aplicar"><i class="fa-solid fa-check"></i> Aplicar filtros</button>
+        </div>
+      </div>
+
+      <div class="cv-chips" id="cv-chips"></div>
+    </div>
+
+    <!-- Indicadores -->
+    <div class="card" style="padding: 16px 20px; margin-bottom: 16px;">
+      <div class="kpi-wrap" id="kpi-wrap"></div>
+      <div class="kpi-note"><i class="fa-solid fa-hand-pointer"></i> Clique em um indicador para filtrar a tabela. Clique novamente para remover.</div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="card" style="padding: 16px 20px;">
+      <div class="cv-bar">
+        <div class="grp" id="bar-default">
+          <div class="cv-count" id="cv-count"></div>
+        </div>
+        <div class="sel-bar" id="sel-bar">
+          <span class="lbl" id="sel-lbl"></span>
+          <button class="btn btn-primary btn-sm" onclick="abrirTroca([...sel])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>
+          <button class="btn btn-secondary btn-sm" onclick="followUp([...sel])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
+          <button class="btn btn-secondary btn-sm" id="btn-mais"><i class="fa-solid fa-ellipsis"></i> Mais ações</button>
+          <button class="link" id="sel-all" style="display: none;"></button>
+          <span class="spacer"></span>
+          <button class="link" onclick="limparSel()">Limpar seleção</button>
+        </div>
+        <div class="grp" id="bar-tools">
+          <button class="btn btn-secondary btn-sm" onclick="exportarCSV()"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo Resgatar Candidato.', 'success')"><i class="fa-solid fa-life-ring"></i> Resgatar Candidato</button>
+          <button class="btn btn-secondary btn-sm" id="btn-cols" title="Escolher colunas exibidas"><i class="fa-solid fa-table-columns"></i> Colunas</button>
+        </div>
+      </div>
+
+      <div class="cv-table-wrap" id="cv-table-wrap">
+        <table class="cv-table" id="cv-table">
+          <colgroup id="cv-colgroup"></colgroup>
+          <thead><tr id="cv-thead"></tr></thead>
+          <tbody id="cv-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <div class="per-page"><span>Mostrar</span><select class="form-control" id="per-page"><option>10</option><option>25</option><option>50</option></select><span id="range-info"></span></div>
+        <div class="pager" id="pager"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu da linha -->
+  <div class="pop menu" id="row-menu"></div>
+  <!-- Mais ações (seleção) -->
+  <div class="pop menu" id="mais-menu">
+    <button onclick="exportarCSV(true)"><i class="fa-solid fa-file-csv"></i> Exportar selecionados (CSV)</button>
+    <button onclick="resgatar([...sel])"><i class="fa-solid fa-life-ring"></i> Resgatar candidatos</button>
+  </div>
+
+  <!-- Colunas -->
+  <div class="pop cols-pop" id="cols-pop">
+    <div class="cols-h">
+      <strong>Colunas exibidas</strong>
+      <p>A tabela mostra até o limite que cabe na largura da tela, sem rolagem lateral. As demais informações ficam no detalhe do candidato.</p>
+      <div class="cols-meter" id="cols-meter"><span id="cols-n"></span><div class="track"><div class="fill" id="cols-fill"></div></div><span id="cols-max"></span></div>
+    </div>
+    <div class="cols-body" id="cols-body"></div>
+    <div class="cols-f">
+      <span><i class="fa-regular fa-bookmark"></i> Sua seleção fica salva para as próximas visitas.</span>
+      <button class="btn btn-secondary btn-sm" id="cols-reset">Restaurar padrão</button>
+    </div>
+  </div>
+
+  <!-- Drawer candidato -->
+  <div class="drawer-overlay" id="drawer-cand" onclick="if(event.target===this) closeDrawer('drawer-cand')">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <div class="dw-head"><h2 class="drawer-title" id="dw-nome"></h2><small id="dw-meta"></small></div>
+        <button class="drawer-close" onclick="closeDrawer('drawer-cand')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="dw-badges" id="dw-badges"></div>
+      <div class="drawer-body" id="dw-body"></div>
+      <div class="dw-foot" id="dw-foot"></div>
+    </div>
+  </div>
+
+  <!-- Modal Trocar de vaga -->
+  <div class="modal-overlay" id="modal-troca">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="tv-title">Trocar de vaga</h2>
+          <div class="tv-steps" id="tv-steps"></div>
+        </div>
+        <button class="modal-close" onclick="fecharTroca()"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="tv-pane" id="tv-edit">
+          <div class="tv-count" id="tv-count"></div>
+          <div class="tv-modes" id="tv-modes">
+            <label class="tv-mode" data-mode="massa"><input type="radio" name="tv-mode" value="massa"><span><strong>Alterar todos para a mesma vaga</strong><small>Uma única Capacity para todos os candidatos selecionados.</small></span></label>
+            <label class="tv-mode" data-mode="ind"><input type="radio" name="tv-mode" value="ind"><span><strong>Definir vaga individualmente</strong><small>Escolha uma Capacity diferente para cada candidato.</small></span></label>
+          </div>
+          <div id="tv-massa" style="display: none;">
+            <div id="tv-atual"></div>
+            <label class="form-label" for="tv-massa-sel">Nova vaga / Capacity</label>
+            <select class="form-control" id="tv-massa-sel"></select>
+            <div id="tv-massa-card"></div>
+          </div>
+          <div id="tv-ind" style="display: none;">
+            <div class="cv-table-wrap"><table class="ind-table"><colgroup><col style="width: 34%;"><col style="width: 24%;"><col></colgroup>
+              <thead><tr><th>Candidato</th><th>Capacity atual</th><th>Nova vaga / Capacity</th></tr></thead>
+              <tbody id="tv-ind-body"></tbody></table></div>
+          </div>
+        </div>
+        <div class="tv-pane" id="tv-review">
+          <div class="tv-count" id="rv-count"></div>
+          <div class="rv-list" id="rv-list"></div>
+          <div class="rv-note" id="rv-note"><i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i><span>As vagas só serão alteradas após clicar em <strong>Confirmar troca</strong>.</span></div>
+        </div>
+        <div class="tv-pane" id="tv-result"></div>
+      </div>
+      <div class="modal-footer" id="tv-footer"></div>
+    </div>
+  </div>
+
+  <!-- Atalhos de estado do protótipo -->
+  <div class="proto-states" id="proto-states">
+    <div class="list">
+      <div>Estados do protótipo</div>
+      <button data-st="1"><b>01</b> Estado inicial, sem filtros</button>
+      <button data-st="2"><b>02</b> Filtros aplicados</button>
+      <button data-st="3"><b>03</b> Personalização de colunas</button>
+      <button data-st="4"><b>04</b> Detalhe do candidato</button>
+      <button data-st="5"><b>05</b> Candidatos selecionados</button>
+      <button data-st="6"><b>06</b> Trocar de vaga: tipo de alteração</button>
+      <button data-st="7"><b>07</b> Trocar de vaga: em massa</button>
+      <button data-st="8"><b>08</b> Trocar de vaga: individual</button>
+      <button data-st="9"><b>09</b> Revisar troca de vaga</button>
+      <button data-st="10"><b>10</b> Feedback: troca realizada</button>
+      <button data-st="11"><b>10b</b> Feedback: sucesso parcial</button>
+    </div>
+    <button onclick="this.parentElement.classList.toggle('open')"><i class="fa-solid fa-layer-group"></i> Estados</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // ---------- Dados (fictícios) ----------
+    const CAPS = [
+      { id: 10856, cap: 'EXTRA - 2026 outubro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 1 BR', cargo: 'Operador de Atendimento', horario: '16:40', sol: 13, buf: 15 },
+      { id: 10922, cap: 'EXTRA - 2026 outubro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 2 BR', cargo: 'Operador de Atendimento', horario: '06:00', sol: 10, buf: 12 },
+      { id: 11031, cap: 'D55 - 2026 novembro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb Community Support BR', cargo: 'Operador de Atendimento', horario: '14:30', sol: 8, buf: 10 },
+      { id: 10864, cap: 'D55 - 2026 outubro', cliente: "L'OREAL", site: 'TPBR SÃO BENTO', celula: "L'oreal CLAPA N1 ECOM VOZ", cargo: 'Operador de Atendimento', horario: '09:00', sol: 20, buf: 22 },
+      { id: 10456, cap: 'D55 - 2026 outubro', cliente: 'AMAZON', site: 'TPBR SÃO BENTO', celula: 'Amazon CLAPA D2 Phone TPS', cargo: 'Operador de Atendimento', horario: '08:00', sol: 19, buf: 25 },
+      { id: 10839, cap: 'D55 - 2026 novembro', cliente: 'HOTELS.COM', site: 'TPBR VILA PRUDENTE', celula: 'Hotels.com CLAPA Service GDS', cargo: 'Operador Bilíngue', horario: '12:00', sol: 16, buf: 20 }
+    ];
+    const capById = id => CAPS.find(c => c.id === id);
+    const opLabel = c => c.cliente + ' - ' + c.site;
+
+    const FIRST = ['Adrielen','Adryan','Alef','Sayuri','Ananda','Andréa','Bárbara','Beatriz','Chrislen','Cláudio','Daniela','Diego','Eduarda','Emerson','Fabiana','Felipe','Gabriela','Gustavo','Helena','Igor','Jéssica','João Pedro','Karina','Leonardo','Luana','Marcos','Natália','Otávio','Paula','Rafaela'];
+    const LAST = ['Beres','Moreira','Farias','Kayaki','Cabral','Cubinhetz','Busa','Silva','Nunes','Rocha','Prado','Lima','Teixeira','Santos','Queiroz','Araújo','Mendes','Barros','Castro','Duarte','Freitas','Gomes','Ribeiro','Martins','Pereira','Souza','Almeida','Carvalho','Pinto','Oliveira'];
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));
+    const p2 = n => String(n).padStart(2, '0');
+    const strip = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s/g, '');
+    const HOR = [['15:00','23:00'],['00:00','00:00'],['06:00','18:00'],['06:00','17:00'],['',''],['08:00','20:00']];
+    const inSet = (i, arr) => arr.includes(i);
+
+    const CANDS = FIRST.map((f, i) => {
+      const capId = i < 14 ? 10856 : i < 19 ? 10922 : i < 22 ? 11031 : i < 25 ? 10864 : i < 28 ? 10456 : 10839;
+      const c = capById(capId);
+      const conv = inSet(i, [2, 11, 23]) ? 'Reprovado' : inSet(i, [5, 17]) ? 'Desistente' : inSet(i, [8, 15, 21, 27]) ? 'Convocado' : inSet(i, [26]) ? 'Desligado' : inSet(i, [19, 29]) ? 'Pendente' : 'Contratado';
+      const doc = inSet(i, [6, 19, 29]) ? 'Pendente' : inSet(i, [8, 21, 27]) ? 'Promessa' : 'Documentação Entregue';
+      const exame = inSet(i, [19, 29]) ? 'Pendente' : inSet(i, [8, 21]) ? 'Agendado' : inSet(i, [13]) ? 'Apto 2' : 'Apto';
+      const trein = conv === 'Contratado' ? (i === 9 ? 'Pendente TP' : 'Adicionado') : conv === 'Desligado' ? 'Adicionado' : conv === 'Convocado' ? 'Pendente TP' : conv === 'Pendente' ? '' : 'Não elegível';
+      const dv = ri(8, 21), da = Math.min(dv + ri(0, 2), 25), dd = Math.min(dv + ri(0, 3), 25);
+      const h = HOR[i % HOR.length];
+      const admitido = conv === 'Contratado' || conv === 'Desligado';
+      return {
+        id: 58210 + i * 7,
+        nome: f + ' ' + LAST[i],
+        nomeSocial: i === 12 ? 'Edu Teixeira' : '',
+        cpf: p2(ri(10, 99)) + ri(1, 9) + '.' + ri(100, 999) + '.' + ri(100, 999) + '-' + p2(ri(0, 99)),
+        capId,
+        syscheck: exame === 'Pendente' ? 'Pendente' : 'Validado',
+        dtValidacao: p2(dv) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)),
+        exame,
+        dtAgenda: exame === 'Pendente' ? '' : p2(da) + '/09/2026 ' + p2(ri(9, 19)) + ':00',
+        doc,
+        dtDoc: doc === 'Documentação Entregue' ? p2(dd) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)) : '',
+        inicioTrein: trein ? p2(Math.min(dd + 1, 26)) + '/09/2026' : '',
+        escala: '6X1', carga: '180', tipo: 'CLT',
+        disp: h[0] ? h[0] + ' - ' + h[1] : '',
+        conv,
+        motivo: conv === 'Reprovado' ? 'Convocação treinamento' : '',
+        fpw: admitido ? String(408600 + ri(10, 290)) : '',
+        horarioTrein: trein ? '14:30' : '',
+        trein,
+        dtFimTurma: trein ? '23/10/2026' : '',
+        dtAdmissao: admitido ? (i % 4 === 3 ? '25/09/2026' : '23/09/2026') : '',
+        email: strip(f) + '.' + strip(LAST[i]) + '@email.com',
+        rg: i % 6 === 1 ? '' : p2(ri(10, 59)) + '.' + ri(100, 999) + '.' + ri(100, 999) + '-' + ri(0, 9),
+        amigo: i % 5 === 1 ? 'Sim' : 'Não'
+      };
+    });
+    const candById = id => CANDS.find(c => c.id === id);
+
+    // ---------- Status visuais ----------
+    const TONE = {
+      'Documentação Entregue': 'ok', 'Promessa': 'warn', 'Pendente': 'neu',
+      'Apto': 'ok', 'Apto 2': 'info', 'Agendado': 'info',
+      'Contratado': 'ok', 'Convocado': 'info', 'Reprovado': 'err', 'Desistente': 'warn', 'Desligado': 'neu',
+      'Adicionado': 'pur', 'Pendente TP': 'warn', 'Não elegível': 'neu'
+    };
+    const badge = v => v ? `<span class="st ${TONE[v] || 'neu'}">${v}</span>` : '<span class="muted">—</span>';
+    const dash = v => v ? v : '<span class="muted">—</span>';
+    const dOnly = v => v ? v.split(' ')[0] : '';
+
+    // ---------- Colunas ----------
+    const COLS = [
+      { k: 'id', l: 'ID', g: 'Candidato', w: .7, v: c => c.id },
+      { k: 'nome', l: 'Candidato', g: 'Candidato', w: 2, lock: true, v: c => c.nome },
+      { k: 'nomeSocial', l: 'Nome Social', g: 'Candidato', w: 1.2, v: c => c.nomeSocial },
+      { k: 'cpf', l: 'CPF', g: 'Candidato', w: 1.1, v: c => c.cpf },
+      { k: 'email', l: 'E-mail', g: 'Candidato', w: 1.8, v: c => c.email },
+      { k: 'rg', l: 'RG', g: 'Candidato', w: 1, v: c => c.rg },
+      { k: 'fpw', l: 'FPW', g: 'Candidato', w: .8, v: c => c.fpw },
+      { k: 'amigo', l: 'Seu Amigo na TP', g: 'Candidato', w: .9, v: c => c.amigo },
+      { k: 'capacity', l: 'Capacity', g: 'Vaga', w: 1.3, v: c => c.capId, h: c => { const x = capById(c.capId); return `${x.id}<span class="sub">${x.cap}</span>`; }, t: c => capById(c.capId).id + ' · ' + capById(c.capId).cap },
+      { k: 'operacao', l: 'Operação', g: 'Vaga', w: 1.4, v: c => opLabel(capById(c.capId)), h: c => { const x = capById(c.capId); return `${x.cliente}<span class="sub">${x.site}</span>`; } },
+      { k: 'celula', l: 'Célula', g: 'Vaga', w: 1.6, v: c => capById(c.capId).celula },
+      { k: 'cargo', l: 'Cargo', g: 'Vaga', w: 1.4, v: c => capById(c.capId).cargo },
+      { k: 'escala', l: 'Escala', g: 'Vaga', w: .7, v: c => c.escala },
+      { k: 'carga', l: 'Carga Horária', g: 'Vaga', w: .8, v: c => c.carga },
+      { k: 'tipo', l: 'Tipo Contrato', g: 'Vaga', w: .8, v: c => c.tipo },
+      { k: 'disp', l: 'Disponibilidade de Horário', g: 'Vaga', w: 1.1, v: c => c.disp },
+      { k: 'horarioVaga', l: 'Horário Vaga', g: 'Vaga', w: .8, v: c => capById(c.capId).horario },
+      { k: 'syscheck', l: 'Dados Syscheck', g: 'Validação', w: .9, v: c => c.syscheck },
+      { k: 'dtValidacao', l: 'Data Validação', g: 'Validação', w: 1, v: c => dOnly(c.dtValidacao) },
+      { k: 'doc', l: 'Documentação', g: 'Documentação', w: 1.35, badge: true, v: c => c.doc, h: c => c.doc === 'Documentação Entregue' ? '<span class="st ok">Entregue</span>' : badge(c.doc) },
+      { k: 'dtDoc', l: 'Data Documentação Entregue', g: 'Documentação', w: 1, v: c => dOnly(c.dtDoc) },
+      { k: 'exame', l: 'Exame', g: 'Exame médico', w: 1, badge: true, v: c => c.exame },
+      { k: 'dtAgenda', l: 'Data Agenda Médica', g: 'Exame médico', w: 1, v: c => dOnly(c.dtAgenda) },
+      { k: 'conv', l: 'Convocação', g: 'Convocação', w: 1.1, badge: true, v: c => c.conv },
+      { k: 'motivo', l: 'Motivo Reprovação', g: 'Convocação', w: 1.3, v: c => c.motivo },
+      { k: 'trein', l: 'Treinamento', g: 'Treinamento', w: 1.1, badge: true, v: c => c.trein },
+      { k: 'inicioTrein', l: 'Início Treinamento', g: 'Treinamento', w: 1, v: c => c.inicioTrein },
+      { k: 'localTrein', l: 'Local Treinamento', g: 'Treinamento', w: 1.3, v: c => capById(c.capId).site },
+      { k: 'horarioTrein', l: 'Horário Treinamento', g: 'Treinamento', w: .9, v: c => c.horarioTrein },
+      { k: 'dtFimTurma', l: 'Data Fim Turma', g: 'Treinamento', w: 1, v: c => c.dtFimTurma },
+      { k: 'dtAdmissao', l: 'Admissão', g: 'Admissão', w: .95, v: c => c.dtAdmissao }
+    ];
+    const DEFAULT_COLS = ['nome', 'capacity', 'operacao', 'doc', 'exame', 'conv', 'trein', 'dtAdmissao'];
+    const LS_COLS = 'peoplexp.convocacao.colunas';
+    let visCols = (() => { try { const s = JSON.parse(localStorage.getItem(LS_COLS)); if (Array.isArray(s) && s.includes('nome')) return s; } catch (e) {} return [...DEFAULT_COLS]; })();
+    const colByK = k => COLS.find(c => c.k === k);
+    function maxCols() {
+      const w = document.getElementById('cv-table-wrap').clientWidth || 1200;
+      return Math.max(4, Math.min(11, Math.floor((w - 96) / 122)));
+    }
+    const shownCols = () => COLS.filter(c => visCols.includes(c.k)).slice(0, maxCols());
+
+    // ---------- Estado ----------
+    const F0 = { capacity: '', operacao: '', celula: '', status: '', busca: '', exame: '', doc: '', trein: '', indic: '', de: '', ate: '', reprov: 'Sim', admit: 'Sim', hist: 'Não' };
+    const state = { f: { ...F0 }, kpi: '', sortKey: 'nome', sortDir: 'asc', page: 1, perPage: 10 };
+    const sel = new Set();
+    let flashIds = [];
+
+    // ---------- KPIs ----------
+    const KPI_GROUPS = [
+      { g: 'Demanda', items: [
+        { k: 'validados', l: 'Candidatos Validados', p: () => true },
+        { k: 'sol', l: 'Solicitado', stat: caps => caps.reduce((s, c) => s + c.sol, 0) },
+        { k: 'buf', l: 'Solicitado + Buffer', stat: caps => caps.reduce((s, c) => s + c.buf, 0) }] },
+      { g: 'Documentação', items: [
+        { k: 'docEnt', l: 'Documentos Entregues', p: c => c.doc === 'Documentação Entregue' },
+        { k: 'prom', l: 'Promessas', assum: true, p: c => c.doc === 'Promessa' }] },
+      { g: 'Exames', items: [
+        { k: 'exAg', l: 'Exames Agendados', p: c => c.exame === 'Agendado' },
+        { k: 'exApto', l: 'Exames Apto', p: c => c.exame === 'Apto' },
+        { k: 'exApto2', l: 'Exames Apto 2', p: c => c.exame === 'Apto 2' }] },
+      { g: 'Convocação', items: [
+        { k: 'conv', l: 'Convocados', p: c => c.conv === 'Convocado' },
+        { k: 'desist', l: 'Desistentes', assum: true, p: c => c.conv === 'Desistente' },
+        { k: 'reprov', l: 'Reprovados', p: c => c.conv === 'Reprovado' }] },
+      { g: 'Treinamento / Admissão', items: [
+        { k: 'contr', l: 'Contratados', p: c => c.conv === 'Contratado' },
+        { k: 'desl', l: 'Desligados', p: c => c.conv === 'Desligado' }] }
+    ];
+    const KPI_ALL = KPI_GROUPS.flatMap(g => g.items);
+    const kpiByK = k => KPI_ALL.find(x => x.k === k);
+
+    // ---------- Filtros ----------
+    const $ = id => document.getElementById(id);
+    const uniq = arr => [...new Set(arr)].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt'));
+    const fill = (id, arr) => arr.forEach(v => $(id).insertAdjacentHTML('beforeend', `<option>${v}</option>`));
+    fill('f-capacity', uniq(CAPS.map(c => c.cap)));
+    fill('f-operacao', uniq(CAPS.map(opLabel)));
+    fill('f-status', ['Contratado', 'Convocado', 'Pendente', 'Desistente', 'Reprovado', 'Desligado']);
+    fill('a-exame', ['Apto', 'Apto 2', 'Agendado', 'Pendente']);
+    fill('a-doc', ['Documentação Entregue', 'Promessa', 'Pendente']);
+    fill('a-trein', ['Adicionado', 'Pendente TP', 'Não elegível']);
+    function refreshCelulas() {
+      const cur = state.f.celula;
+      const caps = CAPS.filter(c => (!state.f.capacity || c.cap === state.f.capacity) && (!state.f.operacao || opLabel(c) === state.f.operacao));
+      $('f-celula').innerHTML = '<option value="">Todas</option>' + uniq(caps.map(c => c.celula)).map(v => `<option>${v}</option>`).join('');
+      $('f-celula').value = caps.some(c => c.celula === cur) ? cur : '';
+      state.f.celula = $('f-celula').value;
+    }
+    const toISO = br => { if (!br) return ''; const [d, m, y] = br.split(' ')[0].split('/'); return y + '-' + m + '-' + d; };
+    const brDate = iso => iso ? iso.split('-').reverse().join('/') : '';
+
+    function scopeCaps() {
+      const f = state.f;
+      return CAPS.filter(c => (!f.capacity || c.cap === f.capacity) && (!f.operacao || opLabel(c) === f.operacao) && (!f.celula || c.celula === f.celula));
+    }
+    function baseFiltered() {
+      const f = state.f, q = f.busca.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+      return CANDS.filter(c => {
+        const cap = capById(c.capId);
+        if (f.capacity && cap.cap !== f.capacity) return false;
+        if (f.operacao && opLabel(cap) !== f.operacao) return false;
+        if (f.celula && cap.celula !== f.celula) return false;
+        if (f.status && c.conv !== f.status) return false;
+        if (q && !(c.nome.toLowerCase().includes(q) || c.nomeSocial.toLowerCase().includes(q) || (qd.length >= 3 && c.cpf.replace(/\D/g, '').includes(qd)))) return false;
+        if (f.exame && c.exame !== f.exame) return false;
+        if (f.doc && c.doc !== f.doc) return false;
+        if (f.trein && c.trein !== f.trein) return false;
+        if (f.indic && c.amigo !== f.indic) return false;
+        const dv = toISO(c.dtValidacao);
+        if (f.de && dv < f.de) return false;
+        if (f.ate && dv > f.ate) return false;
+        if (f.reprov === 'Não' && c.conv === 'Reprovado') return false;
+        if (f.admit === 'Não' && c.dtAdmissao) return false;
+        return true;
+      });
+    }
+    function rowsNow() {
+      let rows = baseFiltered();
+      if (state.kpi) { const k = kpiByK(state.kpi); if (k && k.p) rows = rows.filter(k.p); }
+      const col = colByK(state.sortKey), dir = state.sortDir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => { let x = col.v(a), y = col.v(b); if (/^\d{2}\/\d{2}\/\d{4}/.test(x) || /^\d{2}\/\d{2}\/\d{4}/.test(y)) { x = toISO(x) || '9999'; y = toISO(y) || '9999'; } return String(x).localeCompare(String(y), 'pt', { numeric: true }) * dir; });
+      return rows;
+    }
+
+    // ---------- Render ----------
+    function renderKPIs(base) {
+      const caps = scopeCaps();
+      $('kpi-wrap').innerHTML = KPI_GROUPS.map(g => `
+        <div class="kpi-group"><div class="kpi-group-h">${g.g}</div><div class="kpi-items">
+          ${g.items.map(k => {
+            const v = k.stat ? k.stat(caps) : base.filter(k.p).length;
+            const lbl = k.assum ? `<span class="assum" title="Grupo proposto no redesign. Confirmar com a área de negócio.">${k.l}</span>` : k.l;
+            return k.stat
+              ? `<div class="kpi static" title="Valor da Capacity (não filtra a tabela)"><div class="kpi-v">${v}</div><div class="kpi-l">${lbl}</div></div>`
+              : `<button class="kpi ${state.kpi === k.k ? 'on' : ''}" data-kpi="${k.k}" title="Filtrar: ${k.l}"><div class="kpi-v">${v}</div><div class="kpi-l">${lbl}</div></button>`;
+          }).join('')}
+        </div></div>`).join('');
+    }
+
+    function renderChips() {
+      const f = state.f, chips = [];
+      const add = (k, v, clear) => chips.push({ k, v, clear });
+      if (state.kpi) add('Indicador', kpiByK(state.kpi).l, () => state.kpi = '');
+      if (f.capacity) add('Capacity', f.capacity, () => { f.capacity = ''; refreshCelulas(); });
+      if (f.operacao) add('Operação', f.operacao, () => { f.operacao = ''; refreshCelulas(); });
+      if (f.celula) add('Célula', f.celula, () => f.celula = '');
+      if (f.status) add('Status', f.status, () => f.status = '');
+      if (f.busca) add('Busca', '"' + f.busca + '"', () => f.busca = '');
+      if (f.exame) add('Exame', f.exame, () => f.exame = '');
+      if (f.doc) add('Documentação', f.doc, () => f.doc = '');
+      if (f.trein) add('Treinamento', f.trein, () => f.trein = '');
+      if (f.indic) add('Possui indicação', f.indic, () => f.indic = '');
+      if (f.de || f.ate) add('Validação', (brDate(f.de) || '...') + ' a ' + (brDate(f.ate) || '...'), () => { f.de = ''; f.ate = ''; });
+      if (f.reprov === 'Não') add('Reprovados', 'ocultos', () => f.reprov = 'Sim');
+      if (f.admit === 'Não') add('Admitidos', 'ocultos', () => f.admit = 'Sim');
+      if (f.hist === 'Sim') add('Histórico', 'completo', () => f.hist = 'Não');
+      $('cv-chips').innerHTML = chips.length ? chips.map((c, i) => `<span class="chip"><span>${c.k}: <strong>${c.v}</strong></span><i class="fa-solid fa-xmark" data-chip="${i}" title="Remover filtro"></i></span>`).join('') + '<button class="clear" id="chips-clear">Limpar filtros</button>' : '';
+      $('cv-chips').querySelectorAll('[data-chip]').forEach(x => x.onclick = () => { chips[+x.dataset.chip].clear(); syncForm(); state.page = 1; render(); });
+      if ($('chips-clear')) $('chips-clear').onclick = limparFiltros;
+      const advN = ['exame', 'doc', 'trein', 'indic'].filter(k => f[k]).length + (f.de || f.ate ? 1 : 0) + (f.reprov === 'Não') + (f.admit === 'Não') + (f.hist === 'Sim');
+      $('adv-count').textContent = advN ? '(' + advN + ')' : '';
+    }
+
+    function render() {
+      const base = baseFiltered();
+      if (state.kpi && !kpiByK(state.kpi)) state.kpi = '';
+      renderKPIs(base);
+      renderChips();
+      const rows = rowsNow(), cols = shownCols();
+      const total = rows.length, pages = Math.max(1, Math.ceil(total / state.perPage));
+      if (state.page > pages) state.page = pages;
+      const start = (state.page - 1) * state.perPage, pageRows = rows.slice(start, start + state.perPage);
+
+      const wsum = cols.reduce((s, c) => s + c.w, 0);
+      $('cv-colgroup').innerHTML = '<col style="width: 44px;">' + cols.map(c => `<col style="width: ${(c.w / wsum * 100).toFixed(2)}%;">`).join('') + '<col style="width: 52px;">';
+      const allOn = pageRows.length && pageRows.every(r => sel.has(r.id)), someOn = pageRows.some(r => sel.has(r.id));
+      $('cv-thead').innerHTML = `<th class="ck ns"><input type="checkbox" id="ck-all" title="Selecionar candidatos visíveis" ${allOn ? 'checked' : ''}></th>` +
+        cols.map(c => `<th data-key="${c.k}" class="${state.sortKey === c.k ? 'sorted' : ''}" title="${c.l}">${c.l.toUpperCase()}<i class="fa-solid sort ${state.sortKey === c.k ? (state.sortDir === 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i></th>`).join('') +
+        '<th class="ac ns"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden;">Ações</span></th>';
+      $('ck-all').indeterminate = !allOn && someOn;
+
+      $('cv-tbody').innerHTML = pageRows.length ? pageRows.map(r => `
+        <tr data-id="${r.id}" class="${sel.has(r.id) ? 'sel' : ''} ${flashIds.includes(r.id) ? 'flash' : ''}">
+          <td class="ck"><input type="checkbox" data-ck="${r.id}" ${sel.has(r.id) ? 'checked' : ''} aria-label="Selecionar ${r.nome}"></td>
+          ${cols.map(c => {
+            if (c.k === 'nome') return `<td title="${r.nome}"><button class="cand-n" data-open="${r.id}">${r.nome}${r.nomeSocial ? ' <span style="font-weight: 400; color: var(--text-muted);">(' + r.nomeSocial + ')</span>' : ''}</button><span class="sub">${r.cpf}</span></td>`;
+            const raw = c.v(r);
+            const html = c.h ? c.h(r) : c.badge ? badge(raw) : dash(raw);
+            return `<td title="${c.t ? c.t(r) : (raw || '')}">${html}</td>`;
+          }).join('')}
+          <td class="ac"><button class="row-menu-btn" data-menu="${r.id}" title="Ações do candidato" aria-label="Ações de ${r.nome}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+        </tr>`).join('') : `<tr><td colspan="${cols.length + 2}"><div class="empty-state" style="white-space: normal;"><i class="fa-solid fa-user-slash" style="font-size: 24px; opacity: .5; display: block; margin-bottom: 8px;"></i>Nenhum candidato encontrado com os filtros atuais.<br><button class="clear" style="margin-top: 8px; background: none; border: none; color: var(--primary-purple); font-weight: 600; cursor: pointer;" onclick="limparFiltros()">Limpar filtros</button></div></td></tr>`;
+      flashIds = [];
+
+      $('cv-count').innerHTML = `${total} candidato${total === 1 ? '' : 's'} <span>${state.kpi || Object.keys(F0).some(k => state.f[k] !== F0[k]) ? 'no filtro atual' : 'no total'}</span>`;
+      $('range-info').textContent = total ? `${start + 1}–${start + pageRows.length} de ${total}` : '';
+      let ph = `<button class="btn btn-secondary" ${state.page === 1 ? 'disabled' : ''} data-page="${state.page - 1}">&laquo; Anterior</button>`;
+      for (let p = 1; p <= pages; p++) ph += `<button class="btn ${p === state.page ? 'btn-primary' : 'btn-secondary'}" data-page="${p}">${p}</button>`;
+      ph += `<button class="btn btn-secondary" ${state.page === pages ? 'disabled' : ''} data-page="${state.page + 1}">Seguinte &raquo;</button>`;
+      $('pager').innerHTML = ph;
+      renderSel(rows, pageRows);
+    }
+
+    function renderSel(rows, pageRows) {
+      rows = rows || rowsNow();
+      const n = sel.size, on = n > 0;
+      $('sel-bar').classList.toggle('on', on);
+      $('bar-default').style.display = on ? 'none' : '';
+      $('bar-tools').style.display = on ? 'none' : '';
+      $('sel-lbl').textContent = n + (n === 1 ? ' candidato selecionado' : ' candidatos selecionados');
+      const all = $('sel-all');
+      const pageAll = pageRows && pageRows.length && pageRows.every(r => sel.has(r.id));
+      if (on && pageAll && rows.length > n) { all.style.display = ''; all.textContent = `Selecionar todos os ${rows.length} do filtro`; all.onclick = () => { rows.forEach(r => sel.add(r.id)); render(); }; }
+      else all.style.display = 'none';
+    }
+
+    function syncForm() {
+      const f = state.f;
+      $('f-capacity').value = f.capacity; $('f-operacao').value = f.operacao; refreshCelulas(); $('f-celula').value = f.celula;
+      $('f-status').value = f.status; $('f-busca').value = f.busca;
+      $('a-exame').value = f.exame; $('a-doc').value = f.doc; $('a-trein').value = f.trein; $('a-indic').value = f.indic;
+      $('a-de').value = f.de; $('a-ate').value = f.ate; $('a-reprov').value = f.reprov; $('a-admit').value = f.admit; $('a-hist').value = f.hist;
+    }
+    function limparFiltros() { state.f = { ...F0 }; state.kpi = ''; state.page = 1; syncForm(); render(); }
+
+    // ---------- Eventos: filtros ----------
+    [['f-capacity', 'capacity'], ['f-operacao', 'operacao'], ['f-celula', 'celula'], ['f-status', 'status']].forEach(([id, k]) => $(id).addEventListener('change', e => { state.f[k] = e.target.value; if (k !== 'celula' && k !== 'status') refreshCelulas(); state.page = 1; render(); }));
+    $('f-busca').addEventListener('input', e => { state.f.busca = e.target.value; state.page = 1; render(); });
+    $('btn-more').addEventListener('click', () => { const o = $('cv-adv').classList.toggle('open'); $('btn-more').classList.toggle('on', o); $('btn-more').querySelector('i').className = 'fa-solid ' + (o ? 'fa-minus' : 'fa-plus'); });
+    $('adv-aplicar').addEventListener('click', () => {
+      Object.assign(state.f, { exame: $('a-exame').value, doc: $('a-doc').value, trein: $('a-trein').value, indic: $('a-indic').value, de: $('a-de').value, ate: $('a-ate').value, reprov: $('a-reprov').value, admit: $('a-admit').value, hist: $('a-hist').value });
+      state.page = 1; render();
+    });
+    $('adv-limpar').addEventListener('click', () => { Object.assign(state.f, { exame: '', doc: '', trein: '', indic: '', de: '', ate: '', reprov: 'Sim', admit: 'Sim', hist: 'Não' }); syncForm(); state.page = 1; render(); });
+    $('kpi-wrap').addEventListener('click', e => { const b = e.target.closest('[data-kpi]'); if (!b) return; state.kpi = state.kpi === b.dataset.kpi ? '' : b.dataset.kpi; state.page = 1; render(); });
+
+    // ---------- Eventos: tabela ----------
+    $('cv-table').addEventListener('click', e => {
+      const th = e.target.closest('th[data-key]');
+      if (th) { const k = th.dataset.key; if (state.sortKey === k) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'; else { state.sortKey = k; state.sortDir = 'asc'; } render(); return; }
+      const o = e.target.closest('[data-open]'); if (o) { abrirDrawer(+o.dataset.open); return; }
+      const m = e.target.closest('[data-menu]'); if (m) { e.stopPropagation(); abrirRowMenu(+m.dataset.menu, m); return; }
+    });
+    $('cv-table').addEventListener('change', e => {
+      if (e.target.id === 'ck-all') { const pr = rowsNow().slice((state.page - 1) * state.perPage, state.page * state.perPage); pr.forEach(r => e.target.checked ? sel.add(r.id) : sel.delete(r.id)); render(); return; }
+      const id = +e.target.dataset.ck; if (!id) return;
+      e.target.checked ? sel.add(id) : sel.delete(id); render();
+    });
+    $('per-page').addEventListener('change', e => { state.perPage = +e.target.value; state.page = 1; render(); });
+    $('pager').addEventListener('click', e => { const b = e.target.closest('[data-page]'); if (b && !b.disabled) { state.page = +b.dataset.page; render(); } });
+    function limparSel() { sel.clear(); render(); }
+
+    // ---------- Popovers ----------
+    function place(pop, anchor, alignRight) {
+      pop.classList.add('on');
+      const r = anchor.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+      let left = alignRight ? r.right - pw : r.left, top = r.bottom + 6;
+      if (top + ph > innerHeight - 8) top = Math.max(8, r.top - ph - 6);
+      left = Math.max(8, Math.min(left, innerWidth - pw - 8));
+      pop.style.left = left + 'px'; pop.style.top = top + 'px';
+    }
+    function closePops() { document.querySelectorAll('.pop.on').forEach(p => p.classList.remove('on')); document.querySelectorAll('.row-menu-btn.on').forEach(b => b.classList.remove('on')); }
+    document.addEventListener('click', e => { if (!e.target.closest('.pop') && !e.target.closest('#btn-cols') && !e.target.closest('#btn-mais')) closePops(); if (!e.target.closest('#proto-states')) $('proto-states').classList.remove('open'); });
+    addEventListener('scroll', () => document.querySelectorAll('#row-menu.on, #mais-menu.on').forEach(() => closePops()), true);
+    addEventListener('resize', () => { closePops(); render(); });
+
+    function abrirRowMenu(id, btn) {
+      closePops();
+      const c = candById(id), podeResgatar = c.conv === 'Reprovado' || c.conv === 'Desistente';
+      $('row-menu').innerHTML = `
+        <button onclick="closePops(); abrirDrawer(${id})"><i class="fa-regular fa-id-card"></i> Ver candidato</button>
+        <button onclick="closePops(); showToast('Abrindo edição de ${c.nome}.', 'success')"><i class="fa-solid fa-pen"></i> Editar</button>
+        <hr>
+        <button onclick="closePops(); abrirTroca([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>
+        <button onclick="closePops(); followUp([${id}])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
+        ${podeResgatar ? `<button onclick="closePops(); resgatar([${id}])"><i class="fa-solid fa-life-ring"></i> Resgatar candidato</button>` : ''}`;
+      btn.classList.add('on');
+      place($('row-menu'), btn, true);
+    }
+    $('btn-mais').addEventListener('click', e => { const on = $('mais-menu').classList.contains('on'); closePops(); if (!on) place($('mais-menu'), e.currentTarget); });
+
+    // ---------- Colunas ----------
+    function renderColsPop() {
+      const max = maxCols(), n = visCols.filter(k => colByK(k)).length, full = n >= max;
+      const groups = [...new Set(COLS.map(c => c.g))];
+      $('cols-body').innerHTML = groups.map(g => `<div class="cols-g"><h6>${g}</h6>${COLS.filter(c => c.g === g).map(c => {
+        const on = visCols.includes(c.k), dis = c.lock || (!on && full);
+        return `<label class="${dis && !c.lock ? 'dis' : ''}" ${!on && full ? 'title="Limite de colunas atingido para esta largura de tela"' : ''}><input type="checkbox" data-col="${c.k}" ${on ? 'checked' : ''} ${dis ? 'disabled' : ''}> ${c.l}${c.lock ? ' <span class="muted" style="font-size: 11px;">(fixa)</span>' : ''}</label>`;
+      }).join('')}</div>`).join('');
+      $('cols-n').textContent = Math.min(n, max) + ' de ' + max + ' colunas';
+      $('cols-fill').style.width = Math.min(100, n / max * 100) + '%';
+      $('cols-max').textContent = full ? 'Limite atingido' : '';
+      $('cols-meter').classList.toggle('full', full);
+    }
+    $('btn-cols').addEventListener('click', e => { const on = $('cols-pop').classList.contains('on'); closePops(); if (!on) { renderColsPop(); place($('cols-pop'), e.currentTarget, true); } });
+    $('cols-body').addEventListener('change', e => {
+      const k = e.target.dataset.col; if (!k) return;
+      if (e.target.checked) { if (visCols.length < maxCols()) visCols.push(k); } else visCols = visCols.filter(x => x !== k);
+      localStorage.setItem(LS_COLS, JSON.stringify(visCols)); renderColsPop(); render();
+    });
+    $('cols-reset').addEventListener('click', () => { visCols = [...DEFAULT_COLS]; localStorage.setItem(LS_COLS, JSON.stringify(visCols)); renderColsPop(); render(); });
+
+    // ---------- Drawer ----------
+    let dwId = null;
+    function abrirDrawer(id) {
+      const c = candById(id), cap = capById(c.capId); dwId = id;
+      $('dw-nome').textContent = c.nome;
+      $('dw-meta').textContent = 'ID ' + c.id + ' · CPF ' + c.cpf;
+      $('dw-badges').innerHTML = [['Documentação', c.doc], ['Exame', c.exame], ['Convocação', c.conv], ['Treinamento', c.trein]].filter(x => x[1]).map(x => `<span class="st ${TONE[x[1]] || 'neu'}" title="${x[0]}">${x[0]}: ${x[1]}</span>`).join('');
+      const kv = (k, v, full) => `<div class="${full ? 'full' : ''}"><div class="dw-k">${k}</div><div class="dw-v">${dash(v)}</div></div>`;
+      const sec = (t, inner) => `<div class="dw-sec"><h4>${t}</h4><div class="dw-grid">${inner}</div></div>`;
+      $('dw-body').innerHTML =
+        sec('Candidato', kv('Nome', c.nome) + kv('Nome social', c.nomeSocial) + kv('CPF', c.cpf) + kv('RG', c.rg) + kv('E-mail', c.email, true) + kv('FPW', c.fpw) + kv('Seu Amigo na TP', c.amigo)) +
+        sec('Vaga', kv('Capacity', cap.id + ' · ' + cap.cap) + kv('Operação', opLabel(cap)) + kv('Célula', cap.celula, true) + kv('Cargo', cap.cargo) + kv('Escala', c.escala) + kv('Horário vaga', cap.horario) + kv('Disponibilidade de horário', c.disp) + kv('Carga horária', c.carga) + kv('Tipo contrato', c.tipo)) +
+        sec('Validação', kv('Dados Syscheck', c.syscheck) + kv('Data validação', c.dtValidacao)) +
+        sec('Documentação', kv('Status', c.doc) + kv('Data de entrega', c.dtDoc)) +
+        sec('Exame médico', kv('Status', c.exame) + kv('Data agenda médica', c.dtAgenda)) +
+        sec('Convocação', kv('Status', c.conv) + (c.motivo ? kv('Motivo de reprovação', c.motivo) : '')) +
+        sec('Treinamento', kv('Status', c.trein) + kv('Local', c.trein ? cap.site : '') + kv('Horário', c.horarioTrein) + kv('Início', c.inicioTrein) + kv('Fim da turma', c.dtFimTurma)) +
+        sec('Admissão', kv('Data de admissão', c.dtAdmissao));
+      $('dw-foot').innerHTML = `
+        <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo edição de ${c.nome}.', 'success')"><i class="fa-solid fa-pen"></i> Editar</button>
+        <button class="btn btn-secondary btn-sm" onclick="followUp([${id}])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
+        <button class="btn btn-primary btn-sm" onclick="closeDrawer('drawer-cand'); abrirTroca([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>`;
+      $('dw-body').scrollTop = 0;
+      openDrawer('drawer-cand');
+    }
+
+    // ---------- Ações ----------
+    const plural = (n, s, p) => n + ' ' + (n === 1 ? s : p);
+    function followUp(ids) { showToast('Follow Up registrado para ' + plural(ids.length, 'candidato', 'candidatos') + '.', 'success'); }
+    function resgatar(ids) { closePops(); showToast('Resgate solicitado para ' + plural(ids.length, 'candidato', 'candidatos') + '.', 'success'); }
+    function exportarCSV(onlySel) {
+      closePops();
+      const rows = onlySel ? CANDS.filter(c => sel.has(c.id)) : rowsNow();
+      const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+      const csv = [COLS.map(c => esc(c.l)).join(';'), ...rows.map(r => COLS.map(c => esc(c.v(r))).join(';'))].join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = 'convocacao-candidatos.csv'; a.click();
+      showToast(plural(rows.length, 'candidato exportado', 'candidatos exportados') + ' em CSV.', 'success');
+    }
+
+    // ---------- Trocar de vaga ----------
+    const tv = { ids: [], mode: '', massa: '', ind: {}, step: 'edit', result: null };
+    const capOpt = (c, cur, selv) => `<option value="${c.id}" ${String(selv) === String(c.id) ? 'selected' : ''}>${c.id} · ${c.cap} · ${c.celula}${c.id === cur ? ' (atual)' : ''}</option>`;
+    function abrirTroca(ids) {
+      if (!ids.length) return;
+      Object.assign(tv, { ids: [...ids], mode: ids.length === 1 ? 'massa' : '', massa: '', ind: {}, step: 'edit', result: null });
+      document.querySelectorAll('input[name=tv-mode]').forEach(r => r.checked = false);
+      renderTroca(); openModal('modal-troca');
+    }
+    function fecharTroca() { closeModal('modal-troca'); }
+    function setMode(m) { tv.mode = m; document.querySelectorAll('input[name=tv-mode]').forEach(r => r.checked = r.value === m); renderTroca(); }
+    document.querySelectorAll('.tv-mode').forEach(l => l.addEventListener('click', e => { e.preventDefault(); setMode(l.dataset.mode); }));
+    $('tv-massa-sel').addEventListener('change', e => { tv.massa = e.target.value; renderTroca(); });
+    $('tv-ind-body').addEventListener('change', e => { const id = +e.target.dataset.ind; if (id) { tv.ind[id] = e.target.value; renderTroca(); } });
+    $('tv-ind-body').addEventListener('click', e => { const b = e.target.closest('[data-apply]'); if (!b) return; const v = tv.ind[+b.dataset.apply]; tv.ind = {}; tv.ids.forEach(id => { if (+v !== candById(id).capId) tv.ind[id] = v; else tv.ind[id] = ''; }); tv.ind[+b.dataset.apply] = v; renderTroca(); });
+
+    function changes() {
+      return tv.ids.map(id => {
+        const c = candById(id), nv = tv.mode === 'massa' ? tv.massa : tv.ind[id];
+        return { c, from: c.capId, to: nv ? +nv : null };
+      }).filter(x => x.to && x.to !== x.from);
+    }
+    function vagaCard(cap) {
+      if (!cap) return '';
+      const kv = (k, v, cls) => `<div class="${cls || ''}"><div class="dw-k">${k}</div><div class="dw-v">${v}</div></div>`;
+      return `<div class="vg-card">${kv('Capacity', cap.id)}${kv('Período', cap.cap)}${kv('Cliente', cap.cliente)}${kv('Site', cap.site)}${kv('Célula', cap.celula, 'full2')}${kv('Cargo', cap.cargo)}${kv('Horário', cap.horario)}${kv('Solicitado', cap.sol)}${kv('Solicitado + Buffer', cap.buf)}</div>`;
+    }
+    function renderTroca() {
+      const n = tv.ids.length;
+      const steps = [['edit', 'Definir vagas'], ['review', 'Revisar'], ['result', 'Concluído']];
+      $('tv-title').textContent = tv.step === 'review' ? 'Revisar troca de vaga' : 'Trocar de vaga';
+      $('tv-steps').innerHTML = steps.map(([k, l], i) => `${i ? '<span class="sep">›</span>' : ''}${tv.step === k ? `<b>${i + 1}. ${l}</b>` : `<span>${i + 1}. ${l}</span>`}`).join('');
+      ['edit', 'review', 'result'].forEach(s => $('tv-' + s).classList.toggle('on', tv.step === s));
+      document.querySelectorAll('.tv-mode').forEach(l => l.classList.toggle('on', l.dataset.mode === tv.mode));
+      const ch = changes();
+
+      if (tv.step === 'edit') {
+        const unico = n === 1;
+        $('tv-modes').style.display = unico ? 'none' : '';
+        $('tv-count').innerHTML = unico ? '' : `<strong>${plural(n, 'candidato selecionado', 'candidatos selecionados')}</strong>` + (n <= 8 ? ': ' + tv.ids.map(id => candById(id).nome).join(', ') : '');
+        $('tv-count').style.display = unico ? 'none' : '';
+        if (unico) { const c = candById(tv.ids[0]), a = capById(c.capId); $('tv-atual').innerHTML = `<div class="vg-card" style="margin: 0 0 16px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr);"><div><div class="dw-k">Candidato</div><div class="dw-v">${c.nome}</div><span class="sub">${c.cpf}</span></div><div><div class="dw-k">Capacity atual</div><div class="dw-v">${a.id} · ${a.cap}</div></div><div><div class="dw-k">Célula atual</div><div class="dw-v">${a.celula}</div></div></div>`; }
+        else $('tv-atual').innerHTML = '';
+        $('tv-massa').style.display = tv.mode === 'massa' ? '' : 'none';
+        $('tv-ind').style.display = tv.mode === 'ind' ? '' : 'none';
+        if (tv.mode === 'massa') {
+          const curs = new Set(tv.ids.map(id => candById(id).capId));
+          $('tv-massa-sel').innerHTML = '<option value="">Selecione a nova vaga</option>' + CAPS.map(c => capOpt(c, curs.size === 1 ? [...curs][0] : null, tv.massa)).join('');
+          $('tv-massa-sel').value = tv.massa;
+          $('tv-massa-card').innerHTML = vagaCard(capById(+tv.massa));
+        }
+        if (tv.mode === 'ind') {
+          $('tv-ind-body').innerHTML = tv.ids.map(id => {
+            const c = candById(id), cap = capById(c.capId), v = tv.ind[id] || '';
+            return `<tr><td><strong style="font-weight: 600;">${c.nome}</strong><span class="sub">${c.cpf}</span></td><td>${cap.id}<span class="sub">${cap.celula}</span></td>
+              <td><select class="form-control" data-ind="${id}"><option value="">Manter vaga atual</option>${CAPS.map(x => capOpt(x, c.capId, v)).join('')}</select>
+              ${v && n > 1 ? `<button class="apply" data-apply="${id}"><i class="fa-solid fa-arrow-down"></i> Aplicar esta vaga aos demais</button>` : ''}</td></tr>`;
+          }).join('');
+          tv.ids.forEach(id => { const s = $('tv-ind-body').querySelector(`[data-ind="${id}"]`); if (s) s.value = tv.ind[id] || ''; });
+        }
+        const sem = tv.mode ? n - ch.length : 0;
+        $('tv-footer').innerHTML = `${tv.mode && ch.length && sem ? `<span style="margin-right: auto; font-size: 12px; color: var(--text-muted); align-self: center;">${plural(sem, 'candidato permanece', 'candidatos permanecem')} na vaga atual</span>` : ''}
+          <button class="btn btn-secondary" onclick="fecharTroca()">Cancelar</button>
+          <button class="btn btn-primary" ${ch.length ? '' : 'disabled'} onclick="tv.step='review'; renderTroca()">Revisar alterações <i class="fa-solid fa-arrow-right"></i></button>`;
+      }
+      if (tv.step === 'review') {
+        $('rv-count').innerHTML = `<strong>${plural(ch.length, 'candidato terá', 'candidatos terão')}</strong> a vaga alterada.` + (n - ch.length ? ` ${plural(n - ch.length, 'candidato permanece', 'candidatos permanecem')} na vaga atual.` : '');
+        $('rv-list').innerHTML = `<div class="rv-row h"><span>Candidato</span><span>Vaga atual</span><span></span><span>Nova vaga</span></div>` + ch.map(x => {
+          const a = capById(x.from), b = capById(x.to);
+          return `<div class="rv-row"><span><strong style="font-weight: 600;">${x.c.nome}</strong><span class="sub">${x.c.cpf}</span></span><span>Capacity ${a.id}<span class="sub">${a.celula}</span></span><span class="arr"><i class="fa-solid fa-arrow-right"></i></span><span class="new">Capacity ${b.id}<span class="sub">${b.celula}</span></span></div>`;
+        }).join('');
+        $('tv-footer').innerHTML = `<button class="btn btn-secondary" style="margin-right: auto;" onclick="tv.step='edit'; renderTroca()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+          <button class="btn btn-secondary" onclick="fecharTroca()">Cancelar</button>
+          <button class="btn btn-primary" onclick="confirmarTroca()"><i class="fa-solid fa-check"></i> Confirmar troca</button>`;
+      }
+      if (tv.step === 'result') renderResult();
+    }
+    function confirmarTroca(simFalha) {
+      const ch = changes(), ok = [], fail = [];
+      ch.forEach((x, i) => (simFalha && i === ch.length - 1 && ch.length > 1 ? fail : ok).push(x));
+      ok.forEach(x => { x.c.capId = x.to; });
+      tv.result = { ok, fail }; tv.step = 'result';
+      flashIds = ok.map(x => x.c.id);
+      sel.clear(); render(); renderTroca();
+    }
+    function renderResult() {
+      const { ok, fail } = tv.result, part = fail.length > 0;
+      const row = (x, good) => { const b = capById(x.to); return `<div class="fb-row"><i class="fa-solid ${good ? 'fa-circle-check' : 'fa-circle-xmark'}"></i><span><strong style="font-weight: 600;">${x.c.nome}</strong></span><span>${good ? 'Capacity ' + b.id + '<span class="sub">' + b.celula + '</span>' : '<span class="why">Não foi possível alterar. Permanece na Capacity ' + x.from + '.</span>'}</span></div>`; };
+      $('tv-result').innerHTML = `
+        <div class="fb-head"><div class="fb-ico ${part ? 'part' : 'ok'}"><i class="fa-solid ${part ? 'fa-triangle-exclamation' : 'fa-check'}"></i></div>
+          <div><strong>${part ? `${ok.length} de ${ok.length + fail.length} candidatos tiveram suas vagas alteradas` : plural(ok.length, 'candidato teve sua vaga alterada', 'candidatos tiveram suas vagas alteradas') + ' com sucesso.'}</strong>
+          <p>${part ? 'Os candidatos abaixo não foram alterados e continuam na vaga anterior.' : 'A tabela já mostra as novas vagas.'}</p></div></div>
+        <div class="rv-list">${fail.map(x => row(x, false)).join('')}${ok.map(x => row(x, true)).join('')}</div>`;
+      $('tv-footer').innerHTML = part
+        ? `<button class="btn btn-secondary" onclick="fecharTroca()">Fechar</button><button class="btn btn-primary" onclick="tentarNovamente()"><i class="fa-solid fa-rotate-right"></i> Tentar novamente (${fail.length})</button>`
+        : `<button class="btn btn-primary" onclick="fecharTroca(); showToast('${plural(ok.length, 'candidato teve sua vaga alterada', 'candidatos tiveram suas vagas alteradas')} com sucesso.', 'success')">Concluir</button>`;
+    }
+    function tentarNovamente() {
+      const { fail } = tv.result;
+      Object.assign(tv, { ids: fail.map(x => x.c.id), mode: 'ind', ind: {}, step: 'review', result: null });
+      fail.forEach(x => tv.ind[x.c.id] = String(x.to));
+      renderTroca();
+    }
+
+    // ---------- Atalhos de estado ----------
+    function resetAll() {
+      closePops(); closeDrawer('drawer-cand'); closeModal('modal-troca');
+      sel.clear(); state.f = { ...F0 }; state.kpi = ''; state.page = 1; state.sortKey = 'nome'; state.sortDir = 'asc';
+      $('cv-adv').classList.remove('open'); $('btn-more').classList.remove('on'); $('btn-more').querySelector('i').className = 'fa-solid fa-plus';
+      CANDS.forEach((c, i) => c.capId = c._cap0 ?? c.capId);
+      syncForm(); render(); scrollTo(0, 0);
+    }
+    CANDS.forEach(c => c._cap0 = c.capId);
+    const pick3 = () => CANDS.filter(c => c.capId === 10856).slice(0, 3).map(c => c.id);
+    const STATES = {
+      1: () => resetAll(),
+      2: () => { resetAll(); Object.assign(state.f, { capacity: 'EXTRA - 2026 outubro', operacao: 'AIRBNB - TPBR VILA PRUDENTE', status: 'Contratado' }); syncForm(); render(); },
+      3: () => { resetAll(); setTimeout(() => $('btn-cols').click(), 30); },
+      4: () => { resetAll(); abrirDrawer(CANDS[0].id); },
+      5: () => { resetAll(); CANDS.filter(c => c.capId === 10856).slice(0, 4).forEach(c => sel.add(c.id)); render(); },
+      6: () => { resetAll(); pick3().forEach(id => sel.add(id)); render(); abrirTroca(pick3()); },
+      7: () => { STATES[6](); setMode('massa'); tv.massa = '10922'; renderTroca(); },
+      8: () => { STATES[6](); const ids = pick3(); tv.ind = { [ids[0]]: '10922', [ids[1]]: '10922', [ids[2]]: '11031' }; setMode('ind'); },
+      9: () => { STATES[8](); tv.step = 'review'; renderTroca(); },
+      10: () => { STATES[9](); confirmarTroca(false); },
+      11: () => { STATES[9](); confirmarTroca(true); }
+    };
+    document.querySelectorAll('[data-st]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); $('proto-states').classList.remove('open'); STATES[b.dataset.st](); }));
+
+    render();
+  </script>
+</body>
+</html>
