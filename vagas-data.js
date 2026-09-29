@@ -43,7 +43,16 @@
     status: ['Publicada', 'Bloqueada', 'Encerrada'],
     confidencialidade: ['Pública', 'Confidencial'],
     modalidades: ['Presencial', 'Híbrido', 'Remoto'],
-    niveis: ['Operacional', 'Júnior', 'Pleno', 'Sênior', 'Liderança'],
+    niveis: ['INICIANTE', 'ESTUDANTE', 'EXPERIENTE'],
+    // Tipos de Vaga com vínculo Expert (regra do sistema): exibem o campo Centro de custo
+    tiposExpert: ['VAGA EXTERNA EXPERT', 'VAGA EXTERNA EXPERT CONSULTORIA', 'JOVEM APRENDIZ EXPERT'],
+    centrosCusto: ['CC 1010 – Operações São Paulo', 'CC 1020 – Operações Rio de Janeiro', 'CC 2040 – Operações Nordeste', 'CC 3100 – Back Office', 'CC 4200 – Jovem Aprendiz'],
+    // Requisitos do candidato
+    experiencias: [{ v: 'Junior', d: 'de 0 a 2 anos de experiência' }, { v: 'Pleno', d: 'de 2 a 5 anos de experiência' }, { v: 'Sênior', d: 'acima de 5 anos de experiência' }],
+    escolaridades: ['ENSINO FUNDAMENTAL', 'ENSINO MÉDIO', 'ENSINO TÉCNICO', 'PROFISSIONALIZANTE', 'ENSINO SUPERIOR CURSANDO OU COMPLETO', 'PÓS-GRADUAÇÃO', 'MESTRADO', 'DOUTORADO'],
+    idiomas: ['INGLÊS', 'ESPANHOL', 'ITALIANO', 'ALEMÃO', 'MANDARIM', 'JAPONÊS', 'HOLANDÊS', 'FRANCÊS'],
+    niveisIdioma: ['Iniciante', 'Intermediário', 'Avançado', 'Fluente'],
+    equipamentos: [{ v: 'Celular', i: 'fa-mobile-screen-button' }, { v: 'WebCam', i: 'fa-video' }, { v: 'Notebook/Computador', i: 'fa-laptop' }, { v: 'Internet mínima de 15 Mbps - Cabeada', i: 'fa-ethernet' }],
     publicos: ['VAGA PARA TODOS OS PÚBLICOS', 'VAGA EXCLUSIVA PARA PESSOAS COM DEFICIÊNCIA'],
     escalas: ['5x2', '6x1', '4x3', '5x1'],
     // Base demonstrativa de uso de salários no sistema (valor → nº de vagas). Os 3 mais usados aparecem como sugestão.
@@ -85,7 +94,8 @@
     salariosUso: { 'R$ 1.897,50 + RV até 18% + Benefícios + Plano de carreira': 412, 'R$ 1.650,00 + RV até 15% + Benefícios': 356, 'R$ 2.350,00 + Benefícios + Plano de carreira': 198, 'R$ 3.200,00 + Benefícios': 74, 'A combinar': 31 },
     requisitos: ['Ensino médio completo', 'Digitação rápida e precisa', 'Atenção aos detalhes'],
       perfisVisualizar: ['Administrador', 'Recrutador', 'Analista de RS'], parceiros: ['Instituto Jô Clemente', 'Catho'],
-      dataInicio: '2025-04-11', nivel: 'Operacional', aceitaMudanca: false, idadeMin: '18', idadeMax: '',
+      dataInicio: '2025-04-11', nivel: 'INICIANTE', aceitaMudanca: false, centroCusto: 'CC 1010 – Operações São Paulo',
+      reqCandidato: { experiencia: null, escolaridade: 'ENSINO MÉDIO', idiomas: [{ idioma: 'INGLÊS', nivel: 'Avançado' }, { idioma: 'ESPANHOL', nivel: 'Intermediário' }], equipamentos: ['Notebook/Computador', 'Internet mínima de 15 Mbps - Cabeada'] },
       publico: 'VAGA EXCLUSIVA PARA PESSOAS COM DEFICIÊNCIA',
       pcd: ['fisica::Amputação ou ausência de membro', 'fisica::Monoparesia', 'fisica::Nanismo', 'auditiva::Perda auditiva bilateral parcial', 'auditiva::Perda auditiva unilateral', 'visual::Baixa visão', 'visual::Visão monocular', 'reabilitado::Reabilitado pelo INSS'],
       pesquisaSatisfacao: true,
@@ -107,7 +117,8 @@
       id: null, codigo: '', nome: '', descricao: '', tipo: '', perfilCandidato: '', cargo: '', gestaoRS: '', status: 'Publicada', confidencialidade: 'Pública',
       sobre: '', salario: '', horarios: '', escala: '', jornada: '', modalidade: '', local: '', requisitos: [],
       bemEstar: getBemEstar().html,
-      perfisVisualizar: [], parceiros: [], dataInicio: '', dataFim: '', nivel: '', aceitaMudanca: false, idadeMin: '', idadeMax: '',
+      perfisVisualizar: [], parceiros: [], dataInicio: '', dataFim: '', nivel: '', aceitaMudanca: false, centroCusto: '',
+      reqCandidato: { experiencia: null, escolaridade: null, idiomas: null, equipamentos: null },
       publico: 'VAGA PARA TODOS OS PÚBLICOS', pcd: [], pesquisaSatisfacao: false,
     };
   }
@@ -121,7 +132,7 @@
       descricao: row.nome.length <= 155 ? row.nome : row.nome.slice(0, 152) + '...',
       perfilCandidato: /EXPERT/.test(row.tipo) ? 'SAC/VENDAS' : 'STAFF', gestaoRS: 'RS Corporativo',
       modalidade: 'Presencial', local: 'São Paulo/SP', salario: 'A combinar', horarios: '08:00 às 17:48', escala: '5x2', jornada: '08h48',
-      perfisVisualizar: ['Administrador', 'Recrutador'], nivel: 'Operacional',
+      perfisVisualizar: ['Administrador', 'Recrutador'], nivel: '',
       publico: /pcd/i.test(row.codigo + row.nome) ? 'VAGA EXCLUSIVA PARA PESSOAS COM DEFICIÊNCIA' : 'VAGA PARA TODOS OS PÚBLICOS',
       dataInicio: toISO(row.inclusao), dataFim: toISO(row.fim),
     };

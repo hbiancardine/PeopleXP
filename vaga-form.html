@@ -116,10 +116,59 @@
     .pcd-items label { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 0; cursor: pointer; }
     input[type="checkbox"] { accent-color: var(--primary-purple); width: 16px; height: 16px; cursor: pointer; }
 
-    /* Campos em avaliação */
-    .eval-box { border: 1px dashed #cfcfcf; border-radius: 6px; padding: 14px; background: #fcfcfd; }
-    .eval-box .eval-head { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-    .eval-box .eval-head .pill { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; background: #fff8e1; color: #e65100; border: 1px solid #ffecb3; border-radius: 10px; padding: 1px 8px; }
+    /* Requisitos do candidato */
+    .rq { border-top: 1px solid #f0f0f0; padding: 16px 0; }
+    .rq:first-child { border-top: none; padding-top: 0; }
+    .rq:last-child { padding-bottom: 0; }
+    .rq-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) 230px; gap: 8px 24px; align-items: center; }
+    .rq-t { font-size: 13px; font-weight: 600; color: var(--text-main); }
+    .rq-q { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .rq-sum { font-size: 13px; color: var(--text-main); line-height: 1.6; }
+    .rq-sum .muted, .rq:not(.on) .rq-sum { color: var(--text-muted); }
+    .rq-sum .pend { color: #e65100; }
+    .rq-ctrl { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+    .rq-ctrl .st { font-size: 12px; color: var(--text-muted); min-width: 70px; text-align: right; }
+    .rq.on .rq-ctrl .st { color: var(--primary-purple); font-weight: 600; }
+    .rq-edit { display: inline-flex; visibility: hidden; align-items: center; gap: 6px; background: none; border: none; padding: 4px 6px; border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--primary-purple); cursor: pointer; }
+    .rq-edit:hover { background: #f3e5f5; }
+    .rq.on .rq-edit { visibility: visible; }
+    .ccard span { min-width: 0; overflow-wrap: anywhere; }
+    @media (max-width: 1280px) { .ccards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .rq-body { display: none; margin-top: 14px; }
+    .rq.on.open .rq-body { display: block; }
+    .rq-body .form-group { margin-bottom: 0; }
+    .rcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 760px; }
+    .ccards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .rcard, .ccard { position: relative; display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 6px; background: #fff; cursor: pointer; transition: border-color .15s, background .15s; }
+    .rcard:hover, .ccard:hover { border-color: #ce93d8; }
+    .rcard:has(input:checked), .ccard:has(input:checked) { border-color: var(--primary-purple); background: #faf5fc; }
+    .rcard:has(input:focus-visible), .ccard:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(123,31,162,.2); }
+    .form-group.invalid .rcard, .form-group.invalid .ccard { border-color: var(--error); }
+    .rcard input { position: absolute; opacity: 0; pointer-events: none; }
+    .rcard .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid #bdbdbd; background: #fff; flex: none; margin-top: 2px; transition: border .15s; }
+    .rcard:has(input:checked) .dot { border: 5px solid var(--primary-purple); }
+    .rcard .t { display: block; font-size: 14px; font-weight: 600; color: var(--text-main); }
+    .rcard .d { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .ccard { align-items: center; font-size: 13px; line-height: 1.35; }
+    .ccard i { width: 16px; text-align: center; color: var(--text-muted); flex: none; }
+    .ccard:has(input:checked) i { color: var(--primary-purple); }
+    .ccard input { flex: none; }
+    .idi-list { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }
+    .idi-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 220px) 36px; gap: 8px; align-items: center; }
+    .idi-add { margin-top: 10px; padding: 6px 12px; font-size: 13px; }
+    .vf-section-head p.on { color: var(--primary-purple); font-weight: 600; }
+    @media (max-width: 900px) { .rq-head { grid-template-columns: minmax(0, 1fr) auto; } .rq:not(.on) .rq-edit { display: none; } .rq-sum { grid-column: 1 / -1; grid-row: 2; } .rcards { grid-template-columns: minmax(0, 1fr); } .ccards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .idi-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px; } .ccards { grid-template-columns: minmax(0, 1fr); } }
+
+    /* Estados do protótipo */
+    .proto-states { position: fixed; left: 16px; bottom: 76px; z-index: 1200; font-size: 13px; }
+    .proto-states > button { background: #333; color: #fff; border: none; border-radius: 18px; padding: 8px 14px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; gap: 8px; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+    .proto-states .list { display: none; position: absolute; bottom: 44px; left: 0; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 6px 0; width: 340px; }
+    .proto-states.open .list { display: block; }
+    .proto-states .list div { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; padding: 6px 14px; }
+    .proto-states .list button { display: flex; gap: 10px; width: 100%; background: none; border: none; padding: 7px 14px; font-family: inherit; font-size: 13px; cursor: pointer; text-align: left; color: var(--text-main); }
+    .proto-states .list button:hover, .proto-states .list button.cur { background: #faf5fc; color: var(--primary-purple); }
+    .proto-states .list button b { color: var(--primary-purple); font-variant-numeric: tabular-nums; width: 22px; flex: none; }
 
     /* Barra de ações */
     .vf-actions { position: sticky; bottom: 0; z-index: 40; background: #fff; border-top: 1px solid var(--border-color); box-shadow: 0 -4px 16px rgba(0,0,0,.06); margin-top: 8px; }
@@ -252,8 +301,9 @@
         <a href="#sec-beneficios"><span class="n">4</span> Benefícios</a>
         <a href="#sec-bemestar"><span class="n">5</span> Bem Estar TP</a>
         <a href="#sec-publicacao"><span class="n">6</span> Publicação e Configurações</a>
-        <a href="#sec-publico"><span class="n">7</span> Público e Inclusão</a>
-        <a href="#sec-adicionais"><span class="n">8</span> Configurações adicionais</a>
+        <a href="#sec-requisitos"><span class="n">7</span> Requisitos do candidato</a>
+        <a href="#sec-publico"><span class="n">8</span> Público e Inclusão</a>
+        <a href="#sec-adicionais"><span class="n">9</span> Configurações adicionais</a>
       </nav>
 
       <form id="vaga-form" novalidate autocomplete="off">
@@ -399,34 +449,61 @@
               <label class="form-label" for="f-nivel">Nível da Vaga</label>
               <select class="form-control" id="f-nivel"><option value="">Selecione</option></select>
             </div>
+            <div class="form-group s4" id="grp-centro" style="display: none;">
+              <label class="form-label" for="f-centro">Centro de custo</label>
+              <select class="form-control" id="f-centro"><option value="">Selecione</option></select>
+            </div>
             <div class="form-group s12">
               <div class="toggle-row">
                 <div><div class="t-label">Aceitar candidatos que possam mudar de localidade</div></div>
                 <label class="switch"><input type="checkbox" id="f-mudanca"><span class="track"></span></label>
               </div>
             </div>
-            <!-- Campos em avaliação: remover este bloco para descontinuar Idade Mínima/Máxima -->
-            <div class="form-group s12" id="blk-idade">
-              <div class="eval-box">
-                <div class="eval-head"><span class="pill">Em avaliação</span> Campos mantidos do sistema atual, com permanência em análise.</div>
-                <div class="fgrid">
-                  <div class="form-group s3">
-                    <label class="form-label" for="f-idade-min">Idade Mínima</label>
-                    <input type="number" class="form-control" id="f-idade-min" min="0">
-                  </div>
-                  <div class="form-group s3">
-                    <label class="form-label" for="f-idade-max">Idade Máxima</label>
-                    <input type="number" class="form-control" id="f-idade-max" min="0">
-                  </div>
-                </div>
+          </div>
+        </section>
+
+        <!-- 7. Requisitos do candidato -->
+        <section class="card vf-section" id="sec-requisitos">
+          <div class="vf-section-head"><h2><span class="n">07</span> Requisitos do candidato</h2><p id="rq-count"></p></div>
+          <div class="rq-list">
+            <div class="rq" data-rq="exp">
+              <div class="rq-head">
+                <div><div class="rq-t">Experiência</div><div class="rq-q">Candidato precisa ter alguma experiência para vaga?</div></div>
+                <div class="rq-sum" data-sum></div>
+                <div class="rq-ctrl"><button type="button" class="rq-edit" data-edit></button><span class="st" data-st></span><label class="switch"><input type="checkbox" data-sw aria-label="Exigir experiência"><span class="track"></span></label></div>
               </div>
+              <div class="rq-body"><div class="form-group" data-grp><div class="rcards" id="rq-exp-opts"></div><div class="err-msg">Selecione o nível de experiência.</div></div></div>
+            </div>
+            <div class="rq" data-rq="esc">
+              <div class="rq-head">
+                <div><div class="rq-t">Escolaridade</div><div class="rq-q">Escolaridade mínima exigida na vaga?</div></div>
+                <div class="rq-sum" data-sum></div>
+                <div class="rq-ctrl"><button type="button" class="rq-edit" data-edit></button><span class="st" data-st></span><label class="switch"><input type="checkbox" data-sw aria-label="Exigir escolaridade mínima"><span class="track"></span></label></div>
+              </div>
+              <div class="rq-body"><div class="form-group" data-grp style="max-width: 420px;"><label class="form-label" for="rq-esc">Escolaridade mínima</label><select class="form-control" id="rq-esc"><option value="">Selecione</option></select><div class="err-msg">Selecione a escolaridade mínima.</div></div></div>
+            </div>
+            <div class="rq" data-rq="idi">
+              <div class="rq-head">
+                <div><div class="rq-t">Idiomas</div><div class="rq-q">Vaga com idiomas específicos?</div></div>
+                <div class="rq-sum" data-sum></div>
+                <div class="rq-ctrl"><button type="button" class="rq-edit" data-edit></button><span class="st" data-st></span><label class="switch"><input type="checkbox" data-sw aria-label="Exigir idiomas"><span class="track"></span></label></div>
+              </div>
+              <div class="rq-body"><div class="form-group" data-grp><div class="idi-list" id="rq-idi-list"></div><button type="button" class="btn btn-secondary idi-add" id="rq-idi-add"><i class="fa-solid fa-plus"></i> Adicionar idioma</button><div class="err-msg">Selecione o idioma e o nível de cada linha.</div></div></div>
+            </div>
+            <div class="rq" data-rq="eqp">
+              <div class="rq-head">
+                <div><div class="rq-t">Equipamentos</div><div class="rq-q">Candidato precisa ter algum equipamento?</div></div>
+                <div class="rq-sum" data-sum></div>
+                <div class="rq-ctrl"><button type="button" class="rq-edit" data-edit></button><span class="st" data-st></span><label class="switch"><input type="checkbox" data-sw aria-label="Exigir equipamentos"><span class="track"></span></label></div>
+              </div>
+              <div class="rq-body"><div class="form-group" data-grp><div class="ccards" id="rq-eqp-opts"></div><div class="err-msg">Selecione ao menos um equipamento.</div></div></div>
             </div>
           </div>
         </section>
 
-        <!-- 7. Público e Inclusão -->
+        <!-- 8. Público e Inclusão -->
         <section class="card vf-section" id="sec-publico">
-          <div class="vf-section-head"><h2><span class="n">07</span> Público e Inclusão</h2></div>
+          <div class="vf-section-head"><h2><span class="n">08</span> Público e Inclusão</h2></div>
           <div class="fgrid">
             <div class="form-group s6">
               <label class="form-label" for="f-publico">Público da Vaga<span class="req">*</span></label>
@@ -440,9 +517,9 @@
           </div>
         </section>
 
-        <!-- 8. Configurações adicionais (bloco isolado: pode ser removido sem impacto) -->
+        <!-- 9. Configurações adicionais (bloco isolado: pode ser removido sem impacto) -->
         <section class="card vf-section" id="sec-adicionais">
-          <div class="vf-section-head"><h2><span class="n">08</span> Configurações adicionais</h2></div>
+          <div class="vf-section-head"><h2><span class="n">09</span> Configurações adicionais</h2></div>
           <div class="toggle-row" id="blk-pesquisa">
             <div><div class="t-label">Enviar Pesquisa de Satisfação para Candidatos Após Validação Final?</div></div>
             <label class="switch"><input type="checkbox" id="f-pesquisa"><span class="track"></span></label>
@@ -461,6 +538,22 @@
         <button type="button" class="btn btn-primary" id="btn-salvar"><i class="fa-solid fa-check"></i> Salvar vaga</button>
       </div>
     </div>
+  </div>
+
+  <div class="proto-states" id="proto-states">
+    <div class="list">
+      <div>Estados do protótipo</div>
+      <button type="button" data-st="1"><b>01</b> Nova vaga, requisitos desativados</button>
+      <button type="button" data-st="2"><b>02</b> Experiência ativada</button>
+      <button type="button" data-st="3"><b>03</b> Escolaridade ativada</button>
+      <button type="button" data-st="4"><b>04</b> Idiomas: dois idiomas cadastrados</button>
+      <button type="button" data-st="5"><b>05</b> Equipamentos: seleção múltipla</button>
+      <button type="button" data-st="6"><b>06</b> Todas as exigências configuradas</button>
+      <button type="button" data-st="7"><b>07</b> Tipo Expert: Centro de custo visível</button>
+      <button type="button" data-st="8"><b>08</b> Tipo sem Expert: Centro de custo oculto</button>
+      <button type="button" data-st="9"><b>09</b> Editar vaga com requisitos preenchidos</button>
+    </div>
+    <button type="button" onclick="this.parentElement.classList.toggle('open')"><i class="fa-solid fa-layer-group"></i> Estados</button>
   </div>
 
   <!-- Modal PcD -->
@@ -558,7 +651,88 @@
     const cargos = [...new Set(TPVagas.load().map(v => v.cargo).concat(data.cargo ? [data.cargo] : []))].sort();
     fill('f-tipo', O.tipos); fill('f-perfil', O.perfisCandidato); fill('f-cargo', cargos); fill('f-gestao', O.gestaoRS);
     fill('f-status', O.status); fill('f-confid', O.confidencialidade); fill('f-modalidade', O.modalidades);
-    fill('f-nivel', O.niveis); fill('f-escala', O.escalas); fill('f-publico', O.publicos);
+    fill('f-nivel', O.niveis); fill('f-escala', O.escalas); fill('f-publico', O.publicos); fill('f-centro', O.centrosCusto);
+    const tc = s => String(s || '').toLowerCase().split(' ').map(w => /^(ou|de|e)$/.test(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    fill('rq-esc', O.escolaridades, tc);
+
+    // ---------- Centro de custo (somente Tipo de Vaga com vínculo Expert) ----------
+    const isExpert = t => O.tiposExpert.includes(t);
+    function syncCentro() { $('grp-centro').style.display = isExpert($('f-tipo').value) ? '' : 'none'; }
+    $('f-tipo').addEventListener('change', syncCentro);
+
+    // ---------- Requisitos do candidato ----------
+    const REQS = ['exp', 'esc', 'idi', 'eqp'];
+    const rqEl = k => document.querySelector('[data-rq="' + k + '"]');
+    $('rq-exp-opts').innerHTML = O.experiencias.map(e => '<label class="rcard"><input type="radio" name="rq-exp" value="' + esc(e.v) + '"><span class="dot"></span><span><span class="t">' + esc(e.v) + '</span><span class="d">' + esc(e.d) + '</span></span></label>').join('');
+    $('rq-eqp-opts').innerHTML = O.equipamentos.map(e => '<label class="ccard"><input type="checkbox" value="' + esc(e.v) + '"><i class="fa-solid ' + e.i + '"></i><span>' + esc(e.v) + '</span></label>').join('');
+    let idiomas = [];
+    function renderIdiomas() {
+      const used = idiomas.map(r => r.idioma);
+      $('rq-idi-list').innerHTML = idiomas.map((r, i) => '<div class="idi-row" data-i="' + i + '">' +
+        '<select class="form-control' + (r.err && !r.idioma ? ' is-invalid' : '') + '" data-f="idioma" aria-label="Idioma"><option value="">Selecione o idioma</option>' + O.idiomas.map(l => '<option value="' + esc(l) + '"' + (r.idioma === l ? ' selected' : '') + (used.includes(l) && r.idioma !== l ? ' disabled' : '') + '>' + esc(tc(l)) + '</option>').join('') + '</select>' +
+        '<select class="form-control' + (r.err && !r.nivel ? ' is-invalid' : '') + '" data-f="nivel" aria-label="Nível"><option value="">Selecione o nível</option>' + O.niveisIdioma.map(n => '<option' + (r.nivel === n ? ' selected' : '') + '>' + n + '</option>').join('') + '</select>' +
+        '<button type="button" class="btn-icon" data-rm title="Remover idioma"' + (idiomas.length === 1 ? ' disabled style="opacity:.35; cursor:not-allowed;"' : '') + '><i class="fa-solid fa-xmark"></i></button></div>').join('');
+      $('rq-idi-add').disabled = idiomas.length >= O.idiomas.length;
+    }
+    const clearIdiErr = () => { if (idiomas.every(r => r.idioma && r.nivel)) { idiomas.forEach(r => delete r.err); rqEl('idi').querySelector('[data-grp]').classList.remove('invalid'); updateNavErrors(); } };
+    $('rq-idi-list').addEventListener('change', e => { const row = e.target.closest('.idi-row'); idiomas[+row.dataset.i][e.target.dataset.f] = e.target.value; clearIdiErr(); renderIdiomas(); renderReqSummary(); });
+    $('rq-idi-list').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (!b || idiomas.length === 1) return; idiomas.splice(+b.closest('.idi-row').dataset.i, 1); clearIdiErr(); renderIdiomas(); renderReqSummary(); markDirty(); });
+    $('rq-idi-add').addEventListener('click', () => { idiomas.push({ idioma: '', nivel: '' }); renderIdiomas(); renderReqSummary(); markDirty(); const s = $('rq-idi-list').querySelectorAll('[data-f="idioma"]'); s[s.length - 1].focus(); });
+    function reqValue(k) {
+      if (k === 'exp') return (document.querySelector('input[name="rq-exp"]:checked') || {}).value || '';
+      if (k === 'esc') return $('rq-esc').value;
+      if (k === 'idi') return idiomas.map(r => ({ idioma: r.idioma, nivel: r.nivel }));
+      return [...document.querySelectorAll('#rq-eqp-opts input:checked')].map(i => i.value);
+    }
+    function setReqValue(k, v) {
+      if (k === 'exp') document.querySelectorAll('input[name="rq-exp"]').forEach(i => { i.checked = i.value === v; });
+      if (k === 'esc') $('rq-esc').value = v || '';
+      if (k === 'idi') { idiomas = (v || []).map(r => ({ idioma: r.idioma || '', nivel: r.nivel || '' })); renderIdiomas(); }
+      if (k === 'eqp') document.querySelectorAll('#rq-eqp-opts input').forEach(i => { i.checked = (v || []).includes(i.value); });
+    }
+    function setReq(k, on, v, open) {
+      const el = rqEl(k);
+      el.querySelector('[data-sw]').checked = on;
+      el.classList.toggle('on', on); el.classList.toggle('open', !!open);
+      setReqValue(k, on ? v : null);
+      if (on && k === 'idi' && !idiomas.length) { idiomas = [{ idioma: '', nivel: '' }]; renderIdiomas(); }
+      el.querySelector('[data-grp]').classList.remove('invalid');
+      renderReqSummary();
+    }
+    function renderReqSummary() {
+      const expD = v => (O.experiencias.find(e => e.v === v) || {}).d;
+      const pend = t => '<span class="pend">' + t + '</span>';
+      const lines = a => a.map(esc).join('<br>');
+      let n = 0;
+      REQS.forEach(k => {
+        const el = rqEl(k), on = el.classList.contains('on'), v = reqValue(k);
+        if (on) n++;
+        let s;
+        if (!on) s = (k === 'exp' || k === 'esc') ? 'Não exigida' : 'Não exigidos';
+        else if (k === 'exp') s = v ? esc(v) + ' <span class="muted">· ' + esc(expD(v)) + '</span>' : pend('Selecione o nível de experiência');
+        else if (k === 'esc') s = v ? esc(tc(v)) : pend('Selecione a escolaridade mínima');
+        else if (k === 'idi') { const ok = v.filter(r => r.idioma && r.nivel); s = ok.length ? lines(ok.map(r => tc(r.idioma) + ' · ' + r.nivel)) + (ok.length < v.length ? '<br>' + pend('Idioma incompleto') : '') : pend('Adicione ao menos um idioma'); }
+        else s = v.length ? lines(v) : pend('Selecione ao menos um equipamento');
+        el.querySelector('[data-sum]').innerHTML = s;
+        el.querySelector('[data-st]').textContent = on ? 'Exigido' : 'Não exigido';
+        const open = el.classList.contains('open');
+        el.querySelector('[data-edit]').innerHTML = open ? '<i class="fa-solid fa-chevron-up"></i> Recolher' : '<i class="fa-solid fa-pen"></i> Alterar';
+      });
+      const c = $('rq-count');
+      c.textContent = n ? n + (n === 1 ? ' exigência ativa' : ' exigências ativas') : 'Nenhuma exigência ativa';
+      c.classList.toggle('on', n > 0);
+    }
+    REQS.forEach(k => {
+      const el = rqEl(k);
+      el.querySelector('[data-sw]').addEventListener('change', e => setReq(k, e.target.checked, null, true));
+      el.querySelector('[data-edit]').addEventListener('click', () => { el.classList.toggle('open'); renderReqSummary(); });
+      el.querySelector('.rq-body').addEventListener('change', e => { if (k !== 'idi') renderReqSummary(); });
+    });
+    function reqInvalid(k) {
+      const v = reqValue(k);
+      if (k === 'idi') return !v.length || v.some(r => !r.idioma || !r.nivel);
+      return Array.isArray(v) ? !v.length : !v;
+    }
 
     // ---------- Editor de texto controlado ----------
     function sanitize(html) {
@@ -732,10 +906,15 @@
     setVal('f-escala', Array.isArray(data.escala) ? (data.escala[0] || '') : data.escala); setVal('f-modalidade', data.modalidade); setVal('f-local', data.local);
     setVal('f-inicio', data.dataInicio); setVal('f-fim', data.dataFim); setVal('f-nivel', data.nivel);
     $('f-mudanca').checked = !!data.aceitaMudanca;
-    setVal('f-idade-min', data.idadeMin); setVal('f-idade-max', data.idadeMax);
+    setVal('f-centro', data.centroCusto);
     setVal('f-publico', data.publico);
     $('f-pesquisa').checked = !!data.pesquisaSatisfacao;
-    renderBeneficios(); renderPcdSummary();
+    const rc = data.reqCandidato || {};
+    setReq('exp', !!rc.experiencia, rc.experiencia, false);
+    setReq('esc', !!rc.escolaridade, rc.escolaridade, false);
+    setReq('idi', !!(rc.idiomas && rc.idiomas.length), rc.idiomas, false);
+    setReq('eqp', !!(rc.equipamentos && rc.equipamentos.length), rc.equipamentos, false);
+    renderBeneficios(); renderPcdSummary(); syncCentro();
 
     // ---------- Sugestões de salário ----------
     const salSug = $('sal-sug');
@@ -787,7 +966,13 @@
         bemEstar: editors.bemEstar.get(),
         perfisVisualizar: mpPerfis.get(), parceiros: mpParc.get(),
         dataInicio: $('f-inicio').value, dataFim: $('f-fim').value, nivel: $('f-nivel').value, aceitaMudanca: $('f-mudanca').checked,
-        idadeMin: $('f-idade-min') ? $('f-idade-min').value : '', idadeMax: $('f-idade-max') ? $('f-idade-max').value : '',
+        centroCusto: isExpert($('f-tipo').value) ? $('f-centro').value : '',
+        reqCandidato: {
+          experiencia: rqEl('exp').classList.contains('on') ? reqValue('exp') || null : null,
+          escolaridade: rqEl('esc').classList.contains('on') ? reqValue('esc') || null : null,
+          idiomas: rqEl('idi').classList.contains('on') ? reqValue('idi').filter(r => r.idioma) : null,
+          equipamentos: rqEl('eqp').classList.contains('on') ? reqValue('eqp') : null,
+        },
         publico: $('f-publico').value, pcd: [...pcd],
         pesquisaSatisfacao: $('f-pesquisa') ? $('f-pesquisa').checked : undefined,
       };
@@ -801,6 +986,15 @@
       if (!mpPerfis.get().length) fail(mpPerfis.control, $('grp-perfis'));
       const ini = $('f-inicio').value, fim = $('f-fim').value;
       if (ini && fim && fim < ini) fail($('f-fim'));
+      REQS.forEach(k => {
+        const el = rqEl(k);
+        if (!el.classList.contains('on') || !reqInvalid(k)) return;
+        const g = el.querySelector('[data-grp]');
+        g.classList.add('invalid'); el.classList.add('open');
+        if (k === 'idi') { idiomas.forEach(r => { r.err = true; }); renderIdiomas(); }
+        if (!first) first = g;
+      });
+      renderReqSummary();
       updateNavErrors();
       if (first) { window.scrollTo({ top: first.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); const f = first.querySelector('input, select, textarea'); setTimeout(() => f && f.focus({ preventScroll: true }), 350); }
       return !first;
@@ -824,6 +1018,24 @@
     });
     $('btn-cancelar').addEventListener('click', () => { if (dirty) openModal('modal-descartar'); else location.href = 'cadastro-vagas.html'; });
     $('btn-voltar').addEventListener('click', e => { if (dirty) { e.preventDefault(); openModal('modal-descartar'); } });
+
+    // ---------- Estados do protótipo ----------
+    document.querySelectorAll('#proto-states [data-st]').forEach(b => b.addEventListener('click', () => {
+      const n = +b.dataset.st;
+      location.href = n === 9 ? 'vaga-form.html?id=2166&st=9' : 'vaga-form.html?st=' + n;
+    }));
+    const st = +params.get('st');
+    if (st) {
+      const full = { exp: 'Pleno', esc: 'ENSINO MÉDIO', idi: [{ idioma: 'INGLÊS', nivel: 'Avançado' }, { idioma: 'ESPANHOL', nivel: 'Intermediário' }], eqp: ['WebCam', 'Notebook/Computador', 'Internet mínima de 15 Mbps - Cabeada'] };
+      const map = { 2: ['exp'], 3: ['esc'], 4: ['idi'], 5: ['eqp'], 6: REQS };
+      (map[st] || []).forEach(k => setReq(k, true, full[k], true));
+      if (st === 7) $('f-tipo').value = 'VAGA EXTERNA EXPERT';
+      if (st === 8) $('f-tipo').value = 'VAGA EXTERNA STAFF';
+      renderBeneficios(); syncCentro();
+      document.querySelector('#proto-states [data-st="' + st + '"]').classList.add('cur');
+      const target = $(st === 7 || st === 8 ? 'sec-publicacao' : 'sec-requisitos');
+      setTimeout(() => window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 16 }), 150);
+    }
   </script>
 </body>
 </html>
