@@ -31,6 +31,12 @@
     { id: 1950, codigo: 'QA TRN JR', nome: 'Analista de Qualidade e Treinamento Jr', tipo: 'VAGA EXTERNA STAFF', cargo: 'ANALISTA DE QUALIDADE E TREINAMENTO JR', inclusao: '03/02/2025 11:45', fim: '30/04/2025', status: 'Encerrada' },
     { id: 2210, codigo: 'GER CONTAS', nome: 'Gerente de Contas Sênior', tipo: 'VAGA EXTERNA STAFF', cargo: 'GERENTE DE CONTAS SR', inclusao: '15/04/2025 16:20', fim: '31/07/2025', status: 'Encerrada' },
     { id: 2305, codigo: 'SUP SUPORTE', nome: 'Analista de Suporte Pleno', tipo: 'VAGA EXTERNA STAFF', cargo: 'ANALISTA DE SUPORTE PLENO', inclusao: '02/06/2025 08:55', fim: '31/08/2025', status: 'Encerrada' },
+    // Vagas vinculadas às Capacities da tela Convocação de Candidato
+    { id: 2860, codigo: 'AIRBNB RES', nome: 'Agente de Atendimento - Hospedagem e Viagens - SP', tipo: 'VAGA EXTERNA EXPERT', cargo: 'EXPERT EM INTERACAO', gestaoRS: 'RS Regional Sudeste', inclusao: '15/12/2025 09:10', fim: '31/12/2026', status: 'Publicada' },
+    { id: 2861, codigo: 'AIRBNB COMM', nome: 'Agente de Atendimento - Community Support - SP', tipo: 'VAGA EXTERNA EXPERT', cargo: 'EXPERT EM INTERACAO', gestaoRS: 'RS Regional Sudeste', inclusao: '15/12/2025 09:25', fim: '31/12/2026', status: 'Publicada' },
+    { id: 2870, codigo: 'LOREAL ECOM', nome: 'Agente de Atendimento - Cosméticos E-commerce - SP', tipo: 'VAGA EXTERNA EXPERT', cargo: 'EXPERT EM INTERACAO', gestaoRS: 'RS Corporativo', inclusao: '18/12/2025 10:40', fim: '31/12/2026', status: 'Publicada' },
+    { id: 2875, codigo: 'AMAZON D2', nome: 'Agente de Atendimento - Marketplace - SP', tipo: 'VAGA EXTERNA EXPERT', cargo: 'EXPERT EM INTERACAO', gestaoRS: 'RS Regional Sudeste', inclusao: '19/12/2025 14:05', fim: '31/12/2026', status: 'Publicada' },
+    { id: 2880, codigo: 'HOTELS GDS', nome: 'Agente de Atendimento Bilíngue Inglês - Viagens (GDS)', tipo: 'VAGA EXTERNA EXPERT', cargo: 'EXPERT EM INTERACAO BILINGUE', gestaoRS: 'RS Corporativo', inclusao: '22/12/2025 11:30', fim: '31/12/2026', status: 'Publicada' },
   ];
 
   const BEM_ESTAR_DEFAULT = 'Aqui cuidamos dos nossos colaboradores dos pés à cabeça, com iniciativas voltadas para saúde física e saúde mental, promovendo um ambiente que fortalece o equilíbrio entre vida pessoal e vida profissional. Em saúde mental contamos com apoio psicológico e um canal exclusivo para cuidado do sentimento e bem-estar de forma individualizada, além de promover ações de conscientização, como a semana do Bem-estar e ações que promovem a conexão social e interação entre os colaboradores como Festival de Música e Dança e Sextas-feiras temáticas. No pilar de saúde física promovemos iniciativas como a Copa TP, Campeonato de Game, Grupo de corrida, além de parcerias com academias, estúdios de pilates, yoga e parceiros de cultura e lazer.';
@@ -123,8 +129,12 @@
     };
   }
 
+  // Lista completa (salva pelo usuário + sementes ainda não persistidas) e busca com fallback na semente.
+  function all() { const list = load(); SEED.forEach(s => { if (!list.some(v => v.id === s.id)) list.push({ ...s }); }); return list; }
+  function find(id) { return load().find(v => v.id === id) || SEED.find(v => v.id === id) || null; }
+
   function get(id) {
-    const row = load().find(v => v.id === id);
+    const row = find(id);
     if (!row) return null;
     const base = defaults();
     const seeded = DETAILS[id] || {};
@@ -185,5 +195,5 @@
   function setFlash(msg) { try { sessionStorage.setItem(FLASH, JSON.stringify(msg)); } catch (e) {} }
   function takeFlash() { try { const m = JSON.parse(sessionStorage.getItem(FLASH)); sessionStorage.removeItem(FLASH); return m; } catch (e) { return null; } }
 
-  window.TPVagas = { getBeneficios, getBeneficiosMeta, saveBeneficios, getBemEstar, saveBemEstar, countByTipo, topSalarios, load, save, get, upsert, defaults, setFlash, takeFlash, OPTIONS, BENEFICIOS, PCD_TREE, BEM_ESTAR_DEFAULT, toISO, toBR };
+  window.TPVagas = { all, find, getBeneficios, getBeneficiosMeta, saveBeneficios, getBemEstar, saveBemEstar, countByTipo, topSalarios, load, save, get, upsert, defaults, setFlash, takeFlash, OPTIONS, BENEFICIOS, PCD_TREE, BEM_ESTAR_DEFAULT, toISO, toBR };
 })();

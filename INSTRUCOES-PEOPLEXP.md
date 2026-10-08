@@ -149,20 +149,26 @@ Hover do botão primário: `#6a1b9a`.
 - **Vagas** (`vagas-data.js` → `window.TPVagas`): lista inicial (seed) + salvamento em `localStorage` na chave `tp-vagas-v1`. Funções: `load`, `save`, `get`, `upsert`, `defaults`, `setFlash`/`takeFlash` (mensagem após salvar), `OPTIONS` (listas de selects).
 - **Benefícios por Tipo de Vaga**: chave `tp-beneficios-v1`. **Bem Estar TP**: chave `tp-bemestar-v1`.
 - Fluxo de vagas: listar → criar/editar/copiar/excluir em `vaga-form.html` → salvar → volta para a lista atualizada com toast.
-- **Convocação de Candidato** (`convocacao-candidato.html`): dados fictícios internos da página (30 candidatos, 6 Capacities).
-  - 5 filtros visíveis + filtros avançados expansíveis.
-  - 5 grupos de indicadores: Demanda, Documentação, Exames, Convocação, Treinamento/Admissão. Promessas ficam em Documentação e Desistentes em Convocação (agrupamento **a confirmar**).
-  - Tabela de 8 colunas com seletor de colunas, drawer de detalhe do candidato.
-  - Troca de vaga em massa ou individual com modal de revisão. Com 1 candidato selecionado, abre direto o formulário de troca.
-  - Botão no canto inferior esquerdo alterna 10 estados de tela (vazio, carregando, erro etc.) para demonstração.
+- **Convocação de Candidato** (`convocacao-candidato.html`, BRF 29059): dados fictícios internos da página (36 candidatos, 8 Capacities, 13 salas de treinamento) + vagas de `vagas-data.js` (`TPVagas.all()` / `TPVagas.find()`).
+  - **Filtros** (rascunho → “Aplicar filtros”; “Limpar filtros” restaura tudo): Mês Capacity (multi, ex.: out/26), Versão Capacity (multi: D42, D55, EXTRA, SAV), Cliente (multi), Célula (multi, lista depende dos clientes escolhidos; sem cliente → todas), Status Convocação, Candidato ou CPF (com/sem máscara), ID Capacity e ID Sala de Treinamento (chips, vários IDs). Adicionais: Status Exame Médico (multi), Status Documentação (multi: Documento Entregue / Reprovado / Pendente / Promessa), Possui indicação, Período de validação, Exibir reprovados, Histórico completo. Versão × Mês = interseção. Chips resumem múltiplos valores (“Cliente: Airbnb, Amazon +2”).
+  - **Componente multi-select** padrão (`makeMS`): busca, Selecionar tudo, Limpar, contagem, estados vazio/sem resultado.
+  - **Indicadores**: Demanda (Candidatos Validados, PCD, Solicitado, Solicitado + Buffer — os dois últimos são estáticos), Documentação, Exames, Convocação, Treinamento/Admissão. Clique filtra; segundo clique remove.
+  - **Grid**: até 20 colunas, rolagem horizontal, Candidato e checkbox fixos (sticky). Colunas novas: Vaga, ID BMS (substitui FPW), Data de Nascimento, PCD, Matrícula, Data Confirmação Treinamento, Sala de Treinamento, Configuração PC (link abre modal com os dados do PC).
+  - **Visões de colunas** (modal “Personalizar colunas” pelo botão Colunas): colunas disponíveis × selecionadas em ordem (setas), “N de 20”, limite bloqueia novas seleções. Salvar visão (nome), Salvar alterações, Salvar como nova visão, Excluir (modal de confirmação), Restaurar padrão (não apaga visões). Visões salvas aparecem como **badges** ao lado da contagem de candidatos; clique aplica; o ⋮ abre Tornar principal / Editar / Excluir. A visão **principal** (★) é carregada ao abrir a tela. Persistência por usuário em `localStorage` (`peoplexp.convocacao.colunas.admin-tp`: formats, activeId, principalId, cols).
+  - **Detalhe (drawer)**: Candidato (+ Data de Nascimento, ID BMS, PCD), Vaga (ID + nome, Capacity, Operação, Célula…), Validação (+ Configuração do PC), Documentação, Exame médico (links para agendamento e resultado), Convocação (alteração de status com motivo), Treinamento (+ Data confirmação, Sala), Admissão (+ Matrícula). Rodapé: Editar dados, Follow Up, Troca de Sala, Troca de Capacity, Trocar de vaga.
+  - **Trocar de vaga** (modal): 1) pesquisa por ID, Código, Tipo, Nome e Gestão (só vagas Publicadas); 2) resumo da análise (match, não match, total, novas etapas); 3) detalhamento por candidato com checkbox (match já marcados; não match bloqueado). Match simulado por idioma, experiência, município, vaga PcD; etapas Avaliação → Multitelas → Syscheck → Entrevista reaproveitadas só se concluídas e com testes iguais (comparação teste a teste). “Confirmar troca de vaga” transfere apenas Match selecionados; sucesso total/parcial. **Bloqueio**: contratado com treinamento confirmado não troca de vaga (barra, menu ⋮ e drawer).
+  - **Troca de Capacity** (modal Alocação de Candidato): individual (Salvar) ou em massa (mesma Capacity para todos / individual → revisar → confirmar, sucesso total/parcial). Ao trocar, o candidato sai da sala de treinamento e volta a “Pendente TP”.
+  - **Troca de Sala de Treinamento**: só com candidatos do mesmo ID Capacity (senão botão desabilitado com dica). Lista salas da Capacity (ID, nome, datas/horas). Contratado (com matrícula) só para sala com a mesma data de início; sem matrícula, qualquer sala. Inconsistência → mensagem e nada é movido.
+  - Outras ações: Follow Up (modal de integração), Resgatar (Reprovado/Desistente), Exportar CSV (todas as colunas) e Exportar selecionados. Menu ⋮ da linha: Ver candidato, Editar dados, Follow Up, Trocar de vaga, Troca de Capacity, Troca de Sala, Resgatar.
+  - Botão “Estados” (canto inferior esquerdo): 26 cenários demonstráveis (filtros, colunas/visões, trocar de vaga, troca de Capacity, troca de sala).
 - Para voltar aos dados iniciais, limpe o armazenamento do site no navegador.
 
 ### Pendências de negócio
 
-- Confirmar as regras de agrupamento dos indicadores da Convocação.
-- Definir a lógica do filtro de histórico.
-- Definir os critérios para "resgatar candidato".
-- Substituir os dados fictícios por dados reais (candidatos e Capacities).
+- Substituir listas de exemplo por dados reais: status de convocação, versões/meses de Capacity, clientes e células, Tipos de Vaga e Gestões, salas de treinamento.
+- Confirmar os critérios reais de match da troca de vaga (hoje: idioma, experiência, município, vaga PcD).
+- Definir a lógica do filtro de histórico e os critérios para “resgatar candidato”.
+- Follow Up, Configuração do PC e exame médico estão como pontos de integração (sem regras novas).
 
 ---
 

@@ -1,0 +1,665 @@
+ [IMG]
+
+[Ttulo1] INDEX
+ 
+[Sumrio1] INDEX	2
+[Sumrio1] Controle de Versão	5
+[Sumrio1] Objetivo	5
+[Sumrio1] Escopo da Solução	5
+[Sumrio1] Requisitos	5
+[Sumrio2] 1.	Filtros	6
+[Sumrio3] 【1.1.】	【Filtro por mês capacity】	6
+[Sumrio3] 【1.2.】	【filtro Versão capacity】	6
+[Sumrio3] 【1.3.】	【Filtro Cliente】	6
+[Sumrio3] 【1.4.】	【Filtro célula】	6
+[Sumrio3] 1.5.	Status convocação	7
+[Sumrio3] 1.6.	Filtro por CPF	7
+[Sumrio3] 1.7.	Filtro por Status do Exame Médico	7
+[Sumrio3] 1.8.	Filtro por Status da Documentação	7
+[Sumrio3] 1.9.	Filtro por Possui Indicação	7
+[Sumrio3] 1.10.	Filtro por Período de Validação	7
+[Sumrio3] 1.11.	Filtro para Exibir Candidatos Reprovados	7
+[Sumrio3] 1.12.	Filtro de Histórico Completo	8
+[Sumrio3] 【1.13.】	【Filtro por ID Capacity】	8
+[Sumrio3] 【1.1.】	【Filtro por ID de sala de treinamento】	8
+[Sumrio3] 1.2.	Disponibilizar a ação Aplicar filtros.	8
+[Sumrio2] 2.	Contadores	8
+[Sumrio3] 2.1.	Bloco Demanda	8
+[Sumrio3] 2.1.1.	Candidatos Validados	8
+[Sumrio3] 2.1.2.	Solicitado	9
+[Sumrio3] 2.1.3.	Solicitado + Buffer	9
+[Sumrio3] 【2.1.4.】	【PCD】	9
+[Sumrio3] 2.2.	Bloco Documentação	10
+[Sumrio3] 2.2.1.	Documentos Entregues	10
+[Sumrio3] 2.2.2.	Promessas	10
+[Sumrio3] 2.3.	Bloco Exames	10
+[Sumrio3] 2.3.1.	Exames Agendados	10
+[Sumrio3] 2.3.2.	Exames Apto	11
+[Sumrio3] 2.3.3.	Exames Apto 2	11
+[Sumrio3] 2.4.	Bloco Convocação	11
+[Sumrio3] 2.4.1.	Convocados	11
+[Sumrio3] 2.4.2.	Desistentes	12
+[Sumrio3] 2.4.3.	Reprovados	12
+[Sumrio3] 2.5.	Bloco Treinamento / Admissão	12
+[Sumrio3] 2.6.	Contratados	12
+[Sumrio3] 2.7.	Desligados	13
+[Sumrio2] 3.	Seleção de candidatos	13
+[Sumrio3] 3.1.	Seleção individual	13
+[Sumrio3] 3.2.	Seleção em massa	13
+[Sumrio3] 3.3.	Ações condicionadas à seleção	13
+[Sumrio3] 3.4.	Limpar seleção	13
+[Sumrio2] 4.	Ações	13
+[Sumrio3] 4.1.	Troca de Vaga	13
+[Sumrio3] 【4.1.1.】	【Seleção da nova vaga】	13
+[Sumrio3] 【4.1.2.】	【Análise dos candidatos】	14
+[Sumrio3] 4.1.3.	Resumo da análise	15
+[Sumrio3] 4.1.4.	Detalhamento por candidato	15
+[Sumrio3] 4.1.5.	Reaproveitamento das etapas	15
+[Sumrio3] 4.1.6.	Regras para reaproveitamento	16
+[Sumrio3] 4.1.7.	Respeito à sequência das etapas	16
+[Sumrio3] 4.1.8.	Criação da nova candidatura	17
+[Sumrio3] 4.1.9.	Confirmação da troca	17
+[Sumrio3] 4.1.10.	Tabela para armazenamento do histórico	17
+[Sumrio3] 【4.2.】	【Troca de Capacity】	18
+[Sumrio3] 【4.3.】	【Troca de Sala de Treinamento】	18
+[Sumrio3] 4.4.	Follow Up	19
+[Sumrio3] 4.5.	Exportar CSV	19
+[Sumrio3] 4.6.	Resgatar candidato	19
+[Sumrio2] 5.	Grid de candidatos	19
+[Sumrio3] 5.1.	Exibição	19
+[Sumrio3] 5.2.	Colunas	19
+[Sumrio3] 5.3.	Ordenação	19
+[Sumrio3] 5.4.	Paginação	19
+[Sumrio3] 5.5.	Acesso ao detalhe	20
+[Sumrio2] 6.	Personalização das colunas	20
+[Sumrio3] 6.1.	Acessar configuração	20
+[Sumrio3] 6.2.	Limite de colunas	20
+[Sumrio3] 6.3.	Criar formato de personalização	20
+[Sumrio3] 6.4.	Formatos salvos	20
+[Sumrio3] 6.5.	Selecionar formato salvo	20
+[Sumrio3] 6.6.	Alterar formato	21
+[Sumrio3] 6.7.	Salvar como novo formato	21
+[Sumrio3] 6.8.	Formato padrão	21
+[Sumrio3] 6.9.	Restaurar padrão	21
+[Sumrio3] 6.10.	Exclusão de formato	21
+[Sumrio3] 6.11.	Persistência	21
+[Sumrio3] 6.12.	Ordem das colunas	22
+[Sumrio3] 6.13.	Validação do limite	22
+[Sumrio2] 7.	Detalhamento do candidato	22
+[Sumrio3] 7.1.	Candidato	22
+[Sumrio3] 7.2.	Vaga	22
+[Sumrio3] 7.3.	Validação	22
+[Sumrio3] 7.4.	Documentação	23
+[Sumrio3] 7.5.	Exame Médico	23
+[Sumrio3] 7.6.	Treinamento	23
+[Sumrio3] 7.7.	Admissão	23
+[Sumrio3] 7.8.	Identificação no cabeçalho	23
+[Sumrio3] 7.9.	Ações	23
+[NormalWeb] 
+ 
+
+[Ttulo1] Controle de Versão
+<<TABLE>>
+| Elaborador por | Versão | data | ação | revisado por |
+| Thiago Romani | 1.0 | 01/10/2026 | Escrita da SOW |  |
+<</TABLE>>
+ 
+[Ttulo1] Objetivo
+ Refatorar a tela de Convocação de Candidato do People XP, reorganizando filtros, indicadores, ações e informações apresentadas no grid, de forma a facilitar a consulta e operação dos candidatos em processo de admissão.
+ A nova estrutura deverá reduzir a quantidade de informações e ações diretamente no grid, concentrando informações complementares e operações específicas no detalhamento do candidato, além de permitir a personalização das colunas exibidas pelo usuário.
+ A refatoração deverá manter as funcionalidades atualmente disponíveis na tela e incorporar o novo fluxo de Troca de Vaga e Troca de Sala de treinamento.
+[Ttulo1] Escopo da Solução
+ A alteração contempla:
+[SemEspaamento][L0] Refatoração do layout da tela 
+[SemEspaamento][L0] Reorganização dos filtros
+[SemEspaamento][L0] Reorganização dos filtros 
+[SemEspaamento][L0] Utilização dos indicadores como filtros
+[SemEspaamento][L0] Seleção individual e em massa de candidatos
+[SemEspaamento][L0] Organização das ações da tela
+[SemEspaamento][L0] Personalização das colunas do grid
+[SemEspaamento][L0] Persistência da configuração das colunas
+[SemEspaamento][L0] Possibilidade de restaurar as colunas padrão
+[SemEspaamento][L0] Centralização de informações complementares no detalhe do candidato
+[SemEspaamento][L0] Manutenção das funcionalidades de dados cadastrais 
+[SemEspaamento][L0] Manutenção das informações de configuração do PC
+[SemEspaamento][L0] Manutenção das funcionalidades de exame médico 
+[SemEspaamento][L0] Manutenção da alteração de status da convocação 
+[SemEspaamento][L0] Manutenção do Follow Up (usar o novo FolloW Up)
+[SemEspaamento][L0] Exportação dos candidatos
+[SemEspaamento][L0] Resgate de candidatos
+[SemEspaamento][L0] Remoção da Alteração de WAHA
+[SemEspaamento][L0] Ação de para Troca de Vaga
+[SemEspaamento][L0] Ação para troca de sala de treinamento
+[SemEspaamento][L0] Validações na troca de demanda 
+[SemEspaamento][L0] Revisão da troca antes da confirmação
+[SemEspaamento][L0] Tratamento de sucesso total e sucesso parcial
+[SemEspaamento] 
+[SemEspaamento] A nova tela como será como uma área de gestão e acompanhamento dos candidatos em processo de admissão e contempla estados específicos para filtros, personalização de colunas, detalhe do candidato, seleção e troca de vaga.
+[SemEspaamento] 
+[SemEspaamento] Protótipo: 
+[SemEspaamento] https://hbiancardine.github.io/PeopleXP/convocacao-candidato.html 
+[Ttulo1] Requisitos
+[Ttulo2][L0] Filtros
+ A tela deverá disponibilizar uma área de filtros para permitir que o usuário localize os candidatos de acordo com diferentes critérios.
+ Os filtros deverão ser organizados em grupos, conforme definido no novo layout.
+[Ttulo3][L1] 【Filtro por mês capacity】
+ Permitir selecionar um ou mais “meses Capacity” para consulta. 
+ [IMG]
+[Ttulo3][L1] 【filtro Versão capacity】
+ Permitir selecionar um ou mais versões de Capacity para consulta.
+ [IMG]
+ 
+[Ttulo3][L1] 【Filtro Cliente】
+ Permitir pesquisar e selecionar um ou mais cliente
+ [IMG]
+ 
+[Ttulo3][L1] 【Filtro célula】
+ Listar todas as células ativas do Cliente escolhido, permitir pesquisar e selecionar uma ou mais células.
+ [IMG]
+ 
+[Ttulo3][L1] Status convocação
+ Permitir selecionar o status de convocação (status na sala de treinamento) do candidato. O filtro deverá considerar os status existentes no processo de convocação. Considerar o último status de cada candidato.
+ 
+[Ttulo3][L1] Filtro por CPF
+ Disponibilizar um filtro por CPF, o CPF deverá poder ser informado com ou sem máscara
+[Ttulo3][L1] Filtro por Status do Exame Médico
+ Permitir selecionar um ou mais status do exame médico. Considerar o último status de cada candidato.
+[Ttulo3][L1] Filtro por Status da Documentação
+ Permitir selecionar o status da documentação do candidato.
+[SemEspaamento][L0] DOCUMENTO ENTREGUE
+[SemEspaamento][L0] DOCUMENTO REPROVADO
+[SemEspaamento][L0] DOCUMENTO PENDENTE: candidato que teve um ou mais documentos reprovado.
+[SemEspaamento][L0] PROMESSA: candidato com a etapa de entrega de documento pendente candidato
+ 
+[Ttulo3][L1] Filtro por Possui Indicação
+ Permitir filtrar os candidatos que foram indicação. Opções de filtro
+[SemEspaamento][L0] Todos
+[SemEspaamento][L0] Sim
+[SemEspaamento][L0] Não
+[SemEspaamento] 
+[SemEspaamento] 
+[Ttulo3][L1] Filtro por Período de Validação
+[SemEspaamento] Disponibilizar filtro por período da Data de Validação. Deverão existir:
+[SemEspaamento][L0] Data inicial; 
+[SemEspaamento][L0] Data final. 
+[SemEspaamento] O sistema deverá considerar os candidatos cuja data de validação esteja dentro do período informado, utilizando a regra da tela atual.
+[SemEspaamento] 
+[Ttulo3][L1] Filtro para Exibir Candidatos Reprovados
+[SemEspaamento] Disponibilizar opção para determinar se candidatos reprovados deverão ser apresentados no resultado. O comportamento deverá permanecer equivalente ao existente atualmente.
+[Ttulo3][L1] Filtro de Histórico Completo
+[SemEspaamento] Disponibilizar opção para permitir a consulta do histórico completo dos candidatos. O comportamento deverá permanecer equivalente ao existente atualmente.
+[SemEspaamento] 
+[Ttulo3][L1] 【Filtro por ID Capacity】
+[SemEspaamento] Disponibilizar uma opção para permitir a consulta por ID Capacity.
+[SemEspaamento] 
+[Ttulo3][L1] 【Filtro por ID de sala de treinamento】
+[SemEspaamento] Disponibilizar uma opção para permitir a consulta por ID da sala de treinamento.
+[SemEspaamento] 
+[Ttulo3][L1] Disponibilizar a ação Aplicar filtros.
+[SemEspaamento] Ao aplicar os filtros, o sistema deverá atualizar:
+[SemEspaamento][L0] Indicadores; 
+[SemEspaamento][L0] Quantidade de registros; 
+[SemEspaamento][L0] Grid de candidatos. 
+[SemEspaamento] O resultado deverá considerar todos os filtros informados simultaneamente
+[SemEspaamento] 
+ 
+[Ttulo2][L0] Contadores
+ A tela deverá apresentar somente os indicadores definidos no novo layout, não devendo ser replicados os demais indicadores existentes na tela atual. Os indicadores deverão ser apresentados nos seguintes blocos:
+[SemEspaamento][L0] Demanda 
+[SemEspaamento][L0] Documentação 
+[SemEspaamento][L0] Exames 
+[SemEspaamento][L0] Convocação 
+[SemEspaamento][L0] Treinamento / Admissão 
+[SemEspaamento] 
+ Os indicadores deverão ser calculados conforme as regras descritas abaixo.
+[Ttulo3][L1] Bloco Demanda
+ O bloco Demanda deverá apresentar:
+[SemEspaamento][L0] Candidatos Validados – Total de candidatos
+[SemEspaamento][L0] PCD - Apenas candidatos PCD
+[SemEspaamento][L0] Solicitado; 
+[SemEspaamento][L0] Solicitado + Buffer; 
+ 
+[Ttulo3][L2] Candidatos Validados
+ Objetivo
+ Apresentar a quantidade de candidatos que foram validados (candidatos validados não os candidatos aprovados na dinâmica/entrevista) para as demandas consideradas na consulta.
+ Regra para composição
+[SemEspaamento] 
+ Comportamento
+ Ao clicar no indicador, o grid deverá ser filtrado para apresentar os candidatos que compõem o indicador. Ao clicar novamente, o filtro deverá ser removido.
+ 
+[Ttulo3][L2] Solicitado
+ Objetivo
+ Apresentar a quantidade de candidatos solicitados para atendimento das demandas consideradas na consulta.
+ Regra para composição
+ 
+ Comportamento
+ Por representar quantidade de demanda, e não necessariamente registros individuais de candidatos, o indicador deverá seguir o comportamento definido no novo layout.
+ Caso configurado como indicador filtrável, o clique deverá apresentar os candidatos associados às demandas que compõem o valor.
+ 
+[Ttulo3][L2] Solicitado + Buffer
+ Objetivo
+ Apresentar a quantidade total considerada para atendimento da demanda quando aplicado o Buffer.
+ Regra para composição
+ 
+ Comportamento
+ Por representar quantidade de demanda, e não necessariamente registros individuais de candidatos, o indicador deverá seguir o comportamento definido no novo layout.
+ Caso configurado como indicador filtrável, o clique deverá apresentar os candidatos associados às demandas que compõem o valor.
+ 
+[Ttulo3][L2] 【PCD】
+ Objetivo
+ Apresentar a quantidade de candidatos PCD que foram validados (candidatos validados não os candidatos aprovados na dinâmica/entrevista) para as demandas consideradas na consulta.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá ser filtrado para apresentar os candidatos que compõem o indicador. Ao clicar novamente, o filtro deverá ser removido.
+ 
+[Ttulo3][L1] Bloco Documentação
+ O bloco Documentação deverá apresentar:
+[SemEspaamento][L0] Documentos Entregues; 
+[SemEspaamento][L0] Promessas. 
+ 
+[Ttulo3][L2] Documentos Entregues
+ Objetivo
+ Apresentar a quantidade de candidatos que estão aprovados na etapa de entrega de documentos
+ Regra para composição
+  
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos que atendem à condição de documentação entregue. Ao clicar novamente, o filtro deverá ser removido.
+ 
+[Ttulo3][L2] Promessas
+ Objetivo
+ Apresentar a quantidade de candidatos que possuem promessa (etapa de entrega de documentos como pendente candidato) registrada no processo.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos que possuem promessa. Ao clicar novamente, o filtro deverá ser removido.
+ 
+[Ttulo3][L1] Bloco Exames
+ O bloco Exames deverá apresentar:
+[SemEspaamento][L0] Exames Agendados 
+[SemEspaamento][L0] Exames Apto 
+[SemEspaamento][L0] Exames Apto 2 
+ 
+[Ttulo3][L2] Exames Agendados
+ Objetivo
+ Apresentar a quantidade de candidatos que possuem exame médico agendado.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos com exame agendado.
+ 
+[Ttulo3][L2] Exames Apto
+ Objetivo
+ Apresentar a quantidade de candidatos cujo resultado do exame médico seja APTO.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, deverão ser apresentados os candidatos com resultado APTO.
+ 
+[Ttulo3][L2] Exames Apto 2
+ Objetivo
+ Apresentar a quantidade de candidatos cujo resultado do exame médico seja APTO 2.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos classificados como APTO 2.
+ 
+[Ttulo3][L1] Bloco Convocação
+ O bloco Convocação deverá apresentar:
+[SemEspaamento][L0] Convocados; 
+[SemEspaamento][L0] Desistentes; 
+[SemEspaamento][L0] Reprovados. 
+ 
+[Ttulo3][L2] Convocados
+ Objetivo
+ Apresentar a quantidade de candidatos que estão na situação de Convocado no processo.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos convocados.
+ 
+[Ttulo3][L2] Desistentes
+ Objetivo
+ Apresentar a quantidade de candidatos classificados como Desistente.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos desistentes.
+ 
+[Ttulo3][L2] Reprovados
+ Objetivo
+ Apresentar a quantidade de candidatos classificados como Reprovado.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos reprovados.
+ 
+[Ttulo3][L1] Bloco Treinamento / Admissão
+ O bloco Treinamento / Admissão deverá apresentar:
+[SemEspaamento][L0] Contratados; 
+[SemEspaamento][L0] Desligados. 
+ 
+[Ttulo3][L1] Contratados
+ Objetivo
+ Apresentar a quantidade de candidatos que foram efetivamente contratados.
+ Regra para composição
+ 
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos contratados.
+ 
+[Ttulo3][L1] Desligados
+ Objetivo
+ Apresentar a quantidade de candidatos que foram contratados e posteriormente desligados.
+ Regra para composição
+  
+ Comportamento
+ Ao clicar no indicador, o grid deverá apresentar os candidatos desligados
+ 
+[Ttulo2][L0] Seleção de candidatos
+[Ttulo3][L1] Seleção individual
+ Disponibilizar checkbox para seleção individual.
+[Ttulo3][L1] Seleção em massa
+ Disponibilizar checkbox no cabeçalho do grid.
+[Ttulo3][L1] Ações condicionadas à seleção
+ As ações que dependem da seleção deverão ser habilitadas somente quando houver candidatos selecionados.
+[Ttulo3][L1] Limpar seleção
+ Disponibilizar a opção para Limpar seleção.
+[Ttulo2][L0] Ações
+[Ttulo3][L1] Troca de Vaga
+ Essa ação deve ter o mesmo comportamento da tela “Acompanhamento de vagas”. 
+ Obs.: Candidatos contratados e com treinamento confirmado não podem ser trocado de vaga.
+[Ttulo3][L2] 【Seleção da nova vaga】
+ Ao selecionar a ação “Troca de Vaga”, o sistema deverá apresentar uma modal para seleção da nova vaga, permitindo ao usuário realizar a pesquisa pelos dados da vaga, conforme protótipo apresentado.
+ A pesquisa deverá disponibilizar os campos:
+[SemEspaamento][L0] ID da Vaga;
+[SemEspaamento][L0] Código da Vaga;
+[SemEspaamento][L0] Tipo da Vaga;
+[SemEspaamento][L0] Nome da Vaga;
+[SemEspaamento][L0] Gestão da Vaga.
+ 
+ Após a pesquisa, o usuário deverá selecionar a “Nova Vaga” que será utilizada para a transferência dos candidatos.
+ A troca de vaga não deverá ser efetivada neste momento. A seleção da nova vaga deverá apenas iniciar a análise dos candidatos
+ [IMG]
+[Ttulo3][L2] 【Análise dos candidatos】
+ Após a seleção da nova vaga, o sistema deverá realizar, para cada candidato da vaga atual, o match com a vaga proposta, utilizando as regras de elegibilidade existentes no sistema.
+ O resultado da análise deverá classificar cada candidato como:
+[SemEspaamento][L0] Match: candidato atende aos critérios da nova vaga e poderá ser transferido;
+[SemEspaamento][L0] Não Match: candidato não atende aos critérios da nova vaga e não poderá ser transferido.
+ 
+ A análise deverá ser realizada previamente à efetivação da troca, permitindo que o usuário visualize os resultados antes de confirmar a operação.
+ [IMG]
+[Ttulo3][L2] Resumo da análise
+ Após a execução do match, o sistema deverá apresentar um resumo contendo, no mínimo:
+[SemEspaamento][L0] Quantidade de candidatos que deram match;
+[SemEspaamento][L0] Quantidade de candidatos que não deram match;
+[SemEspaamento][L0] Total de candidatos analisados;
+[SemEspaamento][L0] Quantidade de candidatos que precisarão realizar novas etapas/testes, considerando somente os candidatos que deram match.
+ 
+ Os indicadores deverão utilizar elementos visuais que facilitem a identificação dos resultados, conforme apresentado no protótipo.
+[Ttulo3][L2] Detalhamento por candidato
+ O sistema deverá apresentar uma lista detalhada contendo todos os candidatos analisados.
+ Na coluna “Resultado”, deverá ser utilizado um indicador visual para facilitar a identificação do resultado:
+[SemEspaamento][L0] ✓ Check verde + “Match”: candidato será transferido para a nova vaga após a confirmação;
+[SemEspaamento][L0] ✕ vermelho + “Não Match”: candidato não será transferido para a nova vaga.
+ 
+ A grid deverá apresentar as informações de cada candidato, incluindo:
+[SemEspaamento][L0] Resultado;
+[SemEspaamento][L0] Candidato;
+[SemEspaamento][L0] CPF;
+[SemEspaamento][L0] Etapa na vaga atual;
+[SemEspaamento][L0] Etapas reaproveitadas;
+[SemEspaamento][L0] Etapas/testes que deverão ser realizados;
+[SemEspaamento][L0] Observação.
+[SemEspaamento][L0] Opção para seleção dos candidatos.
+[SemEspaamento][L1] O usuário deve conseguir selecionar alguns os candidatos que estão sendo exibidos na grid. 
+[SemEspaamento][L1] Inicialmente todos os candidatos que deram match deve vir selecionados de forma automática.
+ 
+ Para os candidatos que deram match, o sistema deverá apresentar as etapas que poderão ser reaproveitadas e as etapas/testes que precisarão ser realizados na nova vaga.
+ Para os candidatos que não deram match, o campo “Observação” deverá apresentar o motivo pelo qual o candidato não atende aos critérios da nova vaga.
+ Exemplos de motivos:
+[SemEspaamento][L0] “Candidato não atende aos critérios de idioma.”
+[SemEspaamento][L0] “Candidato não atende aos critérios de experiência.”
+[SemEspaamento][L0] “Candidato não atende ao critério de residência (município).”
+ 
+ Os motivos apresentados deverão estar relacionados aos critérios efetivamente utilizados na validação do match.
+[Ttulo3][L2] Reaproveitamento das etapas
+ Para os candidatos que deram match, o sistema deverá analisar as etapas da vaga atual e da vaga proposta, considerando a sequência do processo seletivo.
+ Deverão ser consideradas, no mínimo, as seguintes etapas:
+[SemEspaamento][L0] Avaliação;
+[SemEspaamento][L0] Multitelas;
+[SemEspaamento][L0] Syscheck;
+[SemEspaamento][L0] Entrevista.
+ 
+ O reaproveitamento deverá respeitar a etapa atual em que o candidato se encontra na vaga de origem.
+ O sistema não poderá aprovar ou reaproveitar uma etapa que o candidato ainda não tenha alcançado ou concluído na vaga atual.
+ Dessa forma, caso o candidato esteja atualmente na etapa de Avaliação, o sistema poderá verificar o resultado da Avaliação para identificar se ela poderá ser reaproveitada na vaga proposta, porém não poderá reaproveitar ou aprovar automaticamente as etapas posteriores, como Multitelas, Syscheck ou Entrevista, mesmo que os testes dessas etapas sejam iguais entre as duas vagas.
+ As etapas posteriores deverão permanecer pendentes e seguir normalmente o fluxo da nova vaga.
+[Ttulo3][L2] Regras para reaproveitamento
+ Para cada etapa que o candidato já tenha alcançado e concluído na vaga atual, o sistema deverá comparar os testes/requisitos existentes na vaga atual com os da vaga proposta.
+ Deverão ser aplicadas as seguintes regras:
+[SemEspaamento][L0] Caso a etapa exista nas duas vagas e possua os mesmos testes/requisitos, o resultado realizado pelo candidato poderá ser reaproveitado e o candidato deverá ser aprovado automaticamente na etapa correspondente da nova vaga.
+[SemEspaamento][L0] Caso a etapa exista nas duas vagas, mas possua testes/requisitos diferentes, o candidato deverá realizar somente os testes/requisitos diferentes ou ainda não realizados.
+[SemEspaamento][L0] Caso a etapa exista somente na vaga proposta, o candidato deverá realizar a etapa quando chegar a ela no fluxo da nova vaga.
+[SemEspaamento][L0] Caso a etapa exista somente na vaga atual e não exista na vaga proposta, ela não deverá ser considerada na nova candidatura.
+[SemEspaamento][L0] Caso existam múltiplos testes dentro de uma mesma etapa, a comparação deverá ser realizada individualmente, permitindo o reaproveitamento dos testes equivalentes e a execução somente dos testes diferentes.
+[SemEspaamento] 
+[Ttulo3][L2] Respeito à sequência das etapas
+ A transferência deverá respeitar a sequência das etapas do processo seletivo.
+ Por exemplo:
+ Cenário 1 – Candidato em Avaliação
+ Se o candidato estiver atualmente em Avaliação:
+[SemEspaamento][L0] Caso a Avaliação seja igual na vaga proposta → a Avaliação poderá ser reaproveitada;
+[SemEspaamento][L0] Caso a Avaliação seja diferente → o candidato deverá realizar a nova Avaliação;
+[SemEspaamento][L0] Multitelas, Syscheck e Entrevista não poderão ser reaproveitados ou aprovados neste momento, pois são etapas posteriores que o candidato ainda não realizou na vaga atual;
+[SemEspaamento][L0] Após a transferência, o candidato deverá seguir o fluxo da nova vaga e realizar as etapas posteriores normalmente, respeitando as regras de cada etapa.
+ 
+ Cenário 2 – Candidato em Multitelas
+ Se o candidato já tiver concluído a Avaliação e estiver atualmente em Multitelas:
+[SemEspaamento][L0] A Avaliação poderá ser reaproveitada caso seja equivalente;
+[SemEspaamento][L0] O Multitelas poderá ser reaproveitado caso os testes sejam iguais;
+[SemEspaamento][L0] Caso o Multitelas seja diferente, o candidato deverá realizar os novos testes;
+[SemEspaamento][L0] O Syscheck e a Entrevista, por serem etapas posteriores, somente poderão ser reaproveitados caso o candidato já tenha alcançado e concluído essas etapas na vaga atual.
+ 
+ Cenário 3 – Candidato aprovado em Syscheck
+ Se o candidato já tiver sido aprovado no Syscheck na vaga atual:
+[SemEspaamento][L0] Avaliação poderá ser reaproveitada, caso seja igual;
+[SemEspaamento][L0] Multitelas poderá ser reaproveitado, caso seja igual;
+[SemEspaamento][L0] Syscheck poderá ser reaproveitado, caso seja igual;
+[SemEspaamento][L0] Caso a única diferença entre as vagas seja a Entrevista, somente a Entrevista deverá ser realizada na nova vaga.
+ 
+ Dessa forma, o sistema deverá considerar não apenas a equivalência entre os testes das vagas, mas também até qual etapa o candidato efetivamente chegou e quais etapas já foram concluídas na vaga de origem.
+[Ttulo3][L2] Criação da nova candidatura
+ Após a confirmação da operação pelo usuário, para cada candidato que tenha dado Match e que foi selecionado na modal pelo usuário, o sistema deverá:
+[SemEspaamento][L0] Reprovar a candidatura do candidato na vaga atual;
+[SemEspaamento][L0] Criar uma nova candidatura para o candidato na vaga proposta;
+[SemEspaamento][L0] Reaproveitar os resultados das etapas que o candidato já tenha concluído e que sejam equivalentes entre as vagas;
+[SemEspaamento][L0] Manter como pendentes as etapas posteriores que o candidato ainda não tenha realizado;
+[SemEspaamento][L0] Solicitar ao candidato somente os testes ou etapas que sejam diferentes ou novos na vaga proposta;
+[SemEspaamento][L0] Posicionar o candidato no fluxo da nova vaga de acordo com as regras de reaproveitamento e com a sequência das etapas.
+ 
+ Os candidatos classificados como Não Match não deverão ter sua candidatura alterada ou criada na nova vaga
+[Ttulo3][L2] Confirmação da troca
+ Após a análise, o sistema deverá apresentar o detalhamento completo dos candidatos e disponibilizar, ao final da modal, os botões:
+[SemEspaamento][L0] “Cancelar”
+[SemEspaamento][L0] “Confirmar troca de vaga”
+ 
+ A operação de troca somente deverá ser efetivada após o usuário selecionar “Confirmar troca de vaga” e apenas para os candidatos selecionados.
+ Caso o usuário clique em “Cancelar”, feche a modal ou saia da operação sem confirmar, nenhuma candidatura deverá ser alterada, reprovada ou criada.
+ Após a confirmação, a troca deverá ser realizada somente para os candidatos classificados como Match, mantendo os candidatos Não Match na situação original.
+[Ttulo3][L2] Tabela para armazenamento do histórico
+[SemEspaamento] A tabela para armazenamento do histórico deve ser a mesma utilizada na ação disponível na tela de Acompanhamento de vagas.
+[SemEspaamento] 
+[SemEspaamento] 
+[Ttulo3][L1] 【Troca de Capacity】
+ 【Mesmo comportamento e regras da tela atual】.
+ [IMG]
+ 
+[Ttulo3][L1] 【Troca de Sala de Treinamento】
+ Essa ação deve ficar disponível apenas se os candidatos selecionados pertencerem ao mesmo ID Capacity, nessa ação o usuário conseguirá movimentar os candidatos entre salas de treinamento da mesma demanda, conforme regras abaixo:
+[SemEspaamento][L0] Candidatos contratados (com matrícula gerada)
+[SemEspaamento][L1] Permitir troca apenas entre salas com a mesma data de início
+[SemEspaamento][L1] Mesmo comportamento da funcionalidade disponível dentro da sala de treinamento
+[SemEspaamento][L0] Candidatos não contratados (sem matrícula)
+[SemEspaamento][L1] Permitir troca entre salas sem validação de data de início.
+[SemEspaamento] 
+[SemEspaamento] Após selecionar os candidatos e clicar nessa opção uma modal com todas as salas de treinamento vinculada ao capacity dos candidatos deve ser aberta.
+[SemEspaamento] 
+[SemEspaamento] [IMG]
+[SemEspaamento] 
+[SemEspaamento] Ao clicar em movimentar o sistema deve fazer as validações (candidatos com matrícula e sem matrícula), caso alguma inconsistência seja encontrada uma mensagem deve ser exibida informando. Se nenhuma inconsistência for encontrada a troca de sala deve ser realizada.
+[SemEspaamento] 
+[Ttulo3][L1] Follow Up
+ Disponibilizar a ação Follow Up para candidatos selecionados.
+[Ttulo3][L1] Exportar CSV
+ Permitir exportar os candidatos resultantes da consulta, a exportação deve conter todas as colunas, inclusive as que o candidato não selecionou no carregamento da grid.
+[Ttulo3][L1] Resgatar candidato
+ Manter a funcionalidade atualmente existente.
+ 
+[Ttulo2][L0] Grid de candidatos
+[Ttulo3][L1] Exibição
+ O grid deverá apresentar os candidatos retornados pelos filtros.
+[Ttulo3][L1] Colunas
+ As colunas disponíveis para exibição deverão ser as mesmas existentes na tela atual. O usuário poderá selecionar quais colunas deseja apresentar no grid, respeitando as regras de personalização definidas nesta SOW.
+ Algumas colunas atuais o usuário pode interagir, essas interações devem permanecer.
+[Ttulo3][L1] Ordenação
+ Todas as colunas devem permitir ordenação.
+[Ttulo3][L1] Paginação
+ Permitir definir a quantidade de registros exibidos por página.
+[Ttulo3][L1] Acesso ao detalhe
+ Permitir acessar o detalhe do candidato.
+[Ttulo2][L0] 【Personalização das colunas】
+ A tela deverá permitir que o usuário personalize as colunas apresentadas no grid e salve diferentes configurações de visualização.
+ O usuário poderá criar diferentes formatos de personalização, permitindo alternar rapidamente entre configurações previamente salvas conforme a necessidade de consulta.
+ O grid deverá permitir a utilização de no máximo 20 colunas simultaneamente
+[Ttulo3][L1] Acessar configuração
+ Disponibilizar a ação Colunas para acessar a configuração das colunas apresentadas no grid. Ao acessar a funcionalidade, o usuário deverá visualizar:
+[SemEspaamento][L0] Colunas disponíveis;
+[SemEspaamento][L0] Colunas atualmente selecionadas;
+[SemEspaamento][L0] Quantidade de colunas selecionadas;
+[SemEspaamento][L0] Formatos de personalização previamente salvos
+[Ttulo3][L1] Limite de colunas
+ O usuário poderá selecionar no máximo 20 colunas para exibição simultânea no grid. Enquanto o limite de 20 colunas não for atingido, o usuário poderá adicionar novas colunas. Ao atingir 20 colunas:
+[SemEspaamento][L0] As demais colunas deverão ficar indisponíveis para seleção
+[SemEspaamento][L0] O sistema deverá apresentar uma mensagem informando que o limite máximo foi atingido.
+ Deverá ser possível remover uma coluna selecionada para, posteriormente, selecionar outra
+[Ttulo3][L1] Criar formato de personalização
+ O usuário deverá conseguir salvar a configuração atual das colunas como um formato de personalização. Ao selecionar a opção Salvar formato, o sistema deverá solicitar um nome para a configuração.
+ Exemplo: Nome do formato: Acompanhamento Exames
+ Após o salvamento, o formato deverá ficar disponível para utilização futura pelo mesmo usuário
+[Ttulo3][L1] Formatos salvos
+ O sistema deverá apresentar os formatos de personalização previamente salvos pelo usuário. Cada formato deverá exibir o “Nome do formato”.
+[Ttulo3][L1] Selecionar formato salvo
+ O usuário deverá conseguir selecionar um formato previamente salvo. Ao selecionar um formato:
+[SemEspaamento][L0] O sistema deverá carregar as colunas configuradas; 
+[SemEspaamento][L0] O grid deverá ser atualizado; 
+[SemEspaamento][L0] A ordem das colunas deverá ser respeitada; 
+[SemEspaamento][L0] A quantidade de colunas deverá respeitar o limite máximo de 20. 
+ A seleção de um formato deverá substituir a configuração de colunas atualmente utilizada no grid.
+[Ttulo3][L1] Alterar formato
+ O usuário poderá carregar um formato existente, alterar sua configuração e salvar as alterações. Deverá existir a possibilidade de:
+[SemEspaamento][L0] Adicionar colunas; 
+[SemEspaamento][L0] Remover colunas; 
+[SemEspaamento][L0] Alterar a ordem das colunas; 
+[SemEspaamento][L0] Salvar a alteração. 
+[Ttulo3][L1] Salvar como novo formato
+ Ao alterar um formato existente, o usuário deverá poder optar por:
+[L0] Salvar alterações no formato atual; ou 
+[L0] Salvar como novo formato, mantendo o formato original inalterado. 
+ Exemplo: Formato atual: Acompanhamento Exames
+ O usuário altera as colunas e escolhe:
+ Salvar como novo formato → Acompanhamento Exames + Documentação
+ Nesse caso, os dois formatos deverão permanecer disponíveis.
+[Ttulo3][L1] Formato padrão
+ O sistema deverá possuir uma configuração padrão da tela. O formato padrão deverá ser utilizado quando o usuário ainda não tiver selecionado um formato personalizado. A configuração padrão não deverá ser excluída pelo usuário.
+[Ttulo3][L1] Restaurar padrão
+ Disponibilizar a opção Restaurar padrão. Ao acioná-la, o sistema deverá carregar a configuração padrão de colunas definida para a tela. A utilização dessa opção não deverá excluir os formatos personalizados salvos pelo usuário.
+[Ttulo3][L1] Exclusão de formato
+ O usuário deverá poder excluir formatos personalizados que não sejam mais necessários. Antes da exclusão, o sistema deverá solicitar confirmação. A exclusão de um formato não deverá excluir as colunas disponíveis no sistema nem afetar outros formatos salvos. O formato padrão não poderá ser excluído.
+  
+[Ttulo3][L1] Persistência
+ Os formatos deverão ser armazenados individualmente por usuário. Um usuário não deverá visualizar ou alterar formatos personalizados criados por outro usuário, salvo se posteriormente for definida uma funcionalidade de compartilhamento.
+[Ttulo3][L1] Ordem das colunas
+ O formato deverá armazenar também a ordem de apresentação das colunas.
+ Ao carregar um formato salvo, o grid deverá apresentar as colunas na mesma ordem em que foram configuradas.
+[Ttulo3][L1] Validação do limite
+ O sistema deverá impedir o salvamento de um formato que contenha mais de 20 colunas.
+ A mesma validação deverá ser aplicada quando:
+[SemEspaamento][L0] O usuário criar um formato; 
+[SemEspaamento][L0] O usuário alterar um formato; 
+[SemEspaamento][L0] O usuário salvar como novo formato. 
+[Ttulo2][L0] 【Detalhamento do candidato】
+ O sistema deverá disponibilizar um detalhamento do candidato, acessível a partir do grid. O detalhamento deverá centralizar as informações atualmente distribuídas entre as colunas do grid e as diferentes modais da tela de Convocação de Candidato. 
+ O objetivo é permitir que o grid apresente somente as informações essenciais para consulta e que o usuário possa acessar o detalhe quando necessitar consultar informações complementares ou realizar alguma ação específica sobre o candidato.
+ O detalhamento deverá ser organizado por grupos de informações, permitindo identificar de forma clara a situação atual do candidato em cada etapa do processo
+[Ttulo3][L1] 【Candidato】
+[SemEspaamento][L0] Nome
+[SemEspaamento][L0] Nome social
+[SemEspaamento][L0] CPF
+[SemEspaamento][L0] RG
+[SemEspaamento][L0] E-mail
+[SemEspaamento][L0] Data de Nascimento
+[SemEspaamento][L0] Seu Amigo na TP
+[SemEspaamento][L0] ID BMS
+[Ttulo3][L1] 【Vaga】
+[SemEspaamento][L0] Vaga (apresentar ID e nome da vaga)
+[SemEspaamento][L0] Capacity
+[SemEspaamento][L0] Operação
+[SemEspaamento][L0] Célula
+[SemEspaamento][L0] Cargo
+[SemEspaamento][L0] Escala
+[SemEspaamento][L0] Horário vaga
+[SemEspaamento][L0] Disponibilidade de horário
+[SemEspaamento][L0] Carga horária
+[SemEspaamento][L0] Tipo contrato
+[Ttulo3][L1] 【Validação】
+[SemEspaamento][L0] Dados Syscheck
+[SemEspaamento][L0] Data Validação
+[SemEspaamento] 
+[Ttulo3][L1] 【Documentação】
+[SemEspaamento] Apresenta a situação da documentação do candidato.
+[SemEspaamento][L0] Status 
+[SemEspaamento][L0] Data de entrega 
+[Ttulo3][L1] 【Exame Médico】
+[SemEspaamento] Apresenta a situação do exame médico do candidato.
+[SemEspaamento][L0] Status 
+[SemEspaamento][L0] Data agenda médica 
+[Ttulo3][L1] 【Treinamento】
+[SemEspaamento] Apresenta as informações referentes ao treinamento do candidato.
+[SemEspaamento][L0] Status 
+[SemEspaamento][L0] Data confirmação
+[SemEspaamento][L0] Local 
+[SemEspaamento][L0] Horário 
+[SemEspaamento][L0] Início 
+[SemEspaamento][L0] Fim da turma 
+[Ttulo3][L1] 【Admissão】
+[SemEspaamento] Apresenta a informação referente à admissão do candidato.
+[SemEspaamento][L0] Matrícula
+[SemEspaamento][L0] Data de admissão
+[Ttulo3][L1] 【Identificação no cabeçalho】
+[SemEspaamento] No cabeçalho do detalhamento devem ser apresentados:
+[SemEspaamento][L0] Nome do candidato 
+[SemEspaamento][L0] ID 
+[SemEspaamento][L0] CPF 
+[SemEspaamento][L0] Botão para fechamento do detalhamento 
+[SemEspaamento] 
+[SemEspaamento] Também devem ser apresentados os indicadores de status:
+[SemEspaamento][L0] Documentação: [status da documentação] 
+[SemEspaamento][L0] Exame: [status do exame] 
+[SemEspaamento][L0] Convocação: [status da convocação] 
+[SemEspaamento][L0] Treinamento: [status do treinamento]
+[SemEspaamento] 
+[Ttulo3][L1] 【Ações】
+[SemEspaamento] Ao final do detalhamento devem ser disponibilizadas as ações:
+[SemEspaamento][L0] Follow Up 
+[SemEspaamento][L0] Trocar de vaga
+[SemEspaamento][L0] Troca de Capacity
+[SemEspaamento][L0] Troca de sala de Treinamento
+[SemEspaamento] 
+[SemEspaamento] As regras de cada ação estão descritas no item “4 Ações”
+ 
+ 
+ 
+[SemEspaamento] 
+
+[Rodap] 

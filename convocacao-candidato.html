@@ -8,8 +8,9 @@
   <link rel="stylesheet" href="fontawesome/css/all.min.css">
   <style>
     .cv-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-    .cv-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.4fr) auto; gap: 12px; align-items: end; }
-    .cv-filters .form-group, .cv-adv .form-group { margin-bottom: 0; }
+    .cv-card { overflow: visible; }
+    .cv-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 14px; align-items: end; }
+    .cv-filters .form-group, .cv-adv .form-group { margin-bottom: 0; min-width: 0; }
     .cv-filters .form-label, .cv-adv .form-label { font-size: 12px; margin-bottom: 6px; }
     .cv-filters .form-control, .cv-adv .form-control { padding: 8px 10px; font-size: 13px; }
     .search-box { position: relative; }
@@ -17,13 +18,16 @@
     .search-box .form-control { padding-left: 32px; }
     .btn-sm { padding: 7px 12px; font-size: 13px; }
     .btn-more.on { border-color: var(--primary-purple); color: var(--primary-purple); background: #faf5fc; }
-    .cv-adv { display: none; margin-top: 12px; padding: 16px; background: #fafafb; border: 1px solid var(--border-color); border-radius: 8px; }
+    .cv-adv { display: none; margin-top: 14px; padding: 16px; background: #fafafb; border: 1px solid var(--border-color); border-radius: 8px; }
     .cv-adv.open { display: block; }
     .cv-adv-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 16px; }
     .cv-adv-sec { grid-column: 1 / -1; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; }
     .cv-adv-sec:first-child { margin-top: 0; }
     .cv-adv .range { display: flex; gap: 6px; }
-    .cv-adv-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    .cv-fbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+    .cv-fbar .spacer { flex: 1; }
+    .cv-fbar .hint { font-size: 12px; color: #b45309; font-weight: 600; }
+    .cv-fbar .hint:empty { display: none; }
     .cv-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
     .cv-chips:empty { display: none; }
     .cv-chips .chip { background: #f3e5f5; color: #6a1b9a; font-size: 12px; padding: 4px 10px; }
@@ -31,20 +35,50 @@
     .cv-chips .clear { font-size: 12px; color: var(--primary-purple); background: none; border: none; cursor: pointer; font-weight: 600; padding: 4px 6px; }
     .cv-chips .clear:hover { text-decoration: underline; }
 
-    .kpi-wrap { display: grid; grid-template-columns: 3fr 2fr 3fr 3fr 2fr; gap: 12px; }
+    /* Multi-select padrão */
+    .ms { position: relative; }
+    .ms-btn { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; text-align: left; cursor: pointer; background: var(--white); font-family: inherit; color: var(--text-muted); }
+    .ms.has .ms-btn { color: var(--text-main); }
+    .ms-btn .ms-txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ms-btn i { font-size: 11px; color: var(--text-muted); transition: transform .15s; flex: none; }
+    .ms.open .ms-btn { border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(123, 31, 162, .1); }
+    .ms.open .ms-btn i { transform: rotate(180deg); }
+    .ms-pop { display: none; position: absolute; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: min(380px, 90vw); background: var(--white); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.12); z-index: 950; }
+    .ms.open .ms-pop { display: block; }
+    .ms-search { position: relative; padding: 8px; border-bottom: 1px solid #f0f0f0; }
+    .ms-search i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--text-muted); }
+    .ms-search input { width: 100%; padding: 6px 8px 6px 28px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; font-family: inherit; }
+    .ms-search input:focus { outline: none; border-color: var(--primary-purple); }
+    .ms-all, .ms-list label { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+    .ms-all { border-bottom: 1px solid #f0f0f0; font-weight: 600; }
+    .ms-list { max-height: 220px; overflow-y: auto; padding: 4px 0; }
+    .ms-list label:hover, .ms-all:hover { background: #faf5fc; }
+    .ms-list label span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ms input[type=checkbox] { accent-color: var(--primary-purple); flex: none; }
+    .ms-empty { padding: 14px 12px; font-size: 12px; color: var(--text-muted); text-align: center; }
+    .ms-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 12px; border-top: 1px solid #f0f0f0; font-size: 12px; color: var(--text-muted); min-height: 30px; }
+    .ms-foot .link, .lnk { background: none; border: none; color: var(--primary-purple); font-weight: 600; font-size: 12px; cursor: pointer; font-family: inherit; padding: 0; }
+    .ms-foot .link:hover, .lnk:hover { text-decoration: underline; }
+
+    /* Entrada de IDs (chips) */
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; min-height: 36px; padding: 4px 8px !important; cursor: text; }
+    .tags:focus-within { border-color: var(--primary-purple); box-shadow: 0 0 0 2px rgba(123, 31, 162, .1); }
+    .tags .tag { display: inline-flex; align-items: center; gap: 5px; background: #f3e5f5; color: #6a1b9a; border-radius: 10px; padding: 1px 8px; font-size: 12px; font-weight: 600; }
+    .tags .tag i { cursor: pointer; font-size: 10px; opacity: .7; }
+    .tags .tag i:hover { opacity: 1; }
+    .tags input { flex: 1; min-width: 70px; border: none; outline: none; font-size: 13px; font-family: inherit; padding: 2px 0; background: transparent; color: var(--text-main); }
+
+    .kpi-wrap { display: grid; grid-template-columns: 4fr 2fr 3fr 3fr 2fr; gap: 12px; }
     .kpi-group { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; min-width: 0; }
-    .kpi-group-h { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--primary-purple); padding: 8px 12px 7px; border-bottom: 1px solid var(--border-color); background: #fafafb; display: flex; justify-content: space-between; align-items: center; }
+    .kpi-group-h { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--primary-purple); padding: 8px 12px 7px; border-bottom: 1px solid var(--border-color); background: #fafafb; display: flex; justify-content: space-between; align-items: center; white-space: normal; }
     .kpi-items { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
-    .kpi { background: none; border: none; border-right: 1px solid #f0f0f0; padding: 10px 12px 11px; text-align: left; font-family: inherit; cursor: pointer; position: relative; min-width: 0; transition: background .15s; }
+    .kpi { display: flex; flex-direction: column; justify-content: flex-start; background: none; border: none; border-right: 1px solid #f0f0f0; padding: 10px 10px 11px; text-align: left; font-family: inherit; cursor: pointer; position: relative; min-width: 0; transition: background .15s; }
     .kpi:last-child { border-right: none; }
     .kpi:hover { background: #faf5fc; }
     .kpi.static { cursor: default; }
     .kpi.static:hover { background: none; }
     .kpi-v { font-size: 22px; font-weight: 700; color: var(--text-main); font-variant-numeric: tabular-nums; line-height: 1.15; }
-    .kpi-l { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.3; min-height: 2.6em; white-space: normal; overflow-wrap: normal; word-break: normal; hyphens: none; text-wrap: balance; }
-    .kpi { display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 10px 11px !important; }
-    .kpi-group-h { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
-    .kpi-l .assum { border-bottom: 1px dashed #b0b0b0; cursor: help; }
+    .kpi-l { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.3; min-height: 2.6em; white-space: normal; text-wrap: balance; }
     .kpi.on { background: #f3e5f5; }
     .kpi.on .kpi-v, .kpi.on .kpi-l { color: var(--primary-purple); }
     .kpi.on::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--primary-purple); }
@@ -55,28 +89,34 @@
     .cv-bar .grp { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .cv-count { font-size: 14px; font-weight: 600; }
     .cv-count span { font-weight: 400; color: var(--text-muted); font-size: 13px; }
-    .sel-bar { display: none; flex: 1; align-items: center; gap: 10px; flex-wrap: wrap; background: #f3e5f5; border: 1px solid #e1bee7; border-radius: 6px; padding: 6px 8px 6px 14px; }
+    .sel-bar { display: none; flex: 1; align-items: center; gap: 8px; flex-wrap: wrap; background: #f3e5f5; border: 1px solid #e1bee7; border-radius: 6px; padding: 6px 8px 6px 14px; }
     .sel-bar.on { display: flex; }
     .sel-bar .lbl { font-size: 13px; font-weight: 600; color: #6a1b9a; margin-right: 6px; }
+    .sel-bar .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .sel-bar .link { background: none; border: none; color: var(--primary-purple); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
     .sel-bar .link:hover { text-decoration: underline; }
     .sel-bar .spacer { flex: 1; }
+    .tip { display: inline-flex; }
+    .tip > .btn[disabled] { pointer-events: none; }
 
-    .cv-table-wrap { width: 100%; overflow: hidden; border: 1px solid var(--border-color); border-radius: 8px; }
-    .cv-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
-    .cv-table th { font-size: 11px; font-weight: 600; letter-spacing: .3px; color: var(--text-muted); background: #fafafb; padding: 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; user-select: none; }
+    .cv-table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; }
+    .cv-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+    .cv-table th { font-size: 11px; font-weight: 600; letter-spacing: .3px; color: var(--text-muted); background: #fafafb; padding: 10px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; user-select: none; border-bottom: 1px solid var(--border-color); text-align: left; }
     .cv-table th.ns { cursor: default; }
     .cv-table th .sort { margin-left: 4px; opacity: .35; font-size: 10px; }
     .cv-table th.sorted .sort { opacity: 1; color: var(--primary-purple); }
-    .cv-table td { font-size: 13px; padding: 9px 12px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cv-table td { font-size: 13px; padding: 9px 12px; border-bottom: 1px solid #f0f0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: var(--white); }
     .cv-table tbody tr:last-child td { border-bottom: none; }
     .cv-table tbody tr:hover td { background: #faf5fc; }
     .cv-table tbody tr.sel td { background: #fbf6fd; }
     .cv-table .ck { width: 44px; text-align: center; padding-left: 14px; padding-right: 6px; }
     .cv-table .ac { width: 52px; text-align: center; padding: 0 8px; }
+    .cv-table th.ck, .cv-table td.ck { position: sticky; left: 0; z-index: 2; }
+    .cv-table th.cand, .cv-table td.cand { position: sticky; left: 44px; z-index: 2; box-shadow: inset -1px 0 0 #eee; }
     .cv-table input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--primary-purple); cursor: pointer; vertical-align: middle; }
     .cand-n { background: none; border: none; padding: 0; font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: block; text-align: left; }
     .cand-n:hover { color: var(--primary-purple); text-decoration: underline; }
+    .cand-n.lnk { font-weight: 600; font-size: 13px; color: var(--primary-purple); display: inline; }
     .sub { display: block; font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
     .muted { color: #9e9e9e; }
     @keyframes rowFlash { 0%, 40% { background: #e8f5e9; } 100% { background: transparent; } }
@@ -95,28 +135,63 @@
     .row-menu-btn:hover, .row-menu-btn.on { background: var(--white); border-color: var(--border-color); color: var(--primary-purple); }
     .pop { position: fixed; background: var(--white); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.12); z-index: 900; display: none; }
     .pop.on { display: block; }
-    .menu { padding: 6px 0; min-width: 200px; }
-    .menu button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 8px 14px; background: none; border: none; font-family: inherit; font-size: 13px; color: var(--text-main); cursor: pointer; text-align: left; }
-    .menu button i { width: 14px; color: var(--text-muted); font-size: 12px; }
+    .menu { padding: 6px 0; min-width: 240px; }
+    .menu button { display: flex; width: 100%; align-items: flex-start; gap: 10px; padding: 8px 14px; background: none; border: none; font-family: inherit; font-size: 13px; color: var(--text-main); cursor: pointer; text-align: left; }
+    .menu button i { width: 14px; color: var(--text-muted); font-size: 12px; margin-top: 3px; }
     .menu button:hover { background: var(--hover-bg); color: var(--primary-purple); }
     .menu button:hover i { color: var(--primary-purple); }
+    .menu button:disabled, .menu button:disabled:hover { color: #aaa; cursor: not-allowed; background: none; }
+    .menu button:disabled i { color: #ccc; }
+    .menu button small { display: block; font-size: 11px; color: #c62828; font-weight: 400; margin-top: 2px; white-space: normal; line-height: 1.35; }
     .menu hr { border: none; border-top: 1px solid #f0f0f0; margin: 6px 0; }
 
-    .cols-pop { width: 560px; max-width: calc(100vw - 32px); }
-    .cols-h { padding: 14px 16px 10px; border-bottom: 1px solid var(--border-color); }
-    .cols-h strong { font-size: 14px; }
-    .cols-h p { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
+    /* Visões salvas (badges acima da tabela) */
+    .views { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .view-badge { display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--border-color); border-radius: 14px; padding: 2px 3px 2px 10px; font-size: 12px; background: var(--white); color: var(--text-main); max-width: 260px; }
+    .view-badge.on { background: #f3e5f5; border-color: #e1bee7; color: #6a1b9a; }
+    .view-badge .vb-n { background: none; border: none; font-family: inherit; font-size: 12px; cursor: pointer; font-weight: 600; color: inherit; padding: 2px 4px 2px 0; display: inline-flex; align-items: center; gap: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .view-badge .vb-n:hover { text-decoration: underline; }
+    .view-badge .star { color: #f59e0b; font-size: 11px; }
+    .view-badge .vb-m { width: 22px; height: 22px; border-radius: 50%; border: none; background: none; cursor: pointer; color: var(--text-muted); font-size: 12px; flex: none; }
+    .view-badge .vb-m:hover, .view-badge .vb-m.on { background: rgba(0,0,0,.06); color: var(--primary-purple); }
+    .views .vlab { font-size: 12px; color: var(--text-muted); }
+
+    /* Personalização de colunas (modal) */
+    #modal-cols .modal-content { max-width: 940px; }
+    .cols-h { padding: 0 0 12px; }
+    .cols-h p { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
     .cols-meter { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted); }
     .cols-meter .track { flex: 1; height: 4px; border-radius: 2px; background: #eee; overflow: hidden; }
     .cols-meter .fill { height: 100%; background: var(--primary-purple); transition: width .2s; }
     .cols-meter.full { color: #b45309; }
     .cols-meter.full .fill { background: #f59e0b; }
-    .cols-body { padding: 12px 16px; max-height: 360px; overflow-y: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px; }
+    .cols-limit { margin-top: 8px; font-size: 12px; color: #b45309; display: flex; gap: 6px; align-items: center; }
+    .fmt-row { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; align-items: center; gap: 8px 10px; margin-top: 12px; padding: 10px 12px; background: #fafafb; border: 1px solid var(--border-color); border-radius: 8px; }
+    .fmt-row .lab { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+    .fmt-row select { width: auto; min-width: 200px; max-width: 280px; padding: 6px 8px; font-size: 13px; }
+    .fmt-row .mod { font-size: 11px; color: #b45309; font-weight: 600; }
+    .fmt-row .mod.ok { color: #2e7d32; }
+    .fmt-row .acts { display: flex; gap: 6px; flex-wrap: nowrap; justify-self: end; }
+    .fmt-row .acts .btn { white-space: nowrap; }
+    .fmt-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; padding: 10px 12px; background: #faf5fc; border: 1px solid #e1bee7; border-radius: 8px; font-size: 13px; }
+    .fmt-form input.form-control { flex: 1; min-width: 200px; padding: 7px 10px; font-size: 13px; }
+    .fmt-form .err { color: #c62828; font-size: 12px; width: 100%; }
+    .cols-body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); height: 380px; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+    .cols-avail { padding: 12px 16px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; align-content: start; border-right: 1px solid var(--border-color); }
     .cols-g h6 { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700; }
     .cols-g label { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 3px 0; cursor: pointer; }
     .cols-g label.dis { color: #aaa; cursor: not-allowed; }
     .cols-g input { accent-color: var(--primary-purple); }
-    .cols-f { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; border-top: 1px solid var(--border-color); background: #fafafb; border-radius: 0 0 6px 6px; font-size: 12px; color: var(--text-muted); }
+    .cols-selq { padding: 12px 16px; overflow-y: auto; background: #fafafb; }
+    .cols-selq h6 { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; }
+    .sel-item { display: flex; align-items: center; gap: 6px; padding: 5px 6px 5px 8px; background: var(--white); border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 6px; font-size: 13px; }
+    .sel-item .ord { font-size: 11px; color: var(--text-muted); width: 18px; text-align: right; font-variant-numeric: tabular-nums; }
+    .sel-item .n { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ib { width: 24px; height: 24px; border: none; background: none; color: var(--text-muted); cursor: pointer; border-radius: 4px; font-size: 11px; flex: none; }
+    .ib:hover { background: var(--hover-bg); color: var(--primary-purple); }
+    .ib:disabled { opacity: .3; cursor: default; background: none; }
+    .cols-f { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); }
+    .cols-f .spacer { flex: 1; }
 
     .table-footer { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 13px; color: var(--text-muted); }
     .table-footer .per-page { display: flex; align-items: center; gap: 8px; }
@@ -124,29 +199,37 @@
     .pager { display: flex; gap: 4px; }
     .pager .btn { padding: 4px 10px; min-width: 32px; font-size: 13px; justify-content: center; }
 
-    #drawer-cand .drawer-content { width: 540px; right: -600px; max-width: 100vw; }
+    #drawer-cand .drawer-content { width: 600px; right: -660px; max-width: 100vw; }
     #drawer-cand.active .drawer-content { right: 0; }
     .dw-head { display: flex; flex-direction: column; gap: 6px; }
     .dw-head small { font-size: 12px; color: var(--text-muted); }
     .dw-badges { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 24px; border-bottom: 1px solid var(--border-color); }
     .dw-sec { margin-bottom: 20px; }
-    .dw-sec h4 { font-size: 11px; font-weight: 700; color: var(--primary-purple); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0f0f0; }
+    .dw-sec h4 { font-size: 11px; font-weight: 700; color: var(--primary-purple); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .dw-sec h4 .lnk { text-transform: none; letter-spacing: 0; font-size: 12px; }
     .dw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
     .dw-grid .full { grid-column: 1 / -1; }
     .dw-k { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
     .dw-v { font-size: 13px; color: var(--text-main); word-break: break-word; }
-    .dw-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 14px 24px; border-top: 1px solid var(--border-color); background: #fdfdfd; }
+    .dw-act { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
+    .dw-act .form-group { margin: 0; flex: 1; min-width: 160px; }
+    .dw-act .form-label { font-size: 11px; margin-bottom: 4px; }
+    .dw-act .form-control { padding: 7px 10px; font-size: 13px; }
+    .dw-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; }
+    .dw-links a { display: inline-flex; align-items: center; gap: 6px; }
+    .dw-foot { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; padding: 14px 24px; border-top: 1px solid var(--border-color); background: #fdfdfd; }
+    .dw-bloq { width: 100%; font-size: 12px; color: #c62828; display: flex; gap: 6px; align-items: center; }
 
-    #modal-troca .modal-content { max-width: 780px; }
-    .tv-steps { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    #modal-cap .modal-content { max-width: 860px; }
+    #modal-vaga .modal-content { max-width: 1120px; }
+    #modal-sala .modal-content { max-width: 820px; }
+    .tv-steps { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--text-muted); margin-top: 4px; flex-wrap: wrap; }
     .tv-steps b { color: var(--primary-purple); font-weight: 600; }
     .tv-steps .sep { color: #ccc; }
     .tv-pane { display: none; }
     .tv-pane.on { display: block; }
     .tv-count { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
     .tv-count strong { color: var(--text-main); }
-    .tv-names { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-    .tv-names .chip { background: #f5f5f5; }
     .tv-modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
     .tv-mode { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px; cursor: pointer; }
     .tv-mode:hover { border-color: #ce93d8; }
@@ -156,11 +239,16 @@
     .tv-mode small { font-size: 12px; color: var(--text-muted); line-height: 1.4; display: block; margin-top: 2px; }
     .vg-card { margin-top: 12px; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 14px; background: #fafafb; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 14px; }
     .vg-card .dw-v { font-weight: 500; }
-    .vg-card .full2 { grid-column: span 2; }
+    .aloc { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .aloc .form-group { margin-bottom: 0; }
+    .aloc .form-label { font-size: 12px; margin-bottom: 5px; }
+    .aloc .form-control { padding: 8px 10px; font-size: 13px; }
+    .aloc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; margin-top: 10px; }
+    .aloc-info { border: 1px solid var(--border-color); border-radius: 8px; background: #fafafb; padding: 12px 14px; display: grid; gap: 10px; }
+    .aloc-info h5 { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--primary-purple); font-weight: 700; }
     .ind-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .ind-table th { font-size: 11px; padding: 8px 10px; background: #fafafb; }
+    .ind-table th { font-size: 11px; padding: 8px 10px; background: #fafafb; text-align: left; }
     .ind-table td { font-size: 13px; padding: 8px 10px; vertical-align: top; border-bottom: 1px solid #f0f0f0; }
-    .ind-table tr:hover td { background: none; }
     .ind-table select { padding: 7px 8px; font-size: 13px; }
     .ind-table .apply { display: inline-block; margin-top: 5px; font-size: 12px; color: var(--primary-purple); background: none; border: none; cursor: pointer; font-weight: 600; padding: 0; font-family: inherit; }
     .ind-table .apply:hover { text-decoration: underline; }
@@ -171,6 +259,9 @@
     .rv-row .arr { color: var(--primary-purple); text-align: center; }
     .rv-row .new { color: var(--primary-purple); font-weight: 600; }
     .rv-note { display: flex; gap: 10px; background: #fff8e1; border: 1px solid #ffecb3; color: #8a5300; border-radius: 8px; padding: 10px 12px; font-size: 13px; line-height: 1.45; margin-top: 14px; }
+    .rv-note.err { background: #ffebee; border-color: #ffcdd2; color: #b71c1c; }
+    .rv-note.err ul { margin: 6px 0 0 18px; }
+    .rv-note.top { margin: 0 0 14px; }
     .fb-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
     .fb-ico { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex: none; }
     .fb-ico.ok { background: #e8f5e9; color: #2e7d32; }
@@ -183,17 +274,57 @@
     .fb-row .fa-circle-xmark { color: #c62828; }
     .fb-row .why { color: #c62828; font-size: 12px; }
 
+    /* Troca de vaga */
+    .vg-sec { border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+    .vg-sec h4 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
+    .vs-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 14px; margin-bottom: 12px; }
+    .vs-form .form-group { margin-bottom: 0; }
+    .vs-form .form-label { font-size: 12px; margin-bottom: 5px; }
+    .vs-form .form-control { padding: 8px 10px; font-size: 13px; }
+    .vs-hint { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--text-muted); padding: 14px 12px; border: 1px dashed var(--border-color); border-radius: 8px; margin-top: 12px; }
+    .vs-res { max-height: 220px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px; margin-top: 12px; }
+    .vs-n { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+    .vs-sel { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 38px; font-size: 13px; }
+    .vs-sel.has { border-color: var(--primary-purple); background: #faf5fc; }
+    .mt-table { width: 100%; border-collapse: collapse; }
+    .mt-table th { font-size: 11px; font-weight: 600; letter-spacing: .3px; color: var(--text-muted); background: #fafafb; padding: 9px 10px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--border-color); }
+    .mt-table td { font-size: 12.5px; padding: 9px 10px; vertical-align: top; border-bottom: 1px solid #f0f0f0; line-height: 1.4; }
+    .mt-table tbody tr:last-child td { border-bottom: none; }
+    .mt-table tbody tr:hover td { background: #faf5fc; }
+    .mt-table tbody tr.on td { background: #f3e5f5; }
+    .mt-table tr.no td { color: var(--text-muted); }
+    .mt-table input[type=checkbox], .mt-table input[type=radio] { accent-color: var(--primary-purple); width: 15px; height: 15px; cursor: pointer; }
+    .mt-table input:disabled { cursor: not-allowed; }
+    .mt-ok { color: #2e7d32; font-weight: 600; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+    .mt-no { color: #c62828; font-weight: 600; white-space: nowrap; display: inline-flex; gap: 6px; align-items: center; }
+    .mt-step { display: inline-flex; gap: 4px; align-items: center; font-size: 12px; margin: 0 8px 3px 0; white-space: nowrap; }
+    .mt-step i { font-size: 11px; }
+    .mt-step.ok i { color: #2e7d32; }
+    .mt-step.todo i { color: #f59e0b; }
+    .mt-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .mt-card { display: flex; gap: 12px; align-items: center; border: 1px solid; border-radius: 8px; padding: 12px 14px; min-width: 0; }
+    .mt-card .ico { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+    .mt-card b { font-size: 22px; display: block; line-height: 1.1; color: var(--text-main); }
+    .mt-card small { font-size: 12px; display: block; font-weight: 600; color: var(--text-main); }
+    .mt-card .l2 { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+    .mt-card.ok { background: #f1f8f2; border-color: #c8e6c9; } .mt-card.ok .ico { background: #e8f5e9; color: #2e7d32; }
+    .mt-card.err { background: #fff5f5; border-color: #ffcdd2; } .mt-card.err .ico { background: #ffebee; color: #c62828; }
+    .mt-card.info { background: #f3f6fd; border-color: #c5cae9; } .mt-card.info .ico { background: #e8eaf6; color: #3949ab; }
+    .mt-card.warn { background: #fffbf0; border-color: #ffe0b2; } .mt-card.warn .ico { background: #fff3e0; color: #e65100; }
+    .vg-empty { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 13px; }
+    .vg-empty i { font-size: 26px; opacity: .5; display: block; margin-bottom: 10px; }
+
     .proto-states { position: fixed; left: 16px; bottom: 16px; z-index: 1200; font-size: 13px; }
     .proto-states > button { background: #333; color: #fff; border: none; border-radius: 18px; padding: 8px 14px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; gap: 8px; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
-    .proto-states .list { display: none; position: absolute; bottom: 44px; left: 0; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 6px 0; width: 300px; }
+    .proto-states .list { display: none; position: absolute; bottom: 44px; left: 0; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.15); padding: 6px 0; width: 340px; max-height: 72vh; overflow-y: auto; }
     .proto-states.open .list { display: block; }
-    .proto-states .list div { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; padding: 6px 14px; }
-    .proto-states .list button { display: flex; gap: 10px; width: 100%; background: none; border: none; padding: 7px 14px; font-family: inherit; font-size: 13px; cursor: pointer; text-align: left; color: var(--text-main); }
+    .proto-states .list div { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; padding: 8px 14px 4px; }
+    .proto-states .list button { display: flex; gap: 10px; width: 100%; background: none; border: none; padding: 6px 14px; font-family: inherit; font-size: 13px; cursor: pointer; text-align: left; color: var(--text-main); }
     .proto-states .list button:hover { background: #faf5fc; color: var(--primary-purple); }
     .proto-states .list button b { color: var(--primary-purple); font-variant-numeric: tabular-nums; width: 22px; flex: none; }
 
-    @media (max-width: 1200px) { .kpi-wrap { grid-template-columns: repeat(6, minmax(0, 1fr)); } .kpi-group:nth-child(1), .kpi-group:nth-child(3), .kpi-group:nth-child(4) { grid-column: span 2; } .kpi-group:nth-child(2) { grid-column: span 3; } .kpi-group:nth-child(5) { grid-column: span 3; } .cv-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @media (max-width: 800px) { .kpi-wrap { grid-template-columns: 1fr; } .kpi-group { grid-column: auto !important; } .cv-filters, .cv-adv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cols-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vg-card { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tv-modes { grid-template-columns: 1fr; } }
+    @media (max-width: 1200px) { .kpi-wrap { grid-template-columns: repeat(6, minmax(0, 1fr)); } .kpi-group:nth-child(1), .kpi-group:nth-child(2) { grid-column: span 3; } .kpi-group:nth-child(3), .kpi-group:nth-child(4), .kpi-group:nth-child(5) { grid-column: span 2; } .cv-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); } .mt-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 800px) { .kpi-wrap { grid-template-columns: 1fr; } .kpi-group { grid-column: auto !important; } .cv-filters, .cv-adv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fmt-row { grid-template-columns: auto minmax(0, 1fr); } .fmt-row .mod { grid-column: 1 / -1; } .fmt-row .acts { grid-column: 1 / -1; justify-self: start; flex-wrap: wrap; } .cols-body { grid-template-columns: 1fr; height: auto; } .cols-avail { grid-template-columns: 1fr; border-right: none; border-bottom: 1px solid var(--border-color); max-height: 260px; } .cols-selq { max-height: 240px; } .vg-card { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tv-modes, .aloc, .vs-form { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -300,35 +431,40 @@
     </div>
 
     <!-- Filtros -->
-    <div class="card" style="padding: 16px 20px; margin-bottom: 16px;">
+    <div class="card cv-card" style="padding: 16px 20px; margin-bottom: 16px;">
       <div class="cv-filters">
-        <div class="form-group"><label class="form-label" for="f-capacity">Capacity</label><select class="form-control" id="f-capacity"><option value="">Todas</option></select></div>
-        <div class="form-group"><label class="form-label" for="f-operacao">Operação</label><select class="form-control" id="f-operacao"><option value="">Todas</option></select></div>
-        <div class="form-group"><label class="form-label" for="f-celula">Célula</label><select class="form-control" id="f-celula"><option value="">Todas</option></select></div>
+        <div class="form-group"><label class="form-label">Mês Capacity</label><div id="ms-mes"></div></div>
+        <div class="form-group"><label class="form-label">Versão Capacity</label><div id="ms-versao"></div></div>
+        <div class="form-group"><label class="form-label">Cliente</label><div id="ms-cliente"></div></div>
+        <div class="form-group"><label class="form-label">Célula</label><div id="ms-celula"></div></div>
         <div class="form-group"><label class="form-label" for="f-status">Status Convocação</label><select class="form-control" id="f-status"><option value="">Todos</option></select></div>
-        <div class="form-group"><label class="form-label" for="f-busca">Candidato ou CPF</label><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" class="form-control" id="f-busca" placeholder="Nome ou 000.000.000-00"></div></div>
-        <button class="btn btn-secondary btn-sm btn-more" id="btn-more" style="height: 36px; justify-self: start;"><i class="fa-solid fa-plus"></i> Filtros <span id="adv-count"></span></button>
+        <div class="form-group"><label class="form-label" for="f-busca">Candidato ou CPF</label><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" class="form-control" id="f-busca" placeholder="Nome ou CPF (com ou sem máscara)"></div></div>
+        <div class="form-group"><label class="form-label">ID Capacity</label><div id="tg-idcap"></div></div>
+        <div class="form-group"><label class="form-label">ID Sala de Treinamento</label><div id="tg-idsala"></div></div>
       </div>
 
       <div class="cv-adv" id="cv-adv">
         <div class="cv-adv-grid">
           <div class="cv-adv-sec">Status por etapa</div>
-          <div class="form-group"><label class="form-label" for="a-exame">Status Exame Médico</label><select class="form-control" id="a-exame"><option value="">Todos</option></select></div>
-          <div class="form-group"><label class="form-label" for="a-doc">Status Documentação</label><select class="form-control" id="a-doc"><option value="">Todos</option></select></div>
-          <div class="form-group"><label class="form-label" for="a-trein">Status Treinamento</label><select class="form-control" id="a-trein"><option value="">Todos</option></select></div>
+          <div class="form-group"><label class="form-label">Status Exame Médico</label><div id="ms-exame"></div></div>
+          <div class="form-group"><label class="form-label">Status Documentação</label><div id="ms-doc"></div></div>
           <div class="form-group"><label class="form-label" for="a-indic">Possui indicação</label><select class="form-control" id="a-indic"><option value="">Todos</option><option>Sim</option><option>Não</option></select></div>
+          <div></div>
           <div class="cv-adv-sec">Período de validação</div>
           <div class="form-group" style="grid-column: span 2;"><label class="form-label">Data início / fim (Dt. Validação)</label><div class="range"><input type="date" class="form-control" id="a-de" title="Data início"><input type="date" class="form-control" id="a-ate" title="Data fim"></div></div>
           <div></div><div></div>
           <div class="cv-adv-sec">Exibição</div>
           <div class="form-group"><label class="form-label" for="a-reprov">Exibir candidatos reprovados</label><select class="form-control" id="a-reprov"><option>Sim</option><option>Não</option></select></div>
-          <div class="form-group"><label class="form-label" for="a-admit">Exibir candidatos admitidos</label><select class="form-control" id="a-admit"><option>Sim</option><option>Não</option></select></div>
           <div class="form-group"><label class="form-label" for="a-hist">Histórico completo</label><select class="form-control" id="a-hist"><option>Não</option><option>Sim</option></select></div>
         </div>
-        <div class="cv-adv-actions">
-          <button class="btn btn-secondary btn-sm" id="adv-limpar">Limpar</button>
-          <button class="btn btn-primary btn-sm" id="adv-aplicar"><i class="fa-solid fa-check"></i> Aplicar filtros</button>
-        </div>
+      </div>
+
+      <div class="cv-fbar">
+        <button class="btn btn-secondary btn-sm btn-more" id="btn-more"><i class="fa-solid fa-plus"></i> Filtros <span id="adv-count"></span></button>
+        <span class="hint" id="draft-hint"></span>
+        <span class="spacer"></span>
+        <button class="btn btn-secondary btn-sm" id="btn-limpar"><i class="fa-solid fa-eraser"></i> Limpar filtros</button>
+        <button class="btn btn-primary btn-sm" id="btn-aplicar"><i class="fa-solid fa-check"></i> Aplicar filtros</button>
       </div>
 
       <div class="cv-chips" id="cv-chips"></div>
@@ -337,7 +473,7 @@
     <!-- Indicadores -->
     <div class="card" style="padding: 16px 20px; margin-bottom: 16px;">
       <div class="kpi-wrap" id="kpi-wrap"></div>
-      <div class="kpi-note"><i class="fa-solid fa-hand-pointer"></i> Clique em um indicador para filtrar a tabela. Clique novamente para remover.</div>
+      <div class="kpi-note"><i class="fa-solid fa-hand-pointer"></i> Clique em um indicador para filtrar a tabela. Clique novamente para remover. Solicitado e Solicitado + Buffer são valores da demanda e não filtram.</div>
     </div>
 
     <!-- Tabela -->
@@ -345,20 +481,19 @@
       <div class="cv-bar">
         <div class="grp" id="bar-default">
           <div class="cv-count" id="cv-count"></div>
+          <div class="views" id="views"></div>
         </div>
         <div class="sel-bar" id="sel-bar">
           <span class="lbl" id="sel-lbl"></span>
-          <button class="btn btn-primary btn-sm" onclick="abrirTroca([...sel])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>
-          <button class="btn btn-secondary btn-sm" onclick="followUp([...sel])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
-          <button class="btn btn-secondary btn-sm" id="btn-mais"><i class="fa-solid fa-ellipsis"></i> Mais ações</button>
+          <span class="acts" id="sel-actions"></span>
           <button class="link" id="sel-all" style="display: none;"></button>
           <span class="spacer"></span>
           <button class="link" onclick="limparSel()">Limpar seleção</button>
         </div>
         <div class="grp" id="bar-tools">
           <button class="btn btn-secondary btn-sm" onclick="exportarCSV()"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
-          <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo Resgatar Candidato.', 'success')"><i class="fa-solid fa-life-ring"></i> Resgatar Candidato</button>
-          <button class="btn btn-secondary btn-sm" id="btn-cols" title="Escolher colunas exibidas"><i class="fa-solid fa-table-columns"></i> Colunas</button>
+          <button class="btn btn-secondary btn-sm" onclick="resgatar()"><i class="fa-solid fa-life-ring"></i> Resgatar Candidato</button>
+          <button class="btn btn-secondary btn-sm" id="btn-cols" title="Personalizar colunas e visões"><i class="fa-solid fa-table-columns"></i> Colunas</button>
         </div>
       </div>
 
@@ -385,17 +520,52 @@
     <button onclick="resgatar([...sel])"><i class="fa-solid fa-life-ring"></i> Resgatar candidatos</button>
   </div>
 
-  <!-- Colunas -->
-  <div class="pop cols-pop" id="cols-pop">
-    <div class="cols-h">
-      <strong>Colunas exibidas</strong>
-      <p>A tabela mostra até o limite que cabe na largura da tela, sem rolagem lateral. As demais informações ficam no detalhe do candidato.</p>
-      <div class="cols-meter" id="cols-meter"><span id="cols-n"></span><div class="track"><div class="fill" id="cols-fill"></div></div><span id="cols-max"></span></div>
+  <!-- Menu da visão (badge) -->
+  <div class="pop menu" id="view-menu"></div>
+
+  <!-- Modal Colunas e visões -->
+  <div class="modal-overlay" id="modal-cols">
+    <div class="modal-content" id="cols-pop">
+      <div class="modal-header">
+        <div><h2 class="modal-title">Personalizar colunas</h2><div class="tv-steps" id="cols-sub"></div></div>
+        <button class="modal-close" onclick="closeModal('modal-cols')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="cols-h">
+          <p>Até 20 colunas simultâneas. A ordem da lista define a ordem no grid; com muitas colunas a tabela rola na horizontal e a coluna Candidato permanece fixa.</p>
+          <div class="cols-meter" id="cols-meter"><span id="cols-n"></span><div class="track"><div class="fill" id="cols-fill"></div></div><span id="cols-max"></span></div>
+          <div class="cols-limit" id="cols-limit" style="display: none;"><i class="fa-solid fa-triangle-exclamation"></i> Limite máximo de 20 colunas atingido. Remova uma coluna para selecionar outra.</div>
+          <div class="fmt-row">
+            <span class="lab">Visão</span>
+            <select class="form-control" id="fmt-sel"></select>
+            <span class="mod" id="fmt-mod"></span>
+            <span class="acts" id="fmt-actions"></span>
+          </div>
+          <div class="fmt-form" id="fmt-form" style="display: none;"></div>
+        </div>
+        <div class="cols-body">
+          <div class="cols-avail" id="cols-avail"></div>
+          <div class="cols-selq"><h6>Selecionadas (ordem no grid)</h6><div id="cols-sel"></div></div>
+        </div>
+      </div>
+      <div class="modal-footer cols-f">
+        <span><i class="fa-regular fa-bookmark"></i> Visões salvas aparecem como badges acima da tabela e ficam disponíveis apenas para você.</span>
+        <span class="spacer"></span>
+        <button class="btn btn-secondary btn-sm" id="cols-reset">Restaurar padrão</button>
+        <button class="btn btn-primary btn-sm" onclick="closeModal('modal-cols')">Concluir</button>
+      </div>
     </div>
-    <div class="cols-body" id="cols-body"></div>
-    <div class="cols-f">
-      <span><i class="fa-regular fa-bookmark"></i> Sua seleção fica salva para as próximas visitas.</span>
-      <button class="btn btn-secondary btn-sm" id="cols-reset">Restaurar padrão</button>
+  </div>
+
+  <!-- Modal confirmação de exclusão de visão -->
+  <div class="modal-overlay" id="modal-del-view">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h2 class="modal-title">Excluir visão</h2>
+        <button class="modal-close" onclick="closeModal('modal-del-view')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="del-view-body" style="font-size: 13px; line-height: 1.5;"></div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-del-view')">Cancelar</button><button class="btn btn-danger" id="del-view-ok"><i class="fa-regular fa-trash-can"></i> Excluir visão</button></div>
     </div>
   </div>
 
@@ -412,137 +582,323 @@
     </div>
   </div>
 
-  <!-- Modal Trocar de vaga -->
-  <div class="modal-overlay" id="modal-troca">
+  <!-- Modal Configuração do PC -->
+  <div class="modal-overlay" id="modal-pc">
+    <div class="modal-content" style="max-width: 560px;">
+      <div class="modal-header">
+        <div><h2 class="modal-title">Configuração do PC</h2><div class="tv-steps" id="pc-sub"></div></div>
+        <button class="modal-close" onclick="closeModal('modal-pc')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="pc-body"></div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-pc')">Fechar</button></div>
+    </div>
+  </div>
+
+  <!-- Modal Follow Up -->
+  <div class="modal-overlay" id="modal-fu">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <div><h2 class="modal-title">Follow Up</h2><div class="tv-steps" id="fu-sub"></div></div>
+        <button class="modal-close" onclick="closeModal('modal-fu')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="fu-body"></div>
+      <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modal-fu')">Fechar</button><button class="btn btn-primary" id="fu-go"><i class="fa-regular fa-paper-plane"></i> Abrir Follow Up</button></div>
+    </div>
+  </div>
+
+  <!-- Modal Troca de Capacity (Alocação de Candidato) -->
+  <div class="modal-overlay" id="modal-cap">
     <div class="modal-content">
       <div class="modal-header">
         <div>
-          <h2 class="modal-title" id="tv-title">Trocar de vaga</h2>
-          <div class="tv-steps" id="tv-steps"></div>
+          <h2 class="modal-title" id="tc-title">Troca de Capacity</h2>
+          <div class="tv-steps" id="tc-steps"></div>
         </div>
-        <button class="modal-close" onclick="fecharTroca()"><i class="fa-solid fa-times"></i></button>
+        <button class="modal-close" onclick="fecharCap()"><i class="fa-solid fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <div class="tv-pane" id="tv-edit">
-          <div class="tv-count" id="tv-count"></div>
-          <div class="tv-modes" id="tv-modes">
-            <label class="tv-mode" data-mode="massa"><input type="radio" name="tv-mode" value="massa"><span><strong>Alterar todos para a mesma vaga</strong><small>Uma única Capacity para todos os candidatos selecionados.</small></span></label>
-            <label class="tv-mode" data-mode="ind"><input type="radio" name="tv-mode" value="ind"><span><strong>Definir vaga individualmente</strong><small>Escolha uma Capacity diferente para cada candidato.</small></span></label>
+        <div class="tv-pane" id="tc-edit">
+          <div class="tv-count" id="tc-count"></div>
+          <div class="tv-modes" id="tc-modes">
+            <label class="tv-mode" data-mode="massa"><input type="radio" name="tc-mode" value="massa"><span><strong>Alocar todos na mesma Capacity</strong><small>Uma única Capacity para todos os candidatos selecionados.</small></span></label>
+            <label class="tv-mode" data-mode="ind"><input type="radio" name="tc-mode" value="ind"><span><strong>Definir Capacity individualmente</strong><small>Escolha uma Capacity diferente para cada candidato.</small></span></label>
           </div>
-          <div id="tv-massa" style="display: none;">
-            <div id="tv-atual"></div>
-            <label class="form-label" for="tv-massa-sel">Nova vaga / Capacity</label>
-            <select class="form-control" id="tv-massa-sel"></select>
-            <div id="tv-massa-card"></div>
-          </div>
-          <div id="tv-ind" style="display: none;">
-            <div class="cv-table-wrap"><table class="ind-table"><colgroup><col style="width: 34%;"><col style="width: 24%;"><col></colgroup>
-              <thead><tr><th>Candidato</th><th>Capacity atual</th><th>Nova vaga / Capacity</th></tr></thead>
-              <tbody id="tv-ind-body"></tbody></table></div>
+          <div id="tc-atual"></div>
+          <div id="tc-massa" style="display: none;"></div>
+          <div id="tc-ind" style="display: none;">
+            <div class="cv-table-wrap"><table class="ind-table"><colgroup><col style="width: 32%;"><col style="width: 26%;"><col></colgroup>
+              <thead><tr><th>Candidato</th><th>Capacity atual</th><th>Nova Capacity</th></tr></thead>
+              <tbody id="tc-ind-body"></tbody></table></div>
           </div>
         </div>
-        <div class="tv-pane" id="tv-review">
+        <div class="tv-pane" id="tc-review">
           <div class="tv-count" id="rv-count"></div>
           <div class="rv-list" id="rv-list"></div>
-          <div class="rv-note" id="rv-note"><i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i><span>As vagas só serão alteradas após clicar em <strong>Confirmar troca</strong>.</span></div>
+          <div class="rv-note"><i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i><span>As Capacities só serão alteradas após clicar em <strong>Confirmar troca</strong>. Candidatos alocados em sala de treinamento saem da sala atual e voltam a ficar pendentes de confirmação na nova Capacity.</span></div>
         </div>
-        <div class="tv-pane" id="tv-result"></div>
+        <div class="tv-pane" id="tc-result"></div>
       </div>
-      <div class="modal-footer" id="tv-footer"></div>
+      <div class="modal-footer" id="tc-footer"></div>
+    </div>
+  </div>
+
+  <!-- Modal Troca de Sala de Treinamento -->
+  <div class="modal-overlay" id="modal-sala">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div><h2 class="modal-title">Troca de Sala de Treinamento</h2><div class="tv-steps" id="sl-sub"></div></div>
+        <button class="modal-close" onclick="closeModal('modal-sala')"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="tv-count" id="sl-info"></div>
+        <div id="sl-msg"></div>
+        <div class="cv-table-wrap" style="overflow: auto;"><table class="mt-table" id="sl-table"></table></div>
+        <div class="rv-note" style="margin-top: 12px;"><i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i><span>Candidatos contratados (com matrícula) só podem ser movimentados para salas com a <strong>mesma data de início</strong> da sala atual. Candidatos sem matrícula podem ir para qualquer sala da Capacity.</span></div>
+      </div>
+      <div class="modal-footer" id="sl-footer"></div>
+    </div>
+  </div>
+
+  <!-- Modal Trocar de vaga -->
+  <div class="modal-overlay" id="modal-vaga">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div><h2 class="modal-title">Trocar de vaga</h2><div class="tv-steps" id="vg-sub"></div></div>
+        <button class="modal-close" onclick="fecharVaga()"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="tv-pane on" id="vg-main">
+          <div class="rv-note top" id="vg-block" style="display: none;"></div>
+          <div class="vg-empty" id="vg-empty" style="display: none;"><i class="fa-solid fa-user-lock"></i>Nenhum candidato elegível para troca de vaga.<br>Candidatos contratados com treinamento confirmado não podem ser transferidos.</div>
+          <div id="vg-search">
+            <div class="vg-sec">
+              <h4>1. Pesquisar nova vaga</h4>
+              <div class="vs-form">
+                <div class="form-group"><label class="form-label" for="vs-id">ID da Vaga</label><input type="text" class="form-control" id="vs-id" placeholder="Informe o ID" inputmode="numeric"></div>
+                <div class="form-group"><label class="form-label" for="vs-cod">Código da Vaga</label><input type="text" class="form-control" id="vs-cod" placeholder="Informe o código"></div>
+                <div class="form-group"><label class="form-label" for="vs-tipo">Tipo da Vaga</label><select class="form-control" id="vs-tipo"><option value="">Todos os tipos</option></select></div>
+                <div class="form-group"><label class="form-label" for="vs-nome">Nome da Vaga</label><input type="text" class="form-control" id="vs-nome" placeholder="Informe o nome da vaga"></div>
+                <div class="form-group"><label class="form-label" for="vs-gestao">Gestão da Vaga</label><select class="form-control" id="vs-gestao"><option value="">Selecione a Gestão</option></select></div>
+              </div>
+              <div style="display: flex; gap: 8px;"><button class="btn btn-primary btn-sm" id="vs-go"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button><button class="btn btn-secondary btn-sm" id="vs-clear">Limpar</button></div>
+              <div id="vs-results"></div>
+              <label class="form-label" style="margin-top: 14px; font-size: 12px;">Nova Vaga*</label>
+              <div class="form-control vs-sel" id="vs-sel"></div>
+            </div>
+          </div>
+          <div id="vg-analysis" style="display: none;">
+            <div class="vg-sec"><h4>2. Resumo da análise</h4><div class="mt-cards" id="mt-cards"></div></div>
+            <div class="vg-sec"><h4>3. Detalhamento por candidato</h4><div class="cv-table-wrap" style="overflow: auto;"><table class="mt-table" id="mt-table"></table></div><div class="rv-note" id="mt-note"><i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i><span>Nenhuma candidatura é alterada até clicar em <strong>Confirmar troca de vaga</strong>. Apenas candidatos com Match e selecionados serão transferidos; os demais permanecem na vaga atual.</span></div></div>
+          </div>
+        </div>
+        <div class="tv-pane" id="vg-result"></div>
+      </div>
+      <div class="modal-footer" id="vg-footer"></div>
     </div>
   </div>
 
   <!-- Atalhos de estado do protótipo -->
   <div class="proto-states" id="proto-states">
     <div class="list">
-      <div>Estados do protótipo</div>
+      <div>Filtros</div>
       <button data-st="1"><b>01</b> Estado inicial, sem filtros</button>
-      <button data-st="2"><b>02</b> Filtros aplicados</button>
-      <button data-st="3"><b>03</b> Personalização de colunas</button>
+      <button data-st="2"><b>02</b> Multi-select aberto (Versão Capacity)</button>
+      <button data-st="3"><b>03</b> Vários filtros preenchidos e aplicados</button>
+      <div>Grid e detalhe</div>
       <button data-st="4"><b>04</b> Detalhe do candidato</button>
       <button data-st="5"><b>05</b> Candidatos selecionados</button>
-      <button data-st="6"><b>06</b> Trocar de vaga: tipo de alteração</button>
-      <button data-st="7"><b>07</b> Trocar de vaga: em massa</button>
-      <button data-st="8"><b>08</b> Trocar de vaga: individual</button>
-      <button data-st="9"><b>09</b> Revisar troca de vaga</button>
-      <button data-st="10"><b>10</b> Feedback: troca realizada</button>
-      <button data-st="11"><b>10b</b> Feedback: sucesso parcial</button>
+      <div>Colunas</div>
+      <button data-st="6"><b>06</b> Painel de personalização</button>
+      <button data-st="7"><b>07</b> Limite de 20 colunas atingido</button>
+      <button data-st="8"><b>08</b> Formato salvo selecionado</button>
+      <button data-st="9"><b>09</b> Edição de formato (salvar / salvar como novo)</button>
+      <button data-st="10"><b>10</b> Excluir formato</button>
+      <button data-st="11"><b>11</b> Colunas reordenadas</button>
+      <div>Trocar de vaga</div>
+      <button data-st="12"><b>12</b> Pesquisar nova vaga</button>
+      <button data-st="13"><b>13</b> Resultados da pesquisa</button>
+      <button data-st="14"><b>14</b> Análise de match</button>
+      <button data-st="15"><b>15</b> Troca confirmada (sucesso)</button>
+      <button data-st="16"><b>16</b> Sucesso parcial</button>
+      <button data-st="17"><b>17</b> Bloqueio: contratado com treinamento confirmado</button>
+      <div>Troca de Capacity</div>
+      <button data-st="18"><b>18</b> Individual (Alocação de Candidato)</button>
+      <button data-st="19"><b>19</b> Em massa</button>
+      <button data-st="20"><b>20</b> Revisão</button>
+      <button data-st="21"><b>21</b> Sucesso</button>
+      <button data-st="22"><b>22</b> Sucesso parcial</button>
+      <div>Troca de sala de treinamento</div>
+      <button data-st="23"><b>23</b> Seleção de sala</button>
+      <button data-st="24"><b>24</b> Movimentação válida</button>
+      <button data-st="25"><b>25</b> Erro: data de início incompatível</button>
+      <button data-st="26"><b>26</b> Capacities diferentes (ação indisponível)</button>
     </div>
     <button onclick="this.parentElement.classList.toggle('open')"><i class="fa-solid fa-layer-group"></i> Estados</button>
   </div>
 
   <script src="script.js"></script>
+  <script src="vagas-data.js"></script>
+
   <script>
+    // ---------- Util ----------
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const uniq = arr => [...new Set(arr)].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt'));
+    const clone = o => JSON.parse(JSON.stringify(o));
+    const plural = (n, s, p) => n + ' ' + (n === 1 ? s : p);
+    const p2 = n => String(n).padStart(2, '0');
+    const toISO = br => { if (!br) return ''; const [d, m, y] = br.split(' ')[0].split('/'); return y + '-' + m + '-' + d; };
+    const brDate = iso => iso ? iso.split('-').reverse().join('/') : '';
+    const dOnly = v => v ? v.split(' ')[0] : '';
+    const cap1 = s => s ? s.charAt(0) + s.slice(1).toLowerCase() : '';
+    const dash = v => (v === '' || v == null) ? '<span class="muted">—</span>' : v;
+    const kv = (k, v, cls) => `<div class="${cls || ''}"><div class="dw-k">${k}</div><div class="dw-v">${dash(v)}</div></div>`;
+
     // ---------- Dados (fictícios) ----------
+    const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    const MESES_L = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    const mesCurto = ym => MESES[+ym.slice(5) - 1] + '/' + ym.slice(2, 4);
+    const mesLongo = ym => ym.slice(0, 4) + ' ' + MESES_L[+ym.slice(5) - 1];
+    // Capacity: ID, versão e mês separados (versao/mes). vagaId vincula à vaga de vagas-data.js.
     const CAPS = [
-      { id: 10856, cap: 'EXTRA - 2026 outubro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 1 BR', cargo: 'Operador de Atendimento', horario: '16:40', sol: 13, buf: 15 },
-      { id: 10922, cap: 'EXTRA - 2026 outubro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 2 BR', cargo: 'Operador de Atendimento', horario: '06:00', sol: 10, buf: 12 },
-      { id: 11031, cap: 'D55 - 2026 novembro', cliente: 'AIRBNB', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb Community Support BR', cargo: 'Operador de Atendimento', horario: '14:30', sol: 8, buf: 10 },
-      { id: 10864, cap: 'D55 - 2026 outubro', cliente: "L'OREAL", site: 'TPBR SÃO BENTO', celula: "L'oreal CLAPA N1 ECOM VOZ", cargo: 'Operador de Atendimento', horario: '09:00', sol: 20, buf: 22 },
-      { id: 10456, cap: 'D55 - 2026 outubro', cliente: 'AMAZON', site: 'TPBR SÃO BENTO', celula: 'Amazon CLAPA D2 Phone TPS', cargo: 'Operador de Atendimento', horario: '08:00', sol: 19, buf: 25 },
-      { id: 10839, cap: 'D55 - 2026 novembro', cliente: 'HOTELS.COM', site: 'TPBR VILA PRUDENTE', celula: 'Hotels.com CLAPA Service GDS', cargo: 'Operador Bilíngue', horario: '12:00', sol: 16, buf: 20 }
+      { id: 10856, versao: 'EXTRA', mes: '2026-10', cliente: 'Airbnb', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 1 BR', cargo: 'Operador de Atendimento', horario: '16:40 - 23:00', local: 'B&M', cc: '160050160101', salario: 'R$ 1.897,50', sol: 13, buf: 15, alocados: 14, vagaId: 2860 },
+      { id: 10922, versao: 'EXTRA', mes: '2026-10', cliente: 'Airbnb', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb VPRDN Resolution 2 BR', cargo: 'Operador de Atendimento', horario: '06:00 - 12:20', local: 'B&M', cc: '160050160101', salario: 'R$ 1.897,50', sol: 10, buf: 12, alocados: 5, vagaId: 2860 },
+      { id: 11031, versao: 'D55', mes: '2026-11', cliente: 'Airbnb', site: 'TPBR VILA PRUDENTE', celula: 'Airbnb Community Support BR', cargo: 'Operador de Atendimento', horario: '14:30 - 20:50', local: 'B&M', cc: '160050160102', salario: 'R$ 1.897,50', sol: 8, buf: 10, alocados: 3, vagaId: 2861 },
+      { id: 10864, versao: 'D55', mes: '2026-10', cliente: "L'Oréal", site: 'TPBR SÃO BENTO', celula: "L'oreal CLAPA N1 ECOM VOZ", cargo: 'Operador de Atendimento', horario: '09:00 - 15:20', local: 'B&M', cc: '160050170210', salario: 'R$ 2.133,65', sol: 20, buf: 22, alocados: 3, vagaId: 2870 },
+      { id: 10456, versao: 'D55', mes: '2026-10', cliente: 'Amazon', site: 'TPBR SÃO BENTO', celula: 'Amazon CLAPA D2 Phone TPS', cargo: 'Operador de Atendimento', horario: '08:00 - 14:20', local: 'B&M', cc: '160050170305', salario: 'R$ 1.897,50', sol: 19, buf: 25, alocados: 3, vagaId: 2875 },
+      { id: 10839, versao: 'D55', mes: '2026-11', cliente: 'Hotels.com', site: 'TPBR VILA PRUDENTE', celula: 'Hotels.com CLAPA Service GDS', cargo: 'Operador Bilíngue', horario: '12:00 - 18:20', local: 'WAHA', cc: '160050160330', salario: 'R$ 2.650,00', sol: 16, buf: 20, alocados: 2, vagaId: 2880 },
+      { id: 11102, versao: 'D42', mes: '2026-11', cliente: '99 Food', site: 'TPBR SÃO BENTO', celula: '99 Food Suporte Entregador', cargo: 'Operador de Atendimento', horario: '10:00 - 16:20', local: 'B&M', cc: '160050170412', salario: 'R$ 1.897,50', sol: 12, buf: 14, alocados: 3, vagaId: 2354 },
+      { id: 11240, versao: 'SAV', mes: '2026-12', cliente: 'Nubank', site: 'TPBR RECIFE', celula: 'Nubank SAC Recife', cargo: 'Operador de Atendimento', horario: '07:00 - 13:20', local: 'B&M', cc: '160050180120', salario: 'R$ 1.650,00', sol: 25, buf: 28, alocados: 3, vagaId: 2741 }
     ];
     const capById = id => CAPS.find(c => c.id === id);
+    const capLabel = c => c.versao + ' - ' + mesLongo(c.mes);
     const opLabel = c => c.cliente + ' - ' + c.site;
 
-    const FIRST = ['Adrielen','Adryan','Alef','Sayuri','Ananda','Andréa','Bárbara','Beatriz','Chrislen','Cláudio','Daniela','Diego','Eduarda','Emerson','Fabiana','Felipe','Gabriela','Gustavo','Helena','Igor','Jéssica','João Pedro','Karina','Leonardo','Luana','Marcos','Natália','Otávio','Paula','Rafaela'];
-    const LAST = ['Beres','Moreira','Farias','Kayaki','Cabral','Cubinhetz','Busa','Silva','Nunes','Rocha','Prado','Lima','Teixeira','Santos','Queiroz','Araújo','Mendes','Barros','Castro','Duarte','Freitas','Gomes','Ribeiro','Martins','Pereira','Souza','Almeida','Carvalho','Pinto','Oliveira'];
+    // Salas de treinamento vinculadas à Capacity
+    const SALAS = [
+      { id: 12628, capId: 10856, nome: 'Airbnb Resolution 1 - Turma 68', dtIni: '20/10/2026', hIni: '08:00', dtFim: '18/11/2026', hFim: '17:00' },
+      { id: 12629, capId: 10856, nome: 'Airbnb Resolution 1 - Turma 69', dtIni: '20/10/2026', hIni: '13:00', dtFim: '18/11/2026', hFim: '22:00' },
+      { id: 12630, capId: 10856, nome: 'Airbnb Resolution 1 - Turma 70', dtIni: '27/10/2026', hIni: '08:00', dtFim: '25/11/2026', hFim: '17:00' },
+      { id: 12702, capId: 10922, nome: 'Airbnb Resolution 2 - Turma 12', dtIni: '22/10/2026', hIni: '06:00', dtFim: '20/11/2026', hFim: '15:00' },
+      { id: 12810, capId: 11031, nome: 'Airbnb Community - Turma 05', dtIni: '03/11/2026', hIni: '14:00', dtFim: '02/12/2026', hFim: '23:00' },
+      { id: 12811, capId: 11031, nome: 'Airbnb Community - Turma 06', dtIni: '10/11/2026', hIni: '14:00', dtFim: '09/12/2026', hFim: '23:00' },
+      { id: 12650, capId: 10864, nome: "L'Oréal ECOM - Turma 31", dtIni: '20/10/2026', hIni: '09:00', dtFim: '18/11/2026', hFim: '18:00' },
+      { id: 12651, capId: 10864, nome: "L'Oréal ECOM - Turma 32", dtIni: '27/10/2026', hIni: '09:00', dtFim: '25/11/2026', hFim: '18:00' },
+      { id: 12660, capId: 10456, nome: 'Amazon D2 - Turma 44', dtIni: '20/10/2026', hIni: '08:00', dtFim: '18/11/2026', hFim: '17:00' },
+      { id: 12820, capId: 10839, nome: 'Hotels.com GDS - Turma 09', dtIni: '03/11/2026', hIni: '12:00', dtFim: '02/12/2026', hFim: '21:00' },
+      { id: 12830, capId: 11102, nome: '99 Food - Turma 02', dtIni: '03/11/2026', hIni: '10:00', dtFim: '02/12/2026', hFim: '19:00' },
+      { id: 12831, capId: 11102, nome: '99 Food - Turma 03', dtIni: '10/11/2026', hIni: '10:00', dtFim: '09/12/2026', hFim: '19:00' },
+      { id: 12900, capId: 11240, nome: 'Nubank SAC Recife - Turma 01', dtIni: '01/12/2026', hIni: '07:00', dtFim: '30/12/2026', hFim: '16:00' }
+    ];
+    const salaById = id => SALAS.find(s => s.id === id) || null;
+
+    // Vagas: fonte compartilhada (vagas-data.js)
+    const VAGAS = window.TPVagas ? TPVagas.all() : [];
+    const vagaById = id => VAGAS.find(v => v.id === id) || (window.TPVagas ? TPVagas.find(id) : null);
+    const gestaoOf = v => v.gestaoRS || (window.TPVagas ? (TPVagas.get(v.id) || {}).gestaoRS : '') || 'RS Corporativo';
+    const vagaLabel = c => { const v = vagaById(c.vagaId); return v ? v.id + ' - ' + v.nome : ''; };
+
+    // Regras simuladas de elegibilidade / etapas por vaga (critérios de match)
+    const ETAPAS = ['Avaliação', 'Multitelas', 'Syscheck', 'Entrevista'];
+    const E_STD = { 'Avaliação': ['Prova Padrão'], 'Multitelas': ['Digitação', 'Navegação'], 'Syscheck': ['Syscheck'], 'Entrevista': ['Entrevista Hallo'] };
+    const REQ = {
+      2860: { municipio: 'São Paulo', etapas: E_STD },
+      2861: { municipio: 'São Paulo', etapas: { ...E_STD, 'Multitelas': ['Digitação', 'Atenção Concentrada'] } },
+      2870: { exp: 'Pleno', etapas: { ...E_STD, 'Avaliação': ['Prova Comportamental'] } },
+      2875: { municipio: 'São Paulo', etapas: E_STD },
+      2880: { idioma: 'INGLÊS', exp: 'Pleno', municipio: 'São Paulo', etapas: { ...E_STD, 'Avaliação': ['Prova Padrão', 'Teste de Inglês'] } },
+      2354: { etapas: { 'Avaliação': ['Prova Padrão'], 'Multitelas': ['Digitação'], 'Entrevista': ['Entrevista Hallo'] } },
+      2741: { municipio: 'Recife', etapas: E_STD },
+      2802: { idioma: 'ESPANHOL', etapas: { ...E_STD, 'Avaliação': ['Prova Padrão', 'Teste de Espanhol'] } },
+      2166: { pcd: true, municipio: 'São Paulo', etapas: E_STD }, 2167: { pcd: true, etapas: E_STD }, 2690: { pcd: true, etapas: E_STD }
+    };
+    const REQ_STAFF = { exp: 'Pleno', etapas: { 'Avaliação': ['Prova Comportamental'], 'Entrevista': ['Entrevista Hallo'] } };
+    const reqOf = v => REQ[v.id] || (/EXPERT/.test(v.tipo) ? { etapas: E_STD } : REQ_STAFF);
+    const EXP_N = { 'Junior': 1, 'Pleno': 2, 'Sênior': 3 };
+
+    // Status de convocação de exemplo (substituir pela lista real do processo)
+    const STATUS_CONV = ['Contratado', 'Convocado', 'Pendente', 'Desistente', 'Reprovado', 'Desligado'];
+    const STATUS_DOC = ['Documento Entregue', 'Documento Reprovado', 'Documento Pendente', 'Promessa'];
+    const STATUS_EXAME = ['Apto', 'Apto 2', 'Agendado', 'Pendente'];
+
+    const FIRST = ['Adrielen', 'Adryan', 'Alef', 'Sayuri', 'Ananda', 'Andréa', 'Bárbara', 'Beatriz', 'Chrislen', 'Cláudio', 'Daniela', 'Diego', 'Eduarda', 'Emerson', 'Fabiana', 'Felipe', 'Gabriela', 'Gustavo', 'Helena', 'Igor', 'Jéssica', 'João Pedro', 'Karina', 'Leonardo', 'Luana', 'Marcos', 'Natália', 'Otávio', 'Paula', 'Rafaela', 'Renata', 'Samuel', 'Tatiane', 'Vinícius', 'Yasmin', 'Caio'];
+    const LAST = ['Beres', 'Moreira', 'Farias', 'Kayaki', 'Cabral', 'Cubinhetz', 'Busa', 'Silva', 'Nunes', 'Rocha', 'Prado', 'Lima', 'Teixeira', 'Santos', 'Queiroz', 'Araújo', 'Mendes', 'Barros', 'Castro', 'Duarte', 'Freitas', 'Gomes', 'Ribeiro', 'Martins', 'Pereira', 'Souza', 'Almeida', 'Carvalho', 'Pinto', 'Oliveira', 'Monteiro', 'Vieira', 'Cardoso', 'Moura', 'Campos', 'Lopes'];
     let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
     const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));
-    const p2 = n => String(n).padStart(2, '0');
-    const strip = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s/g, '');
-    const HOR = [['15:00','23:00'],['00:00','00:00'],['06:00','18:00'],['06:00','17:00'],['',''],['08:00','20:00']];
-    const inSet = (i, arr) => arr.includes(i);
+    const strip = s => norm(s).replace(/\s/g, '');
+    const HOR = [['15:00', '23:00'], ['00:00', '00:00'], ['06:00', '18:00'], ['06:00', '17:00'], ['', ''], ['08:00', '20:00']];
+    const has = (arr, i) => arr.includes(i);
+    const S = { rep: [2, 11, 23], des: [5, 17], conv: [0, 1, 3, 6, 8, 13, 15, 19, 21, 27, 30, 34], pend: [7, 29, 32], desl: [26], treinPend: [9, 20, 31], convConf: [0, 13], pcd: [1, 4, 12, 16, 22, 29, 33], jr: [6, 9, 17, 24, 30], sr: [2, 13], gru: [3, 23], osa: [16], noEng: [5, 11], esp: [16, 20] };
+    const PC_SO = ['Windows 11 Pro', 'Windows 10 Home', 'Windows 11 Home'], PC_CPU = ['Intel Core i5 11ª ger.', 'AMD Ryzen 5 5600', 'Intel Core i3 10ª ger.', 'Intel Core i7 12ª ger.'], PC_RAM = ['8 GB', '16 GB', '8 GB', '12 GB'], PC_NET = ['120 Mbps (cabeada)', '300 Mbps (cabeada)', '60 Mbps (cabeada)', '200 Mbps (cabeada)'];
 
     const CANDS = FIRST.map((f, i) => {
-      const capId = i < 14 ? 10856 : i < 19 ? 10922 : i < 22 ? 11031 : i < 25 ? 10864 : i < 28 ? 10456 : 10839;
-      const c = capById(capId);
-      const conv = inSet(i, [2, 11, 23]) ? 'Reprovado' : inSet(i, [5, 17]) ? 'Desistente' : inSet(i, [8, 15, 21, 27]) ? 'Convocado' : inSet(i, [26]) ? 'Desligado' : inSet(i, [19, 29]) ? 'Pendente' : 'Contratado';
-      const doc = inSet(i, [6, 19, 29]) ? 'Pendente' : inSet(i, [8, 21, 27]) ? 'Promessa' : 'Documentação Entregue';
-      const exame = inSet(i, [19, 29]) ? 'Pendente' : inSet(i, [8, 21]) ? 'Agendado' : inSet(i, [13]) ? 'Apto 2' : 'Apto';
-      const trein = conv === 'Contratado' ? (i === 9 ? 'Pendente TP' : 'Adicionado') : conv === 'Desligado' ? 'Adicionado' : conv === 'Convocado' ? 'Pendente TP' : conv === 'Pendente' ? '' : 'Não elegível';
+      const capId = i < 14 ? 10856 : i < 19 ? 10922 : i < 22 ? 11031 : i < 25 ? 10864 : i < 28 ? 10456 : i < 30 ? 10839 : i < 33 ? 11102 : 11240;
+      const cap = capById(capId);
+      const conv = has(S.rep, i) ? 'Reprovado' : has(S.des, i) ? 'Desistente' : has(S.conv, i) ? 'Convocado' : has(S.pend, i) ? 'Pendente' : has(S.desl, i) ? 'Desligado' : 'Contratado';
+      const doc = has(S.rep, i) ? (i === 2 ? 'Documento Reprovado' : i === 11 ? 'Documento Pendente' : 'Documento Entregue') : has(S.des, i) ? 'Documento Pendente' : has(S.pend, i) ? 'Promessa' : has(S.conv, i) ? (i === 6 ? 'Documento Reprovado' : i % 3 === 0 ? 'Promessa' : i % 3 === 1 ? 'Documento Entregue' : 'Documento Pendente') : 'Documento Entregue';
+      const exame = has(S.pend, i) || i === 5 ? 'Pendente' : (i === 12 || i === 13) ? 'Apto 2' : has(S.conv, i) ? (i % 2 ? 'Agendado' : 'Apto') : 'Apto';
+      const trein = conv === 'Contratado' ? (has(S.treinPend, i) ? 'Pendente TP' : 'Adicionado') : conv === 'Desligado' ? 'Adicionado' : conv === 'Convocado' ? (has(S.convConf, i) ? 'Adicionado' : 'Pendente TP') : conv === 'Pendente' ? '' : 'Não elegível';
+      const salas = SALAS.filter(s => s.capId === capId);
+      const sala = trein && trein !== 'Não elegível' ? salas[i % salas.length] : null;
+      const admitido = conv === 'Contratado' || conv === 'Desligado';
       const dv = ri(8, 21), da = Math.min(dv + ri(0, 2), 25), dd = Math.min(dv + ri(0, 3), 25);
       const h = HOR[i % HOR.length];
-      const admitido = conv === 'Contratado' || conv === 'Desligado';
+      const req = REQ[cap.vagaId] || { etapas: E_STD }, etapasVaga = ETAPAS.filter(e => req.etapas[e]);
+      const prog = has(S.pend, i) ? ['Avaliação', []] : i === 8 ? ['Multitelas', ['Avaliação']] : i === 21 ? ['Syscheck', ['Avaliação', 'Multitelas']] : i === 15 ? ['Entrevista', ['Avaliação', 'Multitelas', 'Syscheck']] : ['Concluído', etapasVaga];
+      const sys = exame === 'Pendente' ? 'Pendente' : 'Validado';
       return {
         id: 58210 + i * 7,
         nome: f + ' ' + LAST[i],
         nomeSocial: i === 12 ? 'Edu Teixeira' : '',
         cpf: p2(ri(10, 99)) + ri(1, 9) + '.' + ri(100, 999) + '.' + ri(100, 999) + '-' + p2(ri(0, 99)),
-        capId,
-        syscheck: exame === 'Pendente' ? 'Pendente' : 'Validado',
+        capId, vagaId: cap.vagaId, salaId: sala ? sala.id : null,
+        pcd: has(S.pcd, i),
+        idBMS: String(1049000 + i * 37),
+        dtNascimento: p2(1 + (i * 11) % 28) + '/' + p2(1 + (i * 5) % 12) + '/' + (1986 + (i * 7) % 18),
+        syscheck: sys,
         dtValidacao: p2(dv) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)),
         exame,
         dtAgenda: exame === 'Pendente' ? '' : p2(da) + '/09/2026 ' + p2(ri(9, 19)) + ':00',
         doc,
-        dtDoc: doc === 'Documentação Entregue' ? p2(dd) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)) : '',
-        inicioTrein: trein ? p2(Math.min(dd + 1, 26)) + '/09/2026' : '',
+        dtDoc: doc === 'Documento Entregue' ? p2(dd) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)) : '',
         escala: '6X1', carga: '180', tipo: 'CLT',
         disp: h[0] ? h[0] + ' - ' + h[1] : '',
         conv,
         motivo: conv === 'Reprovado' ? 'Convocação treinamento' : '',
-        fpw: admitido ? String(408600 + ri(10, 290)) : '',
-        horarioTrein: trein ? '14:30' : '',
         trein,
-        dtFimTurma: trein ? '23/10/2026' : '',
+        dtConfirmacaoTrein: trein === 'Adicionado' ? p2(Math.min(dd + 1, 26)) + '/09/2026 ' + p2(ri(9, 17)) + ':' + p2(ri(0, 59)) : '',
+        matricula: admitido ? String(408600 + ri(10, 290)) : '',
         dtAdmissao: admitido ? (i % 4 === 3 ? '25/09/2026' : '23/09/2026') : '',
         email: strip(f) + '.' + strip(LAST[i]) + '@email.com',
         rg: i % 6 === 1 ? '' : p2(ri(10, 59)) + '.' + ri(100, 999) + '.' + ri(100, 999) + '-' + ri(0, 9),
-        amigo: i % 5 === 1 ? 'Sim' : 'Não'
+        amigo: i % 5 === 1 ? 'Sim' : 'Não',
+        idiomas: capId === 10839 ? ['INGLÊS'] : (i < 14 && !has(S.noEng, i)) ? ['INGLÊS'] : has(S.esp, i) ? ['ESPANHOL'] : [],
+        exp: has(S.jr, i) ? 'Junior' : has(S.sr, i) ? 'Sênior' : 'Pleno',
+        municipio: has(S.gru, i) ? 'Guarulhos' : has(S.osa, i) ? 'Osasco' : capId === 11240 ? 'Recife' : 'São Paulo',
+        etapaAtual: prog[0], etapasConcluidas: [...prog[1]],
+        pc: sys === 'Validado' ? { so: PC_SO[i % 3], cpu: PC_CPU[i % 4], ram: PC_RAM[i % 4], net: PC_NET[i % 4], webcam: 'Sim', headset: i % 7 === 3 ? 'Não' : 'Sim', data: p2(dv) + '/09/2026' } : null
       };
     });
     const candById = id => CANDS.find(c => c.id === id);
+    const MUT = ['capId', 'vagaId', 'salaId', 'conv', 'motivo', 'trein', 'dtConfirmacaoTrein', 'etapaAtual', 'etapasConcluidas', 'tipo'];
+    CANDS.forEach(c => { c._0 = clone(Object.fromEntries(MUT.map(k => [k, c[k]]))); });
+
+    // ---------- Regras compartilhadas de elegibilidade ----------
+    const MSG_BLOQ = 'Contratado com treinamento confirmado não pode trocar de vaga.';
+    const bloqueadoVaga = c => c.conv === 'Contratado' && !!c.dtConfirmacaoTrein;
+    const mesmaCap = ids => new Set(ids.map(id => candById(id).capId)).size === 1;
+    const podeResgatar = c => c.conv === 'Reprovado' || c.conv === 'Desistente';
 
     // ---------- Status visuais ----------
     const TONE = {
-      'Documentação Entregue': 'ok', 'Promessa': 'warn', 'Pendente': 'neu',
+      'Documento Entregue': 'ok', 'Documento Reprovado': 'err', 'Documento Pendente': 'neu', 'Promessa': 'warn', 'Pendente': 'neu',
       'Apto': 'ok', 'Apto 2': 'info', 'Agendado': 'info',
       'Contratado': 'ok', 'Convocado': 'info', 'Reprovado': 'err', 'Desistente': 'warn', 'Desligado': 'neu',
       'Adicionado': 'pur', 'Pendente TP': 'warn', 'Não elegível': 'neu'
     };
-    const badge = v => v ? `<span class="st ${TONE[v] || 'neu'}">${v}</span>` : '<span class="muted">—</span>';
-    const dash = v => v ? v : '<span class="muted">—</span>';
-    const dOnly = v => v ? v.split(' ')[0] : '';
+    const badge = (v, label) => v ? `<span class="st ${TONE[v] || 'neu'}" title="${esc(v)}">${esc(label || v)}</span>` : '<span class="muted">—</span>';
+    const docShort = v => v.replace('Documento ', '');
 
     // ---------- Colunas ----------
     const COLS = [
@@ -552,64 +908,83 @@
       { k: 'cpf', l: 'CPF', g: 'Candidato', w: 1.1, v: c => c.cpf },
       { k: 'email', l: 'E-mail', g: 'Candidato', w: 1.8, v: c => c.email },
       { k: 'rg', l: 'RG', g: 'Candidato', w: 1, v: c => c.rg },
-      { k: 'fpw', l: 'FPW', g: 'Candidato', w: .8, v: c => c.fpw },
+      { k: 'dtNascimento', l: 'Data de Nascimento', g: 'Candidato', w: 1, v: c => c.dtNascimento },
+      { k: 'idBMS', l: 'ID BMS', g: 'Candidato', w: .8, v: c => c.idBMS },
+      { k: 'pcd', l: 'PCD', g: 'Candidato', w: .6, v: c => c.pcd ? 'Sim' : 'Não' },
       { k: 'amigo', l: 'Seu Amigo na TP', g: 'Candidato', w: .9, v: c => c.amigo },
-      { k: 'capacity', l: 'Capacity', g: 'Vaga', w: 1.3, v: c => c.capId, h: c => { const x = capById(c.capId); return `${x.id}<span class="sub">${x.cap}</span>`; }, t: c => capById(c.capId).id + ' · ' + capById(c.capId).cap },
-      { k: 'operacao', l: 'Operação', g: 'Vaga', w: 1.4, v: c => opLabel(capById(c.capId)), h: c => { const x = capById(c.capId); return `${x.cliente}<span class="sub">${x.site}</span>`; } },
+      { k: 'vaga', l: 'Vaga', g: 'Vaga', w: 1.8, v: c => vagaLabel(c), h: c => { const v = vagaById(c.vagaId); return v ? `${v.id}<span class="sub">${esc(v.nome)}</span>` : dash(''); } },
+      { k: 'capacity', l: 'Capacity', g: 'Vaga', w: 1.3, v: c => c.capId, h: c => { const x = capById(c.capId); return `${x.id}<span class="sub">${esc(capLabel(x))}</span>`; }, t: c => capById(c.capId).id + ' · ' + capLabel(capById(c.capId)) },
+      { k: 'operacao', l: 'Operação', g: 'Vaga', w: 1.4, v: c => opLabel(capById(c.capId)), h: c => { const x = capById(c.capId); return `${esc(x.cliente)}<span class="sub">${esc(x.site)}</span>`; } },
       { k: 'celula', l: 'Célula', g: 'Vaga', w: 1.6, v: c => capById(c.capId).celula },
       { k: 'cargo', l: 'Cargo', g: 'Vaga', w: 1.4, v: c => capById(c.capId).cargo },
       { k: 'escala', l: 'Escala', g: 'Vaga', w: .7, v: c => c.escala },
       { k: 'carga', l: 'Carga Horária', g: 'Vaga', w: .8, v: c => c.carga },
       { k: 'tipo', l: 'Tipo Contrato', g: 'Vaga', w: .8, v: c => c.tipo },
       { k: 'disp', l: 'Disponibilidade de Horário', g: 'Vaga', w: 1.1, v: c => c.disp },
-      { k: 'horarioVaga', l: 'Horário Vaga', g: 'Vaga', w: .8, v: c => capById(c.capId).horario },
+      { k: 'horarioVaga', l: 'Horário Vaga', g: 'Vaga', w: 1, v: c => capById(c.capId).horario },
       { k: 'syscheck', l: 'Dados Syscheck', g: 'Validação', w: .9, v: c => c.syscheck },
       { k: 'dtValidacao', l: 'Data Validação', g: 'Validação', w: 1, v: c => dOnly(c.dtValidacao) },
-      { k: 'doc', l: 'Documentação', g: 'Documentação', w: 1.35, badge: true, v: c => c.doc, h: c => c.doc === 'Documentação Entregue' ? '<span class="st ok">Entregue</span>' : badge(c.doc) },
+      { k: 'configPC', l: 'Configuração PC', g: 'Validação', w: 1.1, v: c => c.pc ? 'Enviada' : 'Não enviada', h: c => c.pc ? `<button class="cand-n lnk" data-pc="${c.id}"><i class="fa-solid fa-desktop" style="font-size: 11px;"></i> Ver configuração</button>` : '<span class="muted">Não enviada</span>' },
+      { k: 'doc', l: 'Documentação', g: 'Documentação', w: 1.1, v: c => c.doc, h: c => badge(c.doc, docShort(c.doc)) },
       { k: 'dtDoc', l: 'Data Documentação Entregue', g: 'Documentação', w: 1, v: c => dOnly(c.dtDoc) },
-      { k: 'exame', l: 'Exame', g: 'Exame médico', w: 1, badge: true, v: c => c.exame },
+      { k: 'exame', l: 'Exame', g: 'Exame médico', w: 1, v: c => c.exame, h: c => badge(c.exame) },
       { k: 'dtAgenda', l: 'Data Agenda Médica', g: 'Exame médico', w: 1, v: c => dOnly(c.dtAgenda) },
-      { k: 'conv', l: 'Convocação', g: 'Convocação', w: 1.1, badge: true, v: c => c.conv },
+      { k: 'conv', l: 'Convocação', g: 'Convocação', w: 1.1, v: c => c.conv, h: c => badge(c.conv) },
       { k: 'motivo', l: 'Motivo Reprovação', g: 'Convocação', w: 1.3, v: c => c.motivo },
-      { k: 'trein', l: 'Treinamento', g: 'Treinamento', w: 1.1, badge: true, v: c => c.trein },
-      { k: 'inicioTrein', l: 'Início Treinamento', g: 'Treinamento', w: 1, v: c => c.inicioTrein },
-      { k: 'localTrein', l: 'Local Treinamento', g: 'Treinamento', w: 1.3, v: c => capById(c.capId).site },
-      { k: 'horarioTrein', l: 'Horário Treinamento', g: 'Treinamento', w: .9, v: c => c.horarioTrein },
-      { k: 'dtFimTurma', l: 'Data Fim Turma', g: 'Treinamento', w: 1, v: c => c.dtFimTurma },
+      { k: 'trein', l: 'Treinamento', g: 'Treinamento', w: 1.1, v: c => c.trein, h: c => badge(c.trein) },
+      { k: 'sala', l: 'Sala de Treinamento', g: 'Treinamento', w: 1.6, v: c => { const s = salaById(c.salaId); return s ? s.id + ' · ' + s.nome : ''; }, h: c => { const s = salaById(c.salaId); return s ? `${s.id}<span class="sub">${esc(s.nome)}</span>` : dash(''); } },
+      { k: 'dtConfirmacaoTrein', l: 'Data Confirmação Treinamento', g: 'Treinamento', w: 1, v: c => dOnly(c.dtConfirmacaoTrein) },
+      { k: 'inicioTrein', l: 'Início Treinamento', g: 'Treinamento', w: 1, v: c => { const s = salaById(c.salaId); return s ? s.dtIni : ''; } },
+      { k: 'localTrein', l: 'Local Treinamento', g: 'Treinamento', w: 1.3, v: c => c.salaId ? capById(c.capId).site : '' },
+      { k: 'horarioTrein', l: 'Horário Treinamento', g: 'Treinamento', w: .9, v: c => { const s = salaById(c.salaId); return s ? s.hIni : ''; } },
+      { k: 'dtFimTurma', l: 'Data Fim Turma', g: 'Treinamento', w: 1, v: c => { const s = salaById(c.salaId); return s ? s.dtFim : ''; } },
+      { k: 'matricula', l: 'Matrícula', g: 'Admissão', w: .9, v: c => c.matricula },
       { k: 'dtAdmissao', l: 'Admissão', g: 'Admissão', w: .95, v: c => c.dtAdmissao }
     ];
-    const DEFAULT_COLS = ['nome', 'capacity', 'operacao', 'doc', 'exame', 'conv', 'trein', 'dtAdmissao'];
-    const LS_COLS = 'peoplexp.convocacao.colunas';
-    let visCols = (() => { try { const s = JSON.parse(localStorage.getItem(LS_COLS)); if (Array.isArray(s) && s.includes('nome')) return s; } catch (e) {} return [...DEFAULT_COLS]; })();
     const colByK = k => COLS.find(c => c.k === k);
-    function maxCols() {
-      const w = document.getElementById('cv-table-wrap').clientWidth || 1200;
-      return Math.max(4, Math.min(11, Math.floor((w - 96) / 122)));
-    }
-    const shownCols = () => COLS.filter(c => visCols.includes(c.k)).slice(0, maxCols());
+    const DEFAULT_COLS = ['nome', 'capacity', 'operacao', 'doc', 'exame', 'conv', 'trein', 'dtAdmissao'];
+    const MAX_COLS = 20;
+    const USER = 'admin-tp'; // formatos persistidos por usuário
+    const LS_FMT = 'peoplexp.convocacao.colunas.' + USER;
+    const normCols = arr => ['nome', ...arr.filter((k, i, s) => k !== 'nome' && colByK(k) && s.indexOf(k) === i)].slice(0, MAX_COLS);
+    let fmt = (() => {
+      try { const s = JSON.parse(localStorage.getItem(LS_FMT)); if (s && Array.isArray(s.cols)) return { formats: Array.isArray(s.formats) ? s.formats.filter(f => f && f.id && f.nome && Array.isArray(f.cols)) : [], activeId: s.activeId || 'default', principalId: s.principalId || null, cols: normCols(s.cols) }; } catch (e) {}
+      return { formats: [], activeId: 'default', principalId: null, cols: [...DEFAULT_COLS] };
+    })();
+    // A visão principal é a que abre ao acessar a tela
+    (() => { const p = fmt.formats.find(f => f.id === fmt.principalId); if (p) { fmt.activeId = p.id; fmt.cols = normCols(p.cols); } else fmt.principalId = null; })();
+    const saveFmt = () => { try { localStorage.setItem(LS_FMT, JSON.stringify(fmt)); } catch (e) {} };
+    const activeFormat = () => fmt.formats.find(f => f.id === fmt.activeId) || null;
+    const activeCols = () => { const a = activeFormat(); return a ? a.cols : DEFAULT_COLS; };
+    const fmtModified = () => JSON.stringify(fmt.cols) !== JSON.stringify(normCols(activeCols()));
+    const shownCols = () => fmt.cols.map(colByK).filter(Boolean);
 
-    // ---------- Estado ----------
-    const F0 = { capacity: '', operacao: '', celula: '', status: '', busca: '', exame: '', doc: '', trein: '', indic: '', de: '', ate: '', reprov: 'Sim', admit: 'Sim', hist: 'Não' };
-    const state = { f: { ...F0 }, kpi: '', sortKey: 'nome', sortDir: 'asc', page: 1, perPage: 10 };
+    // ---------- Estado dos filtros (rascunho × aplicado) ----------
+    const F0 = { mes: [], versao: [], cliente: [], celula: [], status: '', busca: '', idCap: [], idSala: [], exame: [], doc: [], indic: '', de: '', ate: '', reprov: 'Sim', hist: 'Não' };
+    let draft = clone(F0);
+    const state = { f: clone(F0), kpi: '', sortKey: 'nome', sortDir: 'asc', page: 1, perPage: 10 };
     const sel = new Set();
     let flashIds = [];
+    const mesOpts = () => [...new Set(CAPS.map(c => c.mes))].sort().map(mesCurto);
+    const celulaOpts = () => uniq(CAPS.filter(c => !draft.cliente.length || draft.cliente.includes(c.cliente)).map(c => c.celula));
 
     // ---------- KPIs ----------
     const KPI_GROUPS = [
       { g: 'Demanda', items: [
         { k: 'validados', l: 'Candidatos Validados', p: () => true },
+        { k: 'pcd', l: 'PCD', p: c => c.pcd },
         { k: 'sol', l: 'Solicitado', stat: caps => caps.reduce((s, c) => s + c.sol, 0) },
         { k: 'buf', l: 'Solicitado + Buffer', stat: caps => caps.reduce((s, c) => s + c.buf, 0) }] },
       { g: 'Documentação', items: [
-        { k: 'docEnt', l: 'Documentos Entregues', p: c => c.doc === 'Documentação Entregue' },
-        { k: 'prom', l: 'Promessas', assum: true, p: c => c.doc === 'Promessa' }] },
+        { k: 'docEnt', l: 'Documentos Entregues', p: c => c.doc === 'Documento Entregue' },
+        { k: 'prom', l: 'Promessas', p: c => c.doc === 'Promessa' }] },
       { g: 'Exames', items: [
         { k: 'exAg', l: 'Exames Agendados', p: c => c.exame === 'Agendado' },
         { k: 'exApto', l: 'Exames Apto', p: c => c.exame === 'Apto' },
         { k: 'exApto2', l: 'Exames Apto 2', p: c => c.exame === 'Apto 2' }] },
       { g: 'Convocação', items: [
         { k: 'conv', l: 'Convocados', p: c => c.conv === 'Convocado' },
-        { k: 'desist', l: 'Desistentes', assum: true, p: c => c.conv === 'Desistente' },
+        { k: 'desist', l: 'Desistentes', p: c => c.conv === 'Desistente' },
         { k: 'reprov', l: 'Reprovados', p: c => c.conv === 'Reprovado' }] },
       { g: 'Treinamento / Admissão', items: [
         { k: 'contr', l: 'Contratados', p: c => c.conv === 'Contratado' },
@@ -618,56 +993,121 @@
     const KPI_ALL = KPI_GROUPS.flatMap(g => g.items);
     const kpiByK = k => KPI_ALL.find(x => x.k === k);
 
-    // ---------- Filtros ----------
-    const $ = id => document.getElementById(id);
-    const uniq = arr => [...new Set(arr)].filter(Boolean).sort((a, b) => a.localeCompare(b, 'pt'));
-    const fill = (id, arr) => arr.forEach(v => $(id).insertAdjacentHTML('beforeend', `<option>${v}</option>`));
-    fill('f-capacity', uniq(CAPS.map(c => c.cap)));
-    fill('f-operacao', uniq(CAPS.map(opLabel)));
-    fill('f-status', ['Contratado', 'Convocado', 'Pendente', 'Desistente', 'Reprovado', 'Desligado']);
-    fill('a-exame', ['Apto', 'Apto 2', 'Agendado', 'Pendente']);
-    fill('a-doc', ['Documentação Entregue', 'Promessa', 'Pendente']);
-    fill('a-trein', ['Adicionado', 'Pendente TP', 'Não elegível']);
-    function refreshCelulas() {
-      const cur = state.f.celula;
-      const caps = CAPS.filter(c => (!state.f.capacity || c.cap === state.f.capacity) && (!state.f.operacao || opLabel(c) === state.f.operacao));
-      $('f-celula').innerHTML = '<option value="">Todas</option>' + uniq(caps.map(c => c.celula)).map(v => `<option>${v}</option>`).join('');
-      $('f-celula').value = caps.some(c => c.celula === cur) ? cur : '';
-      state.f.celula = $('f-celula').value;
+    // ---------- Componente multi-select ----------
+    const MS = {};
+    function makeMS(id, opts) {
+      const root = $(id); root.className = 'ms';
+      root.innerHTML = `<button type="button" class="ms-btn form-control"><span class="ms-txt"></span><i class="fa-solid fa-chevron-down"></i></button>
+        <div class="ms-pop"><div class="ms-search"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Pesquisar" aria-label="Pesquisar"></div>
+        <label class="ms-all"><input type="checkbox"> Selecionar tudo</label><div class="ms-list"></div>
+        <div class="ms-foot"><span class="ms-n"></span><button type="button" class="link">Limpar</button></div></div>`;
+      const ms = Object.assign({ id, root, values: [], q: '', btn: root.querySelector('.ms-btn'), pop: root.querySelector('.ms-pop'), list: root.querySelector('.ms-list'), inp: root.querySelector('.ms-search input'), allCk: root.querySelector('.ms-all input') }, opts);
+      ms.btn.addEventListener('click', e => { e.stopPropagation(); const open = root.classList.contains('open'); closeMS(); closePops(); if (!open) { root.classList.add('open'); ms.q = ''; ms.inp.value = ''; renderMS(ms); setTimeout(() => ms.inp.focus(), 0); } });
+      ms.pop.addEventListener('click', e => e.stopPropagation());
+      ms.inp.addEventListener('input', e => { ms.q = e.target.value; renderMS(ms); });
+      ms.allCk.addEventListener('change', e => { const vis = visibleOpts(ms); if (e.target.checked) vis.forEach(v => { if (!ms.values.includes(v)) ms.values.push(v); }); else ms.values = ms.values.filter(v => !vis.includes(v)); changeMS(ms); });
+      root.querySelector('.ms-foot .link').addEventListener('click', () => { ms.values = []; changeMS(ms); });
+      ms.list.addEventListener('change', e => { const v = e.target.dataset.v; if (v === undefined) return; if (e.target.checked) { if (!ms.values.includes(v)) ms.values.push(v); } else ms.values = ms.values.filter(x => x !== v); changeMS(ms); });
+      MS[id] = ms; renderMS(ms); return ms;
     }
-    const toISO = br => { if (!br) return ''; const [d, m, y] = br.split(' ')[0].split('/'); return y + '-' + m + '-' + d; };
-    const brDate = iso => iso ? iso.split('-').reverse().join('/') : '';
+    const visibleOpts = ms => { const q = norm(ms.q); return ms.options().filter(o => !q || norm(o).includes(q)); };
+    function renderMS(ms) {
+      const all = ms.options(); ms.values = ms.values.filter(v => all.includes(v));
+      const vis = visibleOpts(ms);
+      ms.list.innerHTML = !all.length ? '<div class="ms-empty">Nenhuma opção disponível</div>' : !vis.length ? `<div class="ms-empty">Nenhum resultado para “${esc(ms.q)}”</div>` : vis.map(o => `<label><input type="checkbox" data-v="${esc(o)}" ${ms.values.includes(o) ? 'checked' : ''}> <span title="${esc(o)}">${esc(o)}</span></label>`).join('');
+      ms.allCk.checked = vis.length > 0 && vis.every(v => ms.values.includes(v));
+      ms.allCk.indeterminate = !ms.allCk.checked && vis.some(v => ms.values.includes(v));
+      ms.root.querySelector('.ms-all').style.display = vis.length ? '' : 'none';
+      const n = ms.values.length;
+      ms.root.querySelector('.ms-txt').textContent = !n ? ms.all : n <= 2 ? ms.values.join(', ') : n + ' ' + ms.plural;
+      ms.root.querySelector('.ms-n').textContent = n ? n + ' de ' + all.length + ' ' + ms.plural : '';
+      ms.root.classList.toggle('has', n > 0);
+    }
+    function changeMS(ms) { renderMS(ms); if (ms.onChange) ms.onChange([...ms.values]); }
+    function closeMS() { document.querySelectorAll('.ms.open').forEach(x => x.classList.remove('open')); }
+
+    // ---------- Entrada de IDs com chips ----------
+    const TAGS = {};
+    function makeTags(id, opts) {
+      const root = $(id); root.className = 'tags form-control'; root.innerHTML = `<input type="text" placeholder="${esc(opts.placeholder)}" inputmode="numeric" aria-label="${esc(opts.placeholder)}">`;
+      const t = Object.assign({ id, root, values: [], inp: root.querySelector('input') }, opts);
+      const add = () => { const parts = t.inp.value.split(/[,;\s]+/).map(s => s.trim()).filter(s => /^\d+$/.test(s)); let ch = false; parts.forEach(p => { if (!t.values.includes(p)) { t.values.push(p); ch = true; } }); t.inp.value = ''; if (ch || parts.length) { renderTags(t); if (t.onChange) t.onChange([...t.values]); } };
+      t.inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); if (t.inp.value.trim()) add(); else aplicarFiltros(); }
+        else if (e.key === ',' || e.key === ';' || e.key === ' ') { e.preventDefault(); add(); }
+        else if (e.key === 'Backspace' && !t.inp.value && t.values.length) { t.values.pop(); renderTags(t); if (t.onChange) t.onChange([...t.values]); }
+      });
+      t.inp.addEventListener('blur', add);
+      root.addEventListener('click', e => { const x = e.target.closest('[data-i]'); if (x) { t.values.splice(+x.dataset.i, 1); renderTags(t); if (t.onChange) t.onChange([...t.values]); } else t.inp.focus(); });
+      TAGS[id] = t; renderTags(t); return t;
+    }
+    function renderTags(t) {
+      t.root.querySelectorAll('.tag').forEach(x => x.remove());
+      t.values.forEach((v, i) => t.inp.insertAdjacentHTML('beforebegin', `<span class="tag">${esc(v)}<i class="fa-solid fa-xmark" data-i="${i}" title="Remover"></i></span>`));
+      t.inp.placeholder = t.values.length ? '' : t.placeholder;
+    }
+
+    // ---------- Montagem dos filtros ----------
+    const fill = (id, arr) => arr.forEach(v => $(id).insertAdjacentHTML('beforeend', `<option>${esc(v)}</option>`));
+    fill('f-status', STATUS_CONV);
+    makeMS('ms-mes', { all: 'Todos', plural: 'meses', options: mesOpts, onChange: v => { draft.mes = v; dirty(); } });
+    makeMS('ms-versao', { all: 'Todas', plural: 'versões', options: () => uniq(CAPS.map(c => c.versao)), onChange: v => { draft.versao = v; dirty(); } });
+    makeMS('ms-cliente', { all: 'Todos', plural: 'clientes', options: () => uniq(CAPS.map(c => c.cliente)), onChange: v => { draft.cliente = v; renderMS(MS['ms-celula']); draft.celula = [...MS['ms-celula'].values]; dirty(); } });
+    makeMS('ms-celula', { all: 'Todas', plural: 'células', options: celulaOpts, onChange: v => { draft.celula = v; dirty(); } });
+    makeMS('ms-exame', { all: 'Todos', plural: 'status', options: () => STATUS_EXAME, onChange: v => { draft.exame = v; dirty(); } });
+    makeMS('ms-doc', { all: 'Todos', plural: 'status', options: () => STATUS_DOC, onChange: v => { draft.doc = v; dirty(); } });
+    makeTags('tg-idcap', { placeholder: 'Ex.: 10856, 10922', onChange: v => { draft.idCap = v; dirty(); } });
+    makeTags('tg-idsala', { placeholder: 'Ex.: 12628', onChange: v => { draft.idSala = v; dirty(); } });
+    [['f-status', 'status'], ['a-indic', 'indic'], ['a-de', 'de'], ['a-ate', 'ate'], ['a-reprov', 'reprov'], ['a-hist', 'hist']].forEach(([id, k]) => $(id).addEventListener('change', e => { draft[k] = e.target.value; dirty(); }));
+    $('f-busca').addEventListener('input', e => { draft.busca = e.target.value; dirty(); });
+    $('f-busca').addEventListener('keydown', e => { if (e.key === 'Enter') aplicarFiltros(); });
+    $('btn-aplicar').addEventListener('click', aplicarFiltros);
+    $('btn-limpar').addEventListener('click', limparFiltros);
+    $('btn-more').addEventListener('click', () => { const o = $('cv-adv').classList.toggle('open'); $('btn-more').classList.toggle('on', o); $('btn-more').querySelector('i').className = 'fa-solid ' + (o ? 'fa-minus' : 'fa-plus'); });
+
+    function dirty() { $('draft-hint').textContent = JSON.stringify(draft) !== JSON.stringify(state.f) ? 'Alterações não aplicadas' : ''; }
+    function syncForm() {
+      ['mes', 'versao', 'cliente', 'celula', 'exame', 'doc'].forEach(k => { const ms = MS['ms-' + k]; ms.values = [...draft[k]]; renderMS(ms); draft[k] = [...ms.values]; });
+      TAGS['tg-idcap'].values = [...draft.idCap]; renderTags(TAGS['tg-idcap']);
+      TAGS['tg-idsala'].values = [...draft.idSala]; renderTags(TAGS['tg-idsala']);
+      $('f-status').value = draft.status; $('f-busca').value = draft.busca; $('a-indic').value = draft.indic;
+      $('a-de').value = draft.de; $('a-ate').value = draft.ate; $('a-reprov').value = draft.reprov; $('a-hist').value = draft.hist;
+      dirty();
+    }
+    function aplicarFiltros() { closeMS(); draft.celula = draft.celula.filter(x => celulaOpts().includes(x)); state.f = clone(draft); state.page = 1; render(); }
+    function limparFiltros() { draft = clone(F0); state.f = clone(F0); state.kpi = ''; state.page = 1; syncForm(); render(); }
 
     function scopeCaps() {
       const f = state.f;
-      return CAPS.filter(c => (!f.capacity || c.cap === f.capacity) && (!f.operacao || opLabel(c) === f.operacao) && (!f.celula || c.celula === f.celula));
+      return CAPS.filter(c => (!f.mes.length || f.mes.includes(mesCurto(c.mes))) && (!f.versao.length || f.versao.includes(c.versao)) && (!f.cliente.length || f.cliente.includes(c.cliente)) && (!f.celula.length || f.celula.includes(c.celula)) && (!f.idCap.length || f.idCap.includes(String(c.id))));
     }
     function baseFiltered() {
       const f = state.f, q = f.busca.trim().toLowerCase(), qd = q.replace(/\D/g, '');
       return CANDS.filter(c => {
         const cap = capById(c.capId);
-        if (f.capacity && cap.cap !== f.capacity) return false;
-        if (f.operacao && opLabel(cap) !== f.operacao) return false;
-        if (f.celula && cap.celula !== f.celula) return false;
+        if (f.mes.length && !f.mes.includes(mesCurto(cap.mes))) return false;
+        if (f.versao.length && !f.versao.includes(cap.versao)) return false;
+        if (f.cliente.length && !f.cliente.includes(cap.cliente)) return false;
+        if (f.celula.length && !f.celula.includes(cap.celula)) return false;
+        if (f.idCap.length && !f.idCap.includes(String(cap.id))) return false;
+        if (f.idSala.length && !f.idSala.includes(String(c.salaId || ''))) return false;
         if (f.status && c.conv !== f.status) return false;
         if (q && !(c.nome.toLowerCase().includes(q) || c.nomeSocial.toLowerCase().includes(q) || (qd.length >= 3 && c.cpf.replace(/\D/g, '').includes(qd)))) return false;
-        if (f.exame && c.exame !== f.exame) return false;
-        if (f.doc && c.doc !== f.doc) return false;
-        if (f.trein && c.trein !== f.trein) return false;
+        if (f.exame.length && !f.exame.includes(c.exame)) return false;
+        if (f.doc.length && !f.doc.includes(c.doc)) return false;
         if (f.indic && c.amigo !== f.indic) return false;
         const dv = toISO(c.dtValidacao);
         if (f.de && dv < f.de) return false;
         if (f.ate && dv > f.ate) return false;
         if (f.reprov === 'Não' && c.conv === 'Reprovado') return false;
-        if (f.admit === 'Não' && c.dtAdmissao) return false;
         return true;
       });
     }
     function rowsNow() {
       let rows = baseFiltered();
       if (state.kpi) { const k = kpiByK(state.kpi); if (k && k.p) rows = rows.filter(k.p); }
-      const col = colByK(state.sortKey), dir = state.sortDir === 'asc' ? 1 : -1;
-      rows.sort((a, b) => { let x = col.v(a), y = col.v(b); if (/^\d{2}\/\d{2}\/\d{4}/.test(x) || /^\d{2}\/\d{2}\/\d{4}/.test(y)) { x = toISO(x) || '9999'; y = toISO(y) || '9999'; } return String(x).localeCompare(String(y), 'pt', { numeric: true }) * dir; });
+      const col = colByK(state.sortKey) || colByK('nome'), dir = state.sortDir === 'asc' ? 1 : -1;
+      rows.sort((a, b) => { let x = col.v(a), y = col.v(b); if (/^\d{2}\/\d{2}\/\d{4}/.test(x) || /^\d{2}\/\d{2}\/\d{4}/.test(y)) { x = toISO(x) || '9999'; y = toISO(y) || '9999'; } return String(x ?? '').localeCompare(String(y ?? ''), 'pt', { numeric: true }) * dir; });
       return rows;
     }
 
@@ -678,35 +1118,37 @@
         <div class="kpi-group"><div class="kpi-group-h">${g.g}</div><div class="kpi-items">
           ${g.items.map(k => {
             const v = k.stat ? k.stat(caps) : base.filter(k.p).length;
-            const lbl = k.assum ? `<span class="assum" title="Grupo proposto no redesign. Confirmar com a área de negócio.">${k.l}</span>` : k.l;
             return k.stat
-              ? `<div class="kpi static" title="Valor da Capacity (não filtra a tabela)"><div class="kpi-v">${v}</div><div class="kpi-l">${lbl}</div></div>`
-              : `<button class="kpi ${state.kpi === k.k ? 'on' : ''}" data-kpi="${k.k}" title="Filtrar: ${k.l}"><div class="kpi-v">${v}</div><div class="kpi-l">${lbl}</div></button>`;
+              ? `<div class="kpi static" title="Valor da demanda (não filtra a tabela)"><div class="kpi-v">${v}</div><div class="kpi-l">${k.l}</div></div>`
+              : `<button class="kpi ${state.kpi === k.k ? 'on' : ''}" data-kpi="${k.k}" title="Filtrar: ${k.l}"><div class="kpi-v">${v}</div><div class="kpi-l">${k.l}</div></button>`;
           }).join('')}
         </div></div>`).join('');
     }
 
+    const sumVals = arr => arr.length <= 2 ? arr.join(', ') : arr.slice(0, 2).join(', ') + ' +' + (arr.length - 2);
     function renderChips() {
       const f = state.f, chips = [];
       const add = (k, v, clear) => chips.push({ k, v, clear });
+      const both = (key, val) => { f[key] = clone(val); draft[key] = clone(val); };
       if (state.kpi) add('Indicador', kpiByK(state.kpi).l, () => state.kpi = '');
-      if (f.capacity) add('Capacity', f.capacity, () => { f.capacity = ''; refreshCelulas(); });
-      if (f.operacao) add('Operação', f.operacao, () => { f.operacao = ''; refreshCelulas(); });
-      if (f.celula) add('Célula', f.celula, () => f.celula = '');
-      if (f.status) add('Status', f.status, () => f.status = '');
-      if (f.busca) add('Busca', '"' + f.busca + '"', () => f.busca = '');
-      if (f.exame) add('Exame', f.exame, () => f.exame = '');
-      if (f.doc) add('Documentação', f.doc, () => f.doc = '');
-      if (f.trein) add('Treinamento', f.trein, () => f.trein = '');
-      if (f.indic) add('Possui indicação', f.indic, () => f.indic = '');
-      if (f.de || f.ate) add('Validação', (brDate(f.de) || '...') + ' a ' + (brDate(f.ate) || '...'), () => { f.de = ''; f.ate = ''; });
-      if (f.reprov === 'Não') add('Reprovados', 'ocultos', () => f.reprov = 'Sim');
-      if (f.admit === 'Não') add('Admitidos', 'ocultos', () => f.admit = 'Sim');
-      if (f.hist === 'Sim') add('Histórico', 'completo', () => f.hist = 'Não');
-      $('cv-chips').innerHTML = chips.length ? chips.map((c, i) => `<span class="chip"><span>${c.k}: <strong>${c.v}</strong></span><i class="fa-solid fa-xmark" data-chip="${i}" title="Remover filtro"></i></span>`).join('') + '<button class="clear" id="chips-clear">Limpar filtros</button>' : '';
+      if (f.mes.length) add('Mês', sumVals(f.mes), () => both('mes', []));
+      if (f.versao.length) add('Versão', sumVals(f.versao), () => both('versao', []));
+      if (f.cliente.length) add('Cliente', sumVals(f.cliente), () => both('cliente', []));
+      if (f.celula.length) add('Célula', sumVals(f.celula), () => both('celula', []));
+      if (f.idCap.length) add('ID Capacity', sumVals(f.idCap), () => both('idCap', []));
+      if (f.idSala.length) add('ID Sala', sumVals(f.idSala), () => both('idSala', []));
+      if (f.status) add('Status', f.status, () => both('status', ''));
+      if (f.busca) add('Busca', '"' + f.busca + '"', () => both('busca', ''));
+      if (f.exame.length) add('Exame', sumVals(f.exame), () => both('exame', []));
+      if (f.doc.length) add('Documentação', sumVals(f.doc.map(docShort)), () => both('doc', []));
+      if (f.indic) add('Possui indicação', f.indic, () => both('indic', ''));
+      if (f.de || f.ate) add('Validação', (brDate(f.de) || '...') + ' a ' + (brDate(f.ate) || '...'), () => { both('de', ''); both('ate', ''); });
+      if (f.reprov === 'Não') add('Reprovados', 'ocultos', () => both('reprov', 'Sim'));
+      if (f.hist === 'Sim') add('Histórico', 'completo', () => both('hist', 'Não'));
+      $('cv-chips').innerHTML = chips.length ? chips.map((c, i) => `<span class="chip" title="${esc(c.k)}: ${esc(c.v)}"><span>${c.k}: <strong>${esc(c.v)}</strong></span><i class="fa-solid fa-xmark" data-chip="${i}" title="Remover filtro"></i></span>`).join('') + '<button class="clear" id="chips-clear">Limpar filtros</button>' : '';
       $('cv-chips').querySelectorAll('[data-chip]').forEach(x => x.onclick = () => { chips[+x.dataset.chip].clear(); syncForm(); state.page = 1; render(); });
       if ($('chips-clear')) $('chips-clear').onclick = limparFiltros;
-      const advN = ['exame', 'doc', 'trein', 'indic'].filter(k => f[k]).length + (f.de || f.ate ? 1 : 0) + (f.reprov === 'Não') + (f.admit === 'Não') + (f.hist === 'Sim');
+      const advN = (f.exame.length > 0) + (f.doc.length > 0) + (f.indic ? 1 : 0) + (f.de || f.ate ? 1 : 0) + (f.reprov === 'Não') + (f.hist === 'Sim');
       $('adv-count').textContent = advN ? '(' + advN + ')' : '';
     }
 
@@ -715,79 +1157,114 @@
       if (state.kpi && !kpiByK(state.kpi)) state.kpi = '';
       renderKPIs(base);
       renderChips();
+      dirty();
       const rows = rowsNow(), cols = shownCols();
       const total = rows.length, pages = Math.max(1, Math.ceil(total / state.perPage));
       if (state.page > pages) state.page = pages;
       const start = (state.page - 1) * state.perPage, pageRows = rows.slice(start, start + state.perPage);
 
-      const wsum = cols.reduce((s, c) => s + c.w, 0);
-      $('cv-colgroup').innerHTML = '<col style="width: 44px;">' + cols.map(c => `<col style="width: ${(c.w / wsum * 100).toFixed(2)}%;">`).join('') + '<col style="width: 52px;">';
+      const widths = cols.map(c => Math.round(c.w * 120));
+      $('cv-table').style.minWidth = (44 + widths.reduce((s, w) => s + w, 0) + 52) + 'px';
+      $('cv-colgroup').innerHTML = '<col style="width: 44px;">' + widths.map(w => `<col style="width: ${w}px;">`).join('') + '<col style="width: 52px;">';
       const allOn = pageRows.length && pageRows.every(r => sel.has(r.id)), someOn = pageRows.some(r => sel.has(r.id));
       $('cv-thead').innerHTML = `<th class="ck ns"><input type="checkbox" id="ck-all" title="Selecionar candidatos visíveis" ${allOn ? 'checked' : ''}></th>` +
-        cols.map(c => `<th data-key="${c.k}" class="${state.sortKey === c.k ? 'sorted' : ''}" title="${c.l}">${c.l.toUpperCase()}<i class="fa-solid sort ${state.sortKey === c.k ? (state.sortDir === 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i></th>`).join('') +
+        cols.map(c => `<th data-key="${c.k}" class="${state.sortKey === c.k ? 'sorted' : ''} ${c.k === 'nome' ? 'cand' : ''}" title="${esc(c.l)}">${esc(c.l.toUpperCase())}<i class="fa-solid sort ${state.sortKey === c.k ? (state.sortDir === 'asc' ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'}"></i></th>`).join('') +
         '<th class="ac ns"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden;">Ações</span></th>';
       $('ck-all').indeterminate = !allOn && someOn;
 
       $('cv-tbody').innerHTML = pageRows.length ? pageRows.map(r => `
         <tr data-id="${r.id}" class="${sel.has(r.id) ? 'sel' : ''} ${flashIds.includes(r.id) ? 'flash' : ''}">
-          <td class="ck"><input type="checkbox" data-ck="${r.id}" ${sel.has(r.id) ? 'checked' : ''} aria-label="Selecionar ${r.nome}"></td>
+          <td class="ck"><input type="checkbox" data-ck="${r.id}" ${sel.has(r.id) ? 'checked' : ''} aria-label="Selecionar ${esc(r.nome)}"></td>
           ${cols.map(c => {
-            if (c.k === 'nome') return `<td title="${r.nome}"><button class="cand-n" data-open="${r.id}">${r.nome}${r.nomeSocial ? ' <span style="font-weight: 400; color: var(--text-muted);">(' + r.nomeSocial + ')</span>' : ''}</button><span class="sub">${r.cpf}</span></td>`;
+            if (c.k === 'nome') return `<td class="cand" title="${esc(r.nome)}"><button class="cand-n" data-open="${r.id}">${esc(r.nome)}${r.nomeSocial ? ' <span style="font-weight: 400; color: var(--text-muted);">(' + esc(r.nomeSocial) + ')</span>' : ''}</button><span class="sub">${r.cpf}</span></td>`;
             const raw = c.v(r);
-            const html = c.h ? c.h(r) : c.badge ? badge(raw) : dash(raw);
-            return `<td title="${c.t ? c.t(r) : (raw || '')}">${html}</td>`;
+            const html = c.h ? c.h(r) : dash(esc(raw));
+            return `<td title="${esc(c.t ? c.t(r) : (raw ?? ''))}">${html}</td>`;
           }).join('')}
-          <td class="ac"><button class="row-menu-btn" data-menu="${r.id}" title="Ações do candidato" aria-label="Ações de ${r.nome}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
-        </tr>`).join('') : `<tr><td colspan="${cols.length + 2}"><div class="empty-state" style="white-space: normal;"><i class="fa-solid fa-user-slash" style="font-size: 24px; opacity: .5; display: block; margin-bottom: 8px;"></i>Nenhum candidato encontrado com os filtros atuais.<br><button class="clear" style="margin-top: 8px; background: none; border: none; color: var(--primary-purple); font-weight: 600; cursor: pointer;" onclick="limparFiltros()">Limpar filtros</button></div></td></tr>`;
+          <td class="ac"><button class="row-menu-btn" data-menu="${r.id}" title="Ações do candidato" aria-label="Ações de ${esc(r.nome)}"><i class="fa-solid fa-ellipsis-vertical"></i></button></td>
+        </tr>`).join('') : `<tr><td colspan="${cols.length + 2}" style="white-space: normal;"><div class="empty-state" style="white-space: normal;"><i class="fa-solid fa-user-slash" style="font-size: 24px; opacity: .5; display: block; margin-bottom: 8px;"></i>Nenhum candidato encontrado com os filtros atuais.<br><button class="lnk" style="margin-top: 8px; font-size: 13px;" onclick="limparFiltros()">Limpar filtros</button></div></td></tr>`;
       flashIds = [];
 
-      $('cv-count').innerHTML = `${total} candidato${total === 1 ? '' : 's'} <span>${state.kpi || Object.keys(F0).some(k => state.f[k] !== F0[k]) ? 'no filtro atual' : 'no total'}</span>`;
+      $('cv-count').innerHTML = `${total} candidato${total === 1 ? '' : 's'} <span>${state.kpi || JSON.stringify(state.f) !== JSON.stringify(F0) ? 'no filtro atual' : 'no total'}</span>`;
       $('range-info').textContent = total ? `${start + 1}–${start + pageRows.length} de ${total}` : '';
       let ph = `<button class="btn btn-secondary" ${state.page === 1 ? 'disabled' : ''} data-page="${state.page - 1}">&laquo; Anterior</button>`;
       for (let p = 1; p <= pages; p++) ph += `<button class="btn ${p === state.page ? 'btn-primary' : 'btn-secondary'}" data-page="${p}">${p}</button>`;
       ph += `<button class="btn btn-secondary" ${state.page === pages ? 'disabled' : ''} data-page="${state.page + 1}">Seguinte &raquo;</button>`;
       $('pager').innerHTML = ph;
+      renderViews();
       renderSel(rows, pageRows);
     }
 
+    // Badges das visões salvas (acima da tabela)
+    function renderViews() {
+      $('views').innerHTML = fmt.formats.length ? '<span class="vlab">Visões:</span>' + fmt.formats.map(f => `<span class="view-badge ${fmt.activeId === f.id ? 'on' : ''}" title="${esc(f.nome)} · ${f.cols.length} colunas${fmt.principalId === f.id ? ' · visão principal' : ''}"><button class="vb-n" data-view="${f.id}">${fmt.principalId === f.id ? '<i class="fa-solid fa-star star"></i>' : ''}${esc(f.nome)}</button><button class="vb-m" data-view-menu="${f.id}" title="Opções da visão" aria-label="Opções da visão ${esc(f.nome)}"><i class="fa-solid fa-ellipsis-vertical"></i></button></span>`).join('') : '';
+    }
+    $('views').addEventListener('click', e => {
+      const v = e.target.closest('[data-view]'); if (v) { selectFormat(v.dataset.view); return; }
+      const m = e.target.closest('[data-view-menu]'); if (m) { e.stopPropagation(); abrirViewMenu(m.dataset.viewMenu, m); }
+    });
+    function abrirViewMenu(id, btn) {
+      const on = btn.classList.contains('on'); closePops(); if (on) return;
+      const f = fmt.formats.find(x => x.id === id); if (!f) return;
+      const principal = fmt.principalId === id;
+      $('view-menu').innerHTML = `
+        <button onclick="closePops(); tornarPrincipal('${id}')"><i class="fa-${principal ? 'solid' : 'regular'} fa-star"></i> ${principal ? 'Remover como principal' : 'Tornar principal'}</button>
+        <button onclick="closePops(); openCols('${id}')"><i class="fa-solid fa-pen"></i> Editar</button>
+        <hr>
+        <button onclick="closePops(); pedirExclusao('${id}')"><i class="fa-regular fa-trash-can"></i> Excluir</button>`;
+      btn.classList.add('on');
+      place($('view-menu'), btn);
+    }
+    function tornarPrincipal(id) {
+      const f = fmt.formats.find(x => x.id === id); if (!f) return;
+      const was = fmt.principalId === id; fmt.principalId = was ? null : id; saveFmt(); render();
+      showToast(was ? 'A visão “' + f.nome + '” deixou de ser a principal. A tela passa a abrir com o padrão do sistema.' : 'A visão “' + f.nome + '” é a principal e abrirá ao acessar a tela.', 'success');
+    }
+    let delViewId = null;
+    function pedirExclusao(id) {
+      const f = fmt.formats.find(x => x.id === id); if (!f) return; delViewId = id;
+      $('del-view-body').innerHTML = `Excluir a visão <strong>“${esc(f.nome)}”</strong> (${f.cols.length} colunas)?${fmt.principalId === id ? '<br><br>Ela é a sua visão principal; após a exclusão a tela passa a abrir com o padrão do sistema.' : ''}<br><br><span class="muted">As demais visões e as colunas disponíveis não são afetadas.</span>`;
+      openModal('modal-del-view');
+    }
+    $('del-view-ok').addEventListener('click', () => { closeModal('modal-del-view'); if (delViewId) deleteFormat(delViewId); delViewId = null; });
+
     function renderSel(rows, pageRows) {
       rows = rows || rowsNow();
-      const n = sel.size, on = n > 0;
+      const n = sel.size, on = n > 0, ids = [...sel];
       $('sel-bar').classList.toggle('on', on);
       $('bar-default').style.display = on ? 'none' : '';
       $('bar-tools').style.display = on ? 'none' : '';
       $('sel-lbl').textContent = n + (n === 1 ? ' candidato selecionado' : ' candidatos selecionados');
+      if (on) {
+        const bloq = ids.filter(id => bloqueadoVaga(candById(id))).length, same = mesmaCap(ids);
+        $('sel-actions').innerHTML =
+          (bloq === n ? `<span class="tip" title="${n === 1 ? MSG_BLOQ : 'Todos os candidatos selecionados estão contratados com treinamento confirmado e não podem trocar de vaga.'}"><button class="btn btn-primary btn-sm" disabled><i class="fa-solid fa-right-left"></i> Trocar de vaga</button></span>`
+            : `<button class="btn btn-primary btn-sm" data-act="vaga" ${bloq ? `title="${bloq} candidato(s) contratado(s) com treinamento confirmado não serão analisados"` : ''}><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>`) +
+          `<button class="btn btn-secondary btn-sm" data-act="cap"><i class="fa-solid fa-shuffle"></i> Troca de Capacity</button>` +
+          (same ? `<button class="btn btn-secondary btn-sm" data-act="sala"><i class="fa-solid fa-chalkboard-user"></i> Troca de Sala</button>`
+            : `<span class="tip" title="Disponível apenas quando todos os candidatos selecionados pertencem ao mesmo ID Capacity."><button class="btn btn-secondary btn-sm" disabled><i class="fa-solid fa-chalkboard-user"></i> Troca de Sala</button></span>`) +
+          `<button class="btn btn-secondary btn-sm" data-act="fu"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>` +
+          `<button class="btn btn-secondary btn-sm" id="btn-mais"><i class="fa-solid fa-ellipsis"></i> Mais ações</button>`;
+      }
       const all = $('sel-all');
       const pageAll = pageRows && pageRows.length && pageRows.every(r => sel.has(r.id));
       if (on && pageAll && rows.length > n) { all.style.display = ''; all.textContent = `Selecionar todos os ${rows.length} do filtro`; all.onclick = () => { rows.forEach(r => sel.add(r.id)); render(); }; }
       else all.style.display = 'none';
     }
-
-    function syncForm() {
-      const f = state.f;
-      $('f-capacity').value = f.capacity; $('f-operacao').value = f.operacao; refreshCelulas(); $('f-celula').value = f.celula;
-      $('f-status').value = f.status; $('f-busca').value = f.busca;
-      $('a-exame').value = f.exame; $('a-doc').value = f.doc; $('a-trein').value = f.trein; $('a-indic').value = f.indic;
-      $('a-de').value = f.de; $('a-ate').value = f.ate; $('a-reprov').value = f.reprov; $('a-admit').value = f.admit; $('a-hist').value = f.hist;
-    }
-    function limparFiltros() { state.f = { ...F0 }; state.kpi = ''; state.page = 1; syncForm(); render(); }
-
-    // ---------- Eventos: filtros ----------
-    [['f-capacity', 'capacity'], ['f-operacao', 'operacao'], ['f-celula', 'celula'], ['f-status', 'status']].forEach(([id, k]) => $(id).addEventListener('change', e => { state.f[k] = e.target.value; if (k !== 'celula' && k !== 'status') refreshCelulas(); state.page = 1; render(); }));
-    $('f-busca').addEventListener('input', e => { state.f.busca = e.target.value; state.page = 1; render(); });
-    $('btn-more').addEventListener('click', () => { const o = $('cv-adv').classList.toggle('open'); $('btn-more').classList.toggle('on', o); $('btn-more').querySelector('i').className = 'fa-solid ' + (o ? 'fa-minus' : 'fa-plus'); });
-    $('adv-aplicar').addEventListener('click', () => {
-      Object.assign(state.f, { exame: $('a-exame').value, doc: $('a-doc').value, trein: $('a-trein').value, indic: $('a-indic').value, de: $('a-de').value, ate: $('a-ate').value, reprov: $('a-reprov').value, admit: $('a-admit').value, hist: $('a-hist').value });
-      state.page = 1; render();
+    $('sel-bar').addEventListener('click', e => {
+      const ids = [...sel];
+      const a = e.target.closest('[data-act]');
+      if (a) { ({ vaga: abrirVaga, cap: abrirCap, sala: abrirSala, fu: followUp })[a.dataset.act](ids); return; }
+      if (e.target.closest('#btn-mais')) { e.stopPropagation(); const on = $('mais-menu').classList.contains('on'); closePops(); if (!on) place($('mais-menu'), e.target.closest('#btn-mais')); }
     });
-    $('adv-limpar').addEventListener('click', () => { Object.assign(state.f, { exame: '', doc: '', trein: '', indic: '', de: '', ate: '', reprov: 'Sim', admit: 'Sim', hist: 'Não' }); syncForm(); state.page = 1; render(); });
-    $('kpi-wrap').addEventListener('click', e => { const b = e.target.closest('[data-kpi]'); if (!b) return; state.kpi = state.kpi === b.dataset.kpi ? '' : b.dataset.kpi; state.page = 1; render(); });
 
-    // ---------- Eventos: tabela ----------
+    // ---------- Eventos: KPI, tabela, paginação ----------
+    $('kpi-wrap').addEventListener('click', e => { const b = e.target.closest('[data-kpi]'); if (!b) return; state.kpi = state.kpi === b.dataset.kpi ? '' : b.dataset.kpi; state.page = 1; render(); });
     $('cv-table').addEventListener('click', e => {
       const th = e.target.closest('th[data-key]');
       if (th) { const k = th.dataset.key; if (state.sortKey === k) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'; else { state.sortKey = k; state.sortDir = 'asc'; } render(); return; }
       const o = e.target.closest('[data-open]'); if (o) { abrirDrawer(+o.dataset.open); return; }
+      const pc = e.target.closest('[data-pc]'); if (pc) { abrirPC(+pc.dataset.pc); return; }
       const m = e.target.closest('[data-menu]'); if (m) { e.stopPropagation(); abrirRowMenu(+m.dataset.menu, m); return; }
     });
     $('cv-table').addEventListener('change', e => {
@@ -809,216 +1286,480 @@
       pop.style.left = left + 'px'; pop.style.top = top + 'px';
     }
     function closePops() { document.querySelectorAll('.pop.on').forEach(p => p.classList.remove('on')); document.querySelectorAll('.row-menu-btn.on').forEach(b => b.classList.remove('on')); }
-    document.addEventListener('click', e => { if (!e.target.closest('.pop') && !e.target.closest('#btn-cols') && !e.target.closest('#btn-mais')) closePops(); if (!e.target.closest('#proto-states')) $('proto-states').classList.remove('open'); });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.pop') && !e.target.closest('#btn-mais') && !e.target.closest('[data-view-menu]')) closePops();
+      if (!e.target.closest('.ms')) closeMS();
+      if (!e.target.closest('#proto-states')) $('proto-states').classList.remove('open');
+    });
     addEventListener('scroll', () => document.querySelectorAll('#row-menu.on, #mais-menu.on').forEach(() => closePops()), true);
-    addEventListener('resize', () => { closePops(); render(); });
+    addEventListener('resize', () => { closePops(); closeMS(); });
 
     function abrirRowMenu(id, btn) {
       closePops();
-      const c = candById(id), podeResgatar = c.conv === 'Reprovado' || c.conv === 'Desistente';
+      const c = candById(id), bloq = bloqueadoVaga(c);
       $('row-menu').innerHTML = `
         <button onclick="closePops(); abrirDrawer(${id})"><i class="fa-regular fa-id-card"></i> Ver candidato</button>
-        <button onclick="closePops(); showToast('Abrindo edição de ${c.nome}.', 'success')"><i class="fa-solid fa-pen"></i> Editar</button>
-        <hr>
-        <button onclick="closePops(); abrirTroca([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>
+        <button onclick="closePops(); editarDados(${id})"><i class="fa-solid fa-pen"></i> Editar dados</button>
         <button onclick="closePops(); followUp([${id}])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
-        ${podeResgatar ? `<button onclick="closePops(); resgatar([${id}])"><i class="fa-solid fa-life-ring"></i> Resgatar candidato</button>` : ''}`;
+        <hr>
+        ${bloq ? `<button disabled title="${MSG_BLOQ}"><i class="fa-solid fa-right-left"></i> <span>Trocar de vaga<small>${MSG_BLOQ}</small></span></button>` : `<button onclick="closePops(); abrirVaga([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>`}
+        <button onclick="closePops(); abrirCap([${id}])"><i class="fa-solid fa-shuffle"></i> Troca de Capacity</button>
+        <button onclick="closePops(); abrirSala([${id}])"><i class="fa-solid fa-chalkboard-user"></i> Troca de Sala de Treinamento</button>
+        ${podeResgatar(c) ? `<hr><button onclick="closePops(); resgatar([${id}])"><i class="fa-solid fa-life-ring"></i> Resgatar candidato</button>` : ''}`;
       btn.classList.add('on');
       place($('row-menu'), btn, true);
     }
-    $('btn-mais').addEventListener('click', e => { const on = $('mais-menu').classList.contains('on'); closePops(); if (!on) place($('mais-menu'), e.currentTarget); });
 
-    // ---------- Colunas ----------
+    // ---------- Colunas e visões ----------
+    const colsUI = { naming: null, name: '', err: '' };
+    function resetColsUI() { Object.assign(colsUI, { naming: null, name: '', err: '' }); }
     function renderColsPop() {
-      const max = maxCols(), n = visCols.filter(k => colByK(k)).length, full = n >= max;
-      const groups = [...new Set(COLS.map(c => c.g))];
-      $('cols-body').innerHTML = groups.map(g => `<div class="cols-g"><h6>${g}</h6>${COLS.filter(c => c.g === g).map(c => {
-        const on = visCols.includes(c.k), dis = c.lock || (!on && full);
-        return `<label class="${dis && !c.lock ? 'dis' : ''}" ${!on && full ? 'title="Limite de colunas atingido para esta largura de tela"' : ''}><input type="checkbox" data-col="${c.k}" ${on ? 'checked' : ''} ${dis ? 'disabled' : ''}> ${c.l}${c.lock ? ' <span class="muted" style="font-size: 11px;">(fixa)</span>' : ''}</label>`;
-      }).join('')}</div>`).join('');
-      $('cols-n').textContent = Math.min(n, max) + ' de ' + max + ' colunas';
-      $('cols-fill').style.width = Math.min(100, n / max * 100) + '%';
+      const n = fmt.cols.length, full = n >= MAX_COLS, act = activeFormat(), mod = fmtModified();
+      $('cols-sub').innerHTML = act ? `<span>Editando a visão <b>${esc(act.nome)}</b>${fmt.principalId === act.id ? ' · principal' : ''}</span>` : '<span>Padrão do sistema</span>';
+      $('cols-n').textContent = n + ' de ' + MAX_COLS + ' colunas';
+      $('cols-fill').style.width = Math.min(100, n / MAX_COLS * 100) + '%';
       $('cols-max').textContent = full ? 'Limite atingido' : '';
       $('cols-meter').classList.toggle('full', full);
+      $('cols-limit').style.display = full ? '' : 'none';
+      $('fmt-sel').innerHTML = `<option value="default" ${act ? '' : 'selected'}>Padrão do sistema</option>` + fmt.formats.map(f => `<option value="${f.id}" ${act && act.id === f.id ? 'selected' : ''}>${esc(f.nome)}${fmt.principalId === f.id ? ' ★' : ''}</option>`).join('');
+      $('fmt-mod').textContent = mod ? (act ? 'Alterada (não salva)' : 'Diferente do padrão (não salva)') : (act ? 'Visão salva' : '');
+      $('fmt-mod').classList.toggle('ok', !mod && !!act);
+      $('fmt-actions').innerHTML =
+        (act && mod ? `<button class="btn btn-primary btn-sm" data-fa="update"><i class="fa-regular fa-floppy-disk"></i> Salvar alterações</button>` : '') +
+        `<button class="btn btn-secondary btn-sm" data-fa="new"><i class="fa-solid fa-plus"></i> ${act ? 'Salvar como nova visão' : 'Salvar visão'}</button>` +
+        (act ? `<button class="btn btn-secondary btn-sm" data-fa="del" title="Excluir esta visão"><i class="fa-regular fa-trash-can"></i> Excluir</button>` : '');
+      const form = colsUI.naming
+        ? `<label class="form-label" for="fmt-name" style="margin: 0; white-space: nowrap; font-size: 12px;">Nome da visão</label><input class="form-control" id="fmt-name" placeholder="Ex.: Acompanhamento Exames" value="${esc(colsUI.name)}" maxlength="60"><button class="btn btn-primary btn-sm" data-fa="confirm">Salvar</button><button class="btn btn-secondary btn-sm" data-fa="cancel">Cancelar</button>${colsUI.err ? `<span class="err"><i class="fa-solid fa-circle-exclamation"></i> ${colsUI.err}</span>` : ''}`
+        : '';
+      $('fmt-form').innerHTML = form; $('fmt-form').style.display = form ? '' : 'none';
+      const groups = [...new Set(COLS.map(c => c.g))];
+      $('cols-avail').innerHTML = groups.map(g => `<div class="cols-g"><h6>${g}</h6>${COLS.filter(c => c.g === g).map(c => {
+        const on = fmt.cols.includes(c.k), dis = c.lock || (!on && full);
+        return `<label class="${dis && !c.lock ? 'dis' : ''}" ${!on && full ? 'title="Limite de 20 colunas atingido. Remova uma coluna para selecionar outra."' : ''}><input type="checkbox" data-col="${c.k}" ${on ? 'checked' : ''} ${dis ? 'disabled' : ''}> ${c.l}${c.lock ? ' <span class="muted" style="font-size: 11px;">(fixa)</span>' : ''}</label>`;
+      }).join('')}</div>`).join('');
+      $('cols-sel').innerHTML = fmt.cols.map((k, i) => { const c = colByK(k); return `<div class="sel-item"><span class="ord">${i + 1}</span><span class="n" title="${esc(c.l)}">${c.l}</span>${c.lock ? '<span class="muted" style="font-size: 11px;">fixa</span>' : `<button class="ib" data-mv="${k}" data-d="-1" ${i <= 1 ? 'disabled' : ''} title="Mover para cima"><i class="fa-solid fa-chevron-up"></i></button><button class="ib" data-mv="${k}" data-d="1" ${i === fmt.cols.length - 1 ? 'disabled' : ''} title="Mover para baixo"><i class="fa-solid fa-chevron-down"></i></button><button class="ib" data-rm="${k}" title="Remover coluna"><i class="fa-solid fa-xmark"></i></button>`}</div>`; }).join('');
     }
-    $('btn-cols').addEventListener('click', e => { const on = $('cols-pop').classList.contains('on'); closePops(); if (!on) { renderColsPop(); place($('cols-pop'), e.currentTarget, true); } });
-    $('cols-body').addEventListener('change', e => {
+    function openCols(viewId) { closePops(); closeMS(); resetColsUI(); if (viewId && fmt.formats.some(f => f.id === viewId)) { fmt.activeId = viewId; fmt.cols = normCols(activeCols()); saveFmt(); render(); } renderColsPop(); openModal('modal-cols'); }
+    $('btn-cols').addEventListener('click', () => openCols());
+    function applyCols() { fmt.cols = normCols(fmt.cols); saveFmt(); renderColsPop(); render(); }
+    $('cols-pop').addEventListener('change', e => {
+      if (e.target.id === 'fmt-sel') { selectFormat(e.target.value); return; }
       const k = e.target.dataset.col; if (!k) return;
-      if (e.target.checked) { if (visCols.length < maxCols()) visCols.push(k); } else visCols = visCols.filter(x => x !== k);
-      localStorage.setItem(LS_COLS, JSON.stringify(visCols)); renderColsPop(); render();
+      if (e.target.checked) { if (fmt.cols.length < MAX_COLS && !fmt.cols.includes(k)) fmt.cols.push(k); } else fmt.cols = fmt.cols.filter(x => x !== k);
+      applyCols();
     });
-    $('cols-reset').addEventListener('click', () => { visCols = [...DEFAULT_COLS]; localStorage.setItem(LS_COLS, JSON.stringify(visCols)); renderColsPop(); render(); });
+    $('cols-pop').addEventListener('click', e => {
+      const mv = e.target.closest('[data-mv]'); if (mv) { const i = fmt.cols.indexOf(mv.dataset.mv), j = i + (+mv.dataset.d); if (i > 0 && j > 0 && j < fmt.cols.length) { [fmt.cols[i], fmt.cols[j]] = [fmt.cols[j], fmt.cols[i]]; applyCols(); } return; }
+      const rm = e.target.closest('[data-rm]'); if (rm) { fmt.cols = fmt.cols.filter(x => x !== rm.dataset.rm); applyCols(); return; }
+      const fa = e.target.closest('[data-fa]'); if (!fa) return;
+      const act = activeFormat();
+      switch (fa.dataset.fa) {
+        case 'new': resetColsUI(); colsUI.naming = 'new'; colsUI.name = act ? act.nome + ' (cópia)' : ''; renderColsPop(); setTimeout(() => { const i = $('fmt-name'); if (i) { i.focus(); i.select(); } }, 0); break;
+        case 'update': if (act) { act.cols = [...fmt.cols]; saveFmt(); showToast('Visão “' + act.nome + '” atualizada.', 'success'); renderColsPop(); render(); } break;
+        case 'del': if (act) pedirExclusao(act.id); break;
+        case 'cancel': resetColsUI(); renderColsPop(); break;
+        case 'confirm': confirmSaveFormat(); break;
+      }
+    });
+    $('cols-pop').addEventListener('keydown', e => { if (e.target.id === 'fmt-name') { if (e.key === 'Enter') { e.preventDefault(); confirmSaveFormat(); } if (e.key === 'Escape') { resetColsUI(); renderColsPop(); } } });
+    $('cols-pop').addEventListener('input', e => { if (e.target.id === 'fmt-name') colsUI.name = e.target.value; });
+    function confirmSaveFormat() {
+      const name = ($('fmt-name') ? $('fmt-name').value : colsUI.name).trim();
+      colsUI.name = name;
+      if (!name) { colsUI.err = 'Informe um nome para a visão.'; renderColsPop(); return; }
+      if (fmt.formats.some(f => norm(f.nome) === norm(name))) { colsUI.err = 'Já existe uma visão com esse nome.'; renderColsPop(); return; }
+      if (fmt.cols.length > MAX_COLS) { colsUI.err = 'A visão não pode ter mais de 20 colunas.'; renderColsPop(); return; }
+      const f = { id: 'f' + Date.now(), nome: name, cols: [...fmt.cols] };
+      fmt.formats.push(f); fmt.activeId = f.id; saveFmt(); resetColsUI(); renderColsPop(); render();
+      showToast('Visão “' + name + '” salva. Ela aparece como badge acima da tabela.', 'success');
+    }
+    function selectFormat(id) { resetColsUI(); fmt.activeId = fmt.formats.some(f => f.id === id) ? id : 'default'; fmt.cols = normCols(activeCols()); applyCols(); }
+    function deleteFormat(id) {
+      const f = fmt.formats.find(x => x.id === id); if (!f) return;
+      fmt.formats = fmt.formats.filter(x => x.id !== id);
+      if (fmt.principalId === id) fmt.principalId = null;
+      if (fmt.activeId === id) { fmt.activeId = 'default'; fmt.cols = [...DEFAULT_COLS]; }
+      resetColsUI(); applyCols(); showToast('Visão “' + f.nome + '” excluída.', 'success');
+    }
+    $('cols-reset').addEventListener('click', () => { resetColsUI(); fmt.activeId = 'default'; fmt.cols = [...DEFAULT_COLS]; applyCols(); showToast('Colunas padrão restauradas. Suas visões salvas foram mantidas.', 'success'); });
 
-    // ---------- Drawer ----------
+    // ---------- Drawer (detalhe do candidato) ----------
     let dwId = null;
-    function abrirDrawer(id) {
-      const c = candById(id), cap = capById(c.capId); dwId = id;
+    function abrirDrawer(id, keepScroll) {
+      const c = candById(id), cap = capById(c.capId), v = vagaById(c.vagaId), sala = salaById(c.salaId); dwId = id;
+      const st = keepScroll ? $('dw-body').scrollTop : 0;
       $('dw-nome').textContent = c.nome;
       $('dw-meta').textContent = 'ID ' + c.id + ' · CPF ' + c.cpf;
-      $('dw-badges').innerHTML = [['Documentação', c.doc], ['Exame', c.exame], ['Convocação', c.conv], ['Treinamento', c.trein]].filter(x => x[1]).map(x => `<span class="st ${TONE[x[1]] || 'neu'}" title="${x[0]}">${x[0]}: ${x[1]}</span>`).join('');
-      const kv = (k, v, full) => `<div class="${full ? 'full' : ''}"><div class="dw-k">${k}</div><div class="dw-v">${dash(v)}</div></div>`;
-      const sec = (t, inner) => `<div class="dw-sec"><h4>${t}</h4><div class="dw-grid">${inner}</div></div>`;
+      $('dw-badges').innerHTML = [['Documentação', c.doc, docShort(c.doc)], ['Exame', c.exame], ['Convocação', c.conv], ['Treinamento', c.trein]].filter(x => x[1]).map(x => `<span class="st ${TONE[x[1]] || 'neu'}" title="${x[0]}">${x[0]}: ${x[2] || x[1]}</span>`).join('');
+      const sec = (t, inner, extra) => `<div class="dw-sec"><h4>${t}</h4><div class="dw-grid">${inner}</div>${extra || ''}</div>`;
+      const bloq = bloqueadoVaga(c);
       $('dw-body').innerHTML =
-        sec('Candidato', kv('Nome', c.nome) + kv('Nome social', c.nomeSocial) + kv('CPF', c.cpf) + kv('RG', c.rg) + kv('E-mail', c.email, true) + kv('FPW', c.fpw) + kv('Seu Amigo na TP', c.amigo)) +
-        sec('Vaga', kv('Capacity', cap.id + ' · ' + cap.cap) + kv('Operação', opLabel(cap)) + kv('Célula', cap.celula, true) + kv('Cargo', cap.cargo) + kv('Escala', c.escala) + kv('Horário vaga', cap.horario) + kv('Disponibilidade de horário', c.disp) + kv('Carga horária', c.carga) + kv('Tipo contrato', c.tipo)) +
-        sec('Validação', kv('Dados Syscheck', c.syscheck) + kv('Data validação', c.dtValidacao)) +
-        sec('Documentação', kv('Status', c.doc) + kv('Data de entrega', c.dtDoc)) +
-        sec('Exame médico', kv('Status', c.exame) + kv('Data agenda médica', c.dtAgenda)) +
-        sec('Convocação', kv('Status', c.conv) + (c.motivo ? kv('Motivo de reprovação', c.motivo) : '')) +
-        sec('Treinamento', kv('Status', c.trein) + kv('Local', c.trein ? cap.site : '') + kv('Horário', c.horarioTrein) + kv('Início', c.inicioTrein) + kv('Fim da turma', c.dtFimTurma)) +
-        sec('Admissão', kv('Data de admissão', c.dtAdmissao));
+        sec('Candidato', kv('Nome', esc(c.nome)) + kv('Nome social', esc(c.nomeSocial)) + kv('CPF', c.cpf) + kv('RG', c.rg) + kv('E-mail', esc(c.email), 'full') + kv('Data de Nascimento', c.dtNascimento) + kv('Seu Amigo na TP', c.amigo) + kv('ID BMS', c.idBMS) + kv('PCD', c.pcd ? 'Sim' : 'Não')) +
+        sec('Vaga', kv('Vaga', v ? `${v.id} - ${esc(v.nome)}` : '', 'full') + kv('Capacity', cap.id + ' · ' + esc(capLabel(cap))) + kv('Operação', esc(opLabel(cap))) + kv('Célula', esc(cap.celula), 'full') + kv('Cargo', esc(cap.cargo)) + kv('Escala', c.escala) + kv('Horário vaga', cap.horario) + kv('Disponibilidade de horário', c.disp) + kv('Carga horária', c.carga) + kv('Tipo contrato', c.tipo)) +
+        sec('Validação', kv('Dados Syscheck', c.syscheck) + kv('Data validação', c.dtValidacao) + kv('Etapa atual do processo', c.etapaAtual === 'Concluído' ? 'Etapas concluídas' : 'Em ' + c.etapaAtual),
+          `<div class="dw-links"><button class="lnk" onclick="abrirPC(${id})"><i class="fa-solid fa-desktop"></i> Configuração do PC ${c.pc ? '' : '(não enviada)'}</button></div>`) +
+        sec('Documentação', kv('Status', badge(c.doc)) + kv('Data de entrega', c.dtDoc)) +
+        sec('Exame médico', kv('Status', badge(c.exame)) + kv('Data agenda médica', c.dtAgenda),
+          `<div class="dw-links"><a class="lnk" href="agendamento-exame-medico.html" title="Abrir Agendamento Exame Médico"><i class="fa-solid fa-calendar-check"></i> Agendamento de exame</a><a class="lnk" href="resultado-exame-medico.html" title="Abrir Resultado Exame Médico"><i class="fa-solid fa-file-medical"></i> Resultado do exame</a></div>`) +
+        sec('Convocação', kv('Status', badge(c.conv)) + kv('Motivo de reprovação', c.motivo),
+          `<div class="dw-act"><div class="form-group"><label class="form-label" for="dw-conv-sel">Alterar status da convocação</label><select class="form-control" id="dw-conv-sel">${STATUS_CONV.map(s => `<option ${s === c.conv ? 'selected' : ''}>${s}</option>`).join('')}</select></div><div class="form-group" id="dw-conv-motg" style="${c.conv === 'Reprovado' ? '' : 'display: none;'}"><label class="form-label" for="dw-conv-mot">Motivo</label><input class="form-control" id="dw-conv-mot" value="${esc(c.motivo)}" placeholder="Informe o motivo"></div><button class="btn btn-secondary btn-sm" style="height: 34px;" onclick="salvarStatusConv(${id})"><i class="fa-regular fa-floppy-disk"></i> Salvar status</button></div>`) +
+        sec('Treinamento', kv('Status', badge(c.trein)) + kv('Data confirmação', c.dtConfirmacaoTrein) + kv('Sala de treinamento', sala ? sala.id + ' · ' + esc(sala.nome) : '', 'full') + kv('Local', sala ? esc(cap.site) : '') + kv('Horário', sala ? sala.hIni : '') + kv('Início', sala ? sala.dtIni : '') + kv('Fim da turma', sala ? sala.dtFim : '')) +
+        sec('Admissão', kv('Matrícula', c.matricula) + kv('Data de admissão', c.dtAdmissao));
       $('dw-foot').innerHTML = `
-        <button class="btn btn-secondary btn-sm" onclick="showToast('Abrindo edição de ${c.nome}.', 'success')"><i class="fa-solid fa-pen"></i> Editar</button>
+        ${bloq ? `<span class="dw-bloq"><i class="fa-solid fa-lock"></i> ${MSG_BLOQ}</span>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="editarDados(${id})"><i class="fa-solid fa-pen"></i> Editar dados</button>
         <button class="btn btn-secondary btn-sm" onclick="followUp([${id}])"><i class="fa-regular fa-paper-plane"></i> Follow Up</button>
-        <button class="btn btn-primary btn-sm" onclick="closeDrawer('drawer-cand'); abrirTroca([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>`;
-      $('dw-body').scrollTop = 0;
+        <button class="btn btn-secondary btn-sm" onclick="closeDrawer('drawer-cand'); abrirSala([${id}])"><i class="fa-solid fa-chalkboard-user"></i> Troca de Sala</button>
+        <button class="btn btn-secondary btn-sm" onclick="closeDrawer('drawer-cand'); abrirCap([${id}])"><i class="fa-solid fa-shuffle"></i> Troca de Capacity</button>
+        ${bloq ? `<span class="tip" title="${MSG_BLOQ}"><button class="btn btn-primary btn-sm" disabled><i class="fa-solid fa-right-left"></i> Trocar de vaga</button></span>` : `<button class="btn btn-primary btn-sm" onclick="closeDrawer('drawer-cand'); abrirVaga([${id}])"><i class="fa-solid fa-right-left"></i> Trocar de vaga</button>`}`;
+      $('dw-conv-sel').addEventListener('change', e => { $('dw-conv-motg').style.display = e.target.value === 'Reprovado' ? '' : 'none'; });
+      $('dw-body').scrollTop = st;
       openDrawer('drawer-cand');
     }
+    function salvarStatusConv(id) {
+      const c = candById(id), novo = $('dw-conv-sel').value, mot = $('dw-conv-mot').value.trim();
+      if (novo === c.conv && mot === c.motivo) { showToast('Nenhuma alteração no status.', 'error'); return; }
+      c.conv = novo; c.motivo = novo === 'Reprovado' ? (mot || 'Convocação treinamento') : '';
+      flashIds = [id]; render(); abrirDrawer(id, true);
+      showToast('Status da convocação de ' + c.nome + ' alterado para ' + novo + '.', 'success');
+    }
+    function abrirPC(id) {
+      const c = candById(id);
+      $('pc-sub').textContent = c.nome + ' · ID ' + c.id;
+      $('pc-body').innerHTML = c.pc
+        ? `<div class="dw-grid">${kv('Sistema operacional', c.pc.so)}${kv('Processador', c.pc.cpu)}${kv('Memória RAM', c.pc.ram)}${kv('Internet', c.pc.net)}${kv('Webcam', c.pc.webcam)}${kv('Headset', c.pc.headset)}${kv('Resultado Syscheck', badge(c.syscheck === 'Validado' ? 'Apto' : 'Pendente', c.syscheck))}${kv('Data do envio', c.pc.data)}</div>`
+        : `<div class="vg-empty"><i class="fa-solid fa-desktop"></i>Configuração do PC ainda não enviada pelo candidato.<br>Os dados aparecem aqui após a validação do Syscheck.</div>`;
+      openModal('modal-pc');
+    }
+    function editarDados(id) { const c = candById(id); showToast('Abrindo dados cadastrais de ' + c.nome + '.', 'success'); }
 
-    // ---------- Ações ----------
-    const plural = (n, s, p) => n + ' ' + (n === 1 ? s : p);
-    function followUp(ids) { showToast('Follow Up registrado para ' + plural(ids.length, 'candidato', 'candidatos') + '.', 'success'); }
-    function resgatar(ids) { closePops(); showToast('Resgate solicitado para ' + plural(ids.length, 'candidato', 'candidatos') + '.', 'success'); }
+    // ---------- Ações simples ----------
+    let fuIds = [];
+    function followUp(ids) {
+      fuIds = [...ids];
+      $('fu-sub').textContent = plural(ids.length, 'candidato selecionado', 'candidatos selecionados');
+      $('fu-body').innerHTML = `<p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Esta ação abre o novo Follow Up do PeopleXP para os candidatos abaixo. O registro e o histórico ficam no próprio Follow Up.</p><div class="rv-list">${ids.map(id => { const c = candById(id); return `<div class="fb-row" style="grid-template-columns: 20px minmax(0, 1.3fr) minmax(0, 1fr);"><i class="fa-regular fa-user" style="color: var(--text-muted);"></i><span><strong style="font-weight: 600;">${esc(c.nome)}</strong><span class="sub">${c.cpf}</span></span><span>${badge(c.conv)}</span></div>`; }).join('')}</div>`;
+      openModal('modal-fu');
+    }
+    $('fu-go').addEventListener('click', () => { closeModal('modal-fu'); showToast('Follow Up aberto para ' + plural(fuIds.length, 'candidato', 'candidatos') + '.', 'success'); });
+    function resgatar(ids) {
+      closePops();
+      if (!ids) { showToast('Abrindo Resgatar Candidato.', 'success'); return; }
+      const eleg = ids.filter(id => podeResgatar(candById(id)));
+      if (!eleg.length) { showToast('Nenhum candidato selecionado é elegível para resgate (apenas Reprovado ou Desistente).', 'error'); return; }
+      showToast('Resgate solicitado para ' + plural(eleg.length, 'candidato elegível', 'candidatos elegíveis') + (eleg.length < ids.length ? ' (' + (ids.length - eleg.length) + ' não elegível(is) ignorado(s))' : '') + '.', 'success');
+    }
     function exportarCSV(onlySel) {
       closePops();
       const rows = onlySel ? CANDS.filter(c => sel.has(c.id)) : rowsNow();
-      const esc = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-      const csv = [COLS.map(c => esc(c.l)).join(';'), ...rows.map(r => COLS.map(c => esc(c.v(r))).join(';'))].join('\n');
+      const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+      const csv = [COLS.map(c => q(c.l)).join(';'), ...rows.map(r => COLS.map(c => q(c.v(r))).join(';'))].join('\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
       a.download = 'convocacao-candidatos.csv'; a.click();
-      showToast(plural(rows.length, 'candidato exportado', 'candidatos exportados') + ' em CSV.', 'success');
+      showToast(plural(rows.length, 'candidato exportado', 'candidatos exportados') + ' em CSV (todas as colunas).', 'success');
     }
 
-    // ---------- Trocar de vaga ----------
-    const tv = { ids: [], mode: '', massa: '', ind: {}, step: 'edit', result: null };
-    const capOpt = (c, cur, selv) => `<option value="${c.id}" ${String(selv) === String(c.id) ? 'selected' : ''}>${c.id} · ${c.cap} · ${c.celula}${c.id === cur ? ' (atual)' : ''}</option>`;
-    function abrirTroca(ids) {
+    // ---------- Troca de Capacity (Alocação de Candidato) ----------
+    const tc = { ids: [], mode: '', massa: '', tipo: 'CLT', ind: {}, step: 'edit', result: null };
+    const capOpt = (c, cur, selv) => `<option value="${c.id}" ${String(selv) === String(c.id) ? 'selected' : ''}>${c.id} · ${esc(capLabel(c))} · ${esc(c.celula)}${c.id === cur ? ' (atual)' : ''}</option>`;
+    function abrirCap(ids) {
       if (!ids.length) return;
-      Object.assign(tv, { ids: [...ids], mode: ids.length === 1 ? 'massa' : '', massa: '', ind: {}, step: 'edit', result: null });
-      document.querySelectorAll('input[name=tv-mode]').forEach(r => r.checked = false);
-      renderTroca(); openModal('modal-troca');
+      Object.assign(tc, { ids: [...ids], mode: ids.length === 1 ? 'massa' : '', massa: '', tipo: candById(ids[0]).tipo || 'CLT', ind: {}, step: 'edit', result: null });
+      document.querySelectorAll('input[name=tc-mode]').forEach(r => r.checked = false);
+      renderCap(); openModal('modal-cap');
     }
-    function fecharTroca() { closeModal('modal-troca'); }
-    function setMode(m) { tv.mode = m; document.querySelectorAll('input[name=tv-mode]').forEach(r => r.checked = r.value === m); renderTroca(); }
-    document.querySelectorAll('.tv-mode').forEach(l => l.addEventListener('click', e => { e.preventDefault(); setMode(l.dataset.mode); }));
-    $('tv-massa-sel').addEventListener('change', e => { tv.massa = e.target.value; renderTroca(); });
-    $('tv-ind-body').addEventListener('change', e => { const id = +e.target.dataset.ind; if (id) { tv.ind[id] = e.target.value; renderTroca(); } });
-    $('tv-ind-body').addEventListener('click', e => { const b = e.target.closest('[data-apply]'); if (!b) return; const v = tv.ind[+b.dataset.apply]; tv.ind = {}; tv.ids.forEach(id => { if (+v !== candById(id).capId) tv.ind[id] = v; else tv.ind[id] = ''; }); tv.ind[+b.dataset.apply] = v; renderTroca(); });
-
-    function changes() {
-      return tv.ids.map(id => {
-        const c = candById(id), nv = tv.mode === 'massa' ? tv.massa : tv.ind[id];
-        return { c, from: c.capId, to: nv ? +nv : null };
-      }).filter(x => x.to && x.to !== x.from);
+    function fecharCap() { closeModal('modal-cap'); }
+    function setModeCap(m) { tc.mode = m; document.querySelectorAll('input[name=tc-mode]').forEach(r => r.checked = r.value === m); renderCap(); }
+    document.querySelectorAll('.tv-mode').forEach(l => l.addEventListener('click', e => { e.preventDefault(); setModeCap(l.dataset.mode); }));
+    $('tc-massa').addEventListener('change', e => { if (e.target.id === 'tc-sel') { tc.massa = e.target.value; renderCap(); } else if (e.target.id === 'tc-tipo') tc.tipo = e.target.value; });
+    $('tc-ind-body').addEventListener('change', e => { const id = +e.target.dataset.ind; if (id) { tc.ind[id] = e.target.value; renderCap(); } });
+    $('tc-ind-body').addEventListener('click', e => { const b = e.target.closest('[data-apply]'); if (!b) return; const v = tc.ind[+b.dataset.apply]; tc.ind = {}; tc.ids.forEach(id => { tc.ind[id] = +v !== candById(id).capId ? v : ''; }); renderCap(); });
+    function changesCap() { return tc.ids.map(id => { const c = candById(id), nv = tc.mode === 'massa' ? tc.massa : tc.ind[id]; return { c, from: c.capId, to: nv ? +nv : null }; }).filter(x => x.to && x.to !== x.from); }
+    function alocForm() {
+      const curs = new Set(tc.ids.map(id => candById(id).capId)), cur = curs.size === 1 ? [...curs][0] : null, cap = capById(+tc.massa);
+      const ro = (l, v, dis) => `<div class="form-group"><label class="form-label">${l}</label><input class="form-control" value="${esc(v || '')}" readonly ${dis ? 'disabled' : ''} placeholder="—"></div>`;
+      return `<div class="aloc"><div>
+        <div class="form-group"><label class="form-label" for="tc-sel">Capacity</label><select class="form-control" id="tc-sel"><option value="">Selecione a Capacity</option>${CAPS.map(c => capOpt(c, cur, tc.massa)).join('')}</select></div>
+        <div class="aloc-grid">${ro('Operação', cap && opLabel(cap))}${ro('Célula da Operação', cap && cap.celula)}${ro('Local de Trabalho', cap && cap.local)}${ro('Cargo', cap && cap.cargo)}${ro('Horário', cap && cap.horario + ' · Vagas: ' + cap.sol)}${ro('Escala', cap && '6X1', true)}${ro('Carga Horária', cap && '180', true)}
+          <div class="form-group"><label class="form-label" for="tc-tipo">Tipo de Contrato</label><select class="form-control" id="tc-tipo" ${cap ? '' : 'disabled'}>${['CLT', 'Temporário', 'Estágio', 'Jovem Aprendiz'].map(t => `<option ${t === tc.tipo ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+        </div></div>
+        <div class="aloc-info"><h5>Dados da Capacity</h5>${cap ? kv('Cargo', esc(cap.cargo)) + kv('Centro de Custo', cap.cc) + kv('Salário', cap.salario) + kv('Qtd. Vagas', cap.sol) + kv('Qtd. Candidatos Alocados', cap.alocados + ` <span class="muted">(+${changesCap().length} após a troca)</span>`) : '<div class="muted" style="font-size: 13px; line-height: 1.5;">Selecione a Capacity para ver cargo, centro de custo, salário e vagas.</div>'}</div></div>`;
     }
-    function vagaCard(cap) {
-      if (!cap) return '';
-      const kv = (k, v, cls) => `<div class="${cls || ''}"><div class="dw-k">${k}</div><div class="dw-v">${v}</div></div>`;
-      return `<div class="vg-card">${kv('Capacity', cap.id)}${kv('Período', cap.cap)}${kv('Cliente', cap.cliente)}${kv('Site', cap.site)}${kv('Célula', cap.celula, 'full2')}${kv('Cargo', cap.cargo)}${kv('Horário', cap.horario)}${kv('Solicitado', cap.sol)}${kv('Solicitado + Buffer', cap.buf)}</div>`;
-    }
-    function renderTroca() {
-      const n = tv.ids.length;
-      const steps = [['edit', 'Definir vagas'], ['review', 'Revisar'], ['result', 'Concluído']];
-      $('tv-title').textContent = tv.step === 'review' ? 'Revisar troca de vaga' : 'Trocar de vaga';
-      $('tv-steps').innerHTML = steps.map(([k, l], i) => `${i ? '<span class="sep">›</span>' : ''}${tv.step === k ? `<b>${i + 1}. ${l}</b>` : `<span>${i + 1}. ${l}</span>`}`).join('');
-      ['edit', 'review', 'result'].forEach(s => $('tv-' + s).classList.toggle('on', tv.step === s));
-      document.querySelectorAll('.tv-mode').forEach(l => l.classList.toggle('on', l.dataset.mode === tv.mode));
-      const ch = changes();
-
-      if (tv.step === 'edit') {
-        const unico = n === 1;
-        $('tv-modes').style.display = unico ? 'none' : '';
-        $('tv-count').innerHTML = unico ? '' : `<strong>${plural(n, 'candidato selecionado', 'candidatos selecionados')}</strong>` + (n <= 8 ? ': ' + tv.ids.map(id => candById(id).nome).join(', ') : '');
-        $('tv-count').style.display = unico ? 'none' : '';
-        if (unico) { const c = candById(tv.ids[0]), a = capById(c.capId); $('tv-atual').innerHTML = `<div class="vg-card" style="margin: 0 0 16px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr);"><div><div class="dw-k">Candidato</div><div class="dw-v">${c.nome}</div><span class="sub">${c.cpf}</span></div><div><div class="dw-k">Capacity atual</div><div class="dw-v">${a.id} · ${a.cap}</div></div><div><div class="dw-k">Célula atual</div><div class="dw-v">${a.celula}</div></div></div>`; }
-        else $('tv-atual').innerHTML = '';
-        $('tv-massa').style.display = tv.mode === 'massa' ? '' : 'none';
-        $('tv-ind').style.display = tv.mode === 'ind' ? '' : 'none';
-        if (tv.mode === 'massa') {
-          const curs = new Set(tv.ids.map(id => candById(id).capId));
-          $('tv-massa-sel').innerHTML = '<option value="">Selecione a nova vaga</option>' + CAPS.map(c => capOpt(c, curs.size === 1 ? [...curs][0] : null, tv.massa)).join('');
-          $('tv-massa-sel').value = tv.massa;
-          $('tv-massa-card').innerHTML = vagaCard(capById(+tv.massa));
-        }
-        if (tv.mode === 'ind') {
-          $('tv-ind-body').innerHTML = tv.ids.map(id => {
-            const c = candById(id), cap = capById(c.capId), v = tv.ind[id] || '';
-            return `<tr><td><strong style="font-weight: 600;">${c.nome}</strong><span class="sub">${c.cpf}</span></td><td>${cap.id}<span class="sub">${cap.celula}</span></td>
-              <td><select class="form-control" data-ind="${id}"><option value="">Manter vaga atual</option>${CAPS.map(x => capOpt(x, c.capId, v)).join('')}</select>
-              ${v && n > 1 ? `<button class="apply" data-apply="${id}"><i class="fa-solid fa-arrow-down"></i> Aplicar esta vaga aos demais</button>` : ''}</td></tr>`;
+    function renderCap() {
+      const n = tc.ids.length, unico = n === 1;
+      const steps = [['edit', 'Definir Capacity'], ['review', 'Revisar'], ['result', 'Concluído']];
+      $('tc-title').textContent = tc.step === 'review' ? 'Revisar troca de Capacity' : 'Troca de Capacity';
+      $('tc-steps').innerHTML = unico ? `<span>Alocação de Candidato · ${esc(candById(tc.ids[0]).nome)}</span>` : steps.map(([k, l], i) => `${i ? '<span class="sep">›</span>' : ''}${tc.step === k ? `<b>${i + 1}. ${l}</b>` : `<span>${i + 1}. ${l}</span>`}`).join('');
+      ['edit', 'review', 'result'].forEach(s => $('tc-' + s).classList.toggle('on', tc.step === s));
+      document.querySelectorAll('.tv-mode').forEach(l => l.classList.toggle('on', l.dataset.mode === tc.mode));
+      const ch = changesCap();
+      if (tc.step === 'edit') {
+        $('tc-modes').style.display = unico ? 'none' : '';
+        $('tc-count').style.display = unico ? 'none' : '';
+        $('tc-count').innerHTML = unico ? '' : `<strong>${plural(n, 'candidato selecionado', 'candidatos selecionados')}</strong>` + (n <= 8 ? ': ' + tc.ids.map(id => esc(candById(id).nome)).join(', ') : '');
+        if (unico) { const c = candById(tc.ids[0]), a = capById(c.capId); $('tc-atual').innerHTML = `<div class="vg-card" style="margin: 0 0 16px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr);"><div><div class="dw-k">Candidato</div><div class="dw-v">${esc(c.nome)}</div><span class="sub">${c.cpf}</span></div><div><div class="dw-k">Capacity atual</div><div class="dw-v">${a.id} · ${esc(capLabel(a))}</div></div><div><div class="dw-k">Célula atual</div><div class="dw-v">${esc(a.celula)}</div></div></div>`; }
+        else $('tc-atual').innerHTML = '';
+        $('tc-massa').style.display = tc.mode === 'massa' ? '' : 'none';
+        $('tc-ind').style.display = tc.mode === 'ind' ? '' : 'none';
+        if (tc.mode === 'massa') $('tc-massa').innerHTML = alocForm();
+        if (tc.mode === 'ind') {
+          $('tc-ind-body').innerHTML = tc.ids.map(id => {
+            const c = candById(id), cap = capById(c.capId), v = tc.ind[id] || '';
+            return `<tr><td><strong style="font-weight: 600;">${esc(c.nome)}</strong><span class="sub">${c.cpf}</span></td><td>${cap.id}<span class="sub">${esc(cap.celula)}</span></td>
+              <td><select class="form-control" data-ind="${id}"><option value="">Manter Capacity atual</option>${CAPS.map(x => capOpt(x, c.capId, v)).join('')}</select>
+              ${v && n > 1 ? `<button class="apply" data-apply="${id}"><i class="fa-solid fa-arrow-down"></i> Aplicar esta Capacity aos demais</button>` : ''}</td></tr>`;
           }).join('');
-          tv.ids.forEach(id => { const s = $('tv-ind-body').querySelector(`[data-ind="${id}"]`); if (s) s.value = tv.ind[id] || ''; });
         }
-        const sem = tv.mode ? n - ch.length : 0;
-        $('tv-footer').innerHTML = `${tv.mode && ch.length && sem ? `<span style="margin-right: auto; font-size: 12px; color: var(--text-muted); align-self: center;">${plural(sem, 'candidato permanece', 'candidatos permanecem')} na vaga atual</span>` : ''}
-          <button class="btn btn-secondary" onclick="fecharTroca()">Cancelar</button>
-          <button class="btn btn-primary" ${ch.length ? '' : 'disabled'} onclick="tv.step='review'; renderTroca()">Revisar alterações <i class="fa-solid fa-arrow-right"></i></button>`;
+        const sem = tc.mode ? n - ch.length : 0;
+        $('tc-footer').innerHTML = unico
+          ? `<button class="btn btn-secondary" onclick="fecharCap()">Fechar</button><button class="btn btn-primary" ${ch.length ? '' : 'disabled'} onclick="salvarCap()"><i class="fa-regular fa-floppy-disk"></i> Salvar</button>`
+          : `${tc.mode && ch.length && sem ? `<span style="margin-right: auto; font-size: 12px; color: var(--text-muted); align-self: center;">${plural(sem, 'candidato permanece', 'candidatos permanecem')} na Capacity atual</span>` : ''}
+            <button class="btn btn-secondary" onclick="fecharCap()">Cancelar</button>
+            <button class="btn btn-primary" ${ch.length ? '' : 'disabled'} onclick="tc.step='review'; renderCap()">Revisar alterações <i class="fa-solid fa-arrow-right"></i></button>`;
       }
-      if (tv.step === 'review') {
-        $('rv-count').innerHTML = `<strong>${plural(ch.length, 'candidato terá', 'candidatos terão')}</strong> a vaga alterada.` + (n - ch.length ? ` ${plural(n - ch.length, 'candidato permanece', 'candidatos permanecem')} na vaga atual.` : '');
-        $('rv-list').innerHTML = `<div class="rv-row h"><span>Candidato</span><span>Vaga atual</span><span></span><span>Nova vaga</span></div>` + ch.map(x => {
+      if (tc.step === 'review') {
+        $('rv-count').innerHTML = `<strong>${plural(ch.length, 'candidato terá', 'candidatos terão')}</strong> a Capacity alterada.` + (n - ch.length ? ` ${plural(n - ch.length, 'candidato permanece', 'candidatos permanecem')} na Capacity atual.` : '');
+        $('rv-list').innerHTML = `<div class="rv-row h"><span>Candidato</span><span>Capacity atual</span><span></span><span>Nova Capacity</span></div>` + ch.map(x => {
           const a = capById(x.from), b = capById(x.to);
-          return `<div class="rv-row"><span><strong style="font-weight: 600;">${x.c.nome}</strong><span class="sub">${x.c.cpf}</span></span><span>Capacity ${a.id}<span class="sub">${a.celula}</span></span><span class="arr"><i class="fa-solid fa-arrow-right"></i></span><span class="new">Capacity ${b.id}<span class="sub">${b.celula}</span></span></div>`;
+          return `<div class="rv-row"><span><strong style="font-weight: 600;">${esc(x.c.nome)}</strong><span class="sub">${x.c.cpf}</span></span><span>Capacity ${a.id}<span class="sub">${esc(a.celula)}</span></span><span class="arr"><i class="fa-solid fa-arrow-right"></i></span><span class="new">Capacity ${b.id}<span class="sub">${esc(b.celula)}</span></span></div>`;
         }).join('');
-        $('tv-footer').innerHTML = `<button class="btn btn-secondary" style="margin-right: auto;" onclick="tv.step='edit'; renderTroca()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-          <button class="btn btn-secondary" onclick="fecharTroca()">Cancelar</button>
-          <button class="btn btn-primary" onclick="confirmarTroca()"><i class="fa-solid fa-check"></i> Confirmar troca</button>`;
+        $('tc-footer').innerHTML = `<button class="btn btn-secondary" style="margin-right: auto;" onclick="tc.step='edit'; renderCap()"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+          <button class="btn btn-secondary" onclick="fecharCap()">Cancelar</button>
+          <button class="btn btn-primary" onclick="confirmarCap()"><i class="fa-solid fa-check"></i> Confirmar troca</button>`;
       }
-      if (tv.step === 'result') renderResult();
+      if (tc.step === 'result') renderCapResult();
     }
-    function confirmarTroca(simFalha) {
-      const ch = changes(), ok = [], fail = [];
+    function aplicarCap(x) {
+      x.c.capId = x.to; x.c.salaId = null; x.c.tipo = tc.tipo;
+      if (x.c.trein && x.c.trein !== 'Não elegível') { x.c.trein = 'Pendente TP'; x.c.dtConfirmacaoTrein = ''; }
+    }
+    function salvarCap() {
+      const ch = changesCap(); if (!ch.length) return;
+      ch.forEach(aplicarCap); flashIds = ch.map(x => x.c.id); fecharCap(); sel.clear(); render();
+      const b = capById(ch[0].to);
+      showToast('Capacity de ' + ch[0].c.nome + ' alterada para ' + b.id + ' · ' + capLabel(b) + '.', 'success');
+    }
+    function confirmarCap(simFalha) {
+      const ch = changesCap(), ok = [], fail = [];
       ch.forEach((x, i) => (simFalha && i === ch.length - 1 && ch.length > 1 ? fail : ok).push(x));
-      ok.forEach(x => { x.c.capId = x.to; });
-      tv.result = { ok, fail }; tv.step = 'result';
+      ok.forEach(aplicarCap);
+      tc.result = { ok, fail }; tc.step = 'result';
       flashIds = ok.map(x => x.c.id);
-      sel.clear(); render(); renderTroca();
+      sel.clear(); render(); renderCap();
     }
-    function renderResult() {
-      const { ok, fail } = tv.result, part = fail.length > 0;
-      const row = (x, good) => { const b = capById(x.to); return `<div class="fb-row"><i class="fa-solid ${good ? 'fa-circle-check' : 'fa-circle-xmark'}"></i><span><strong style="font-weight: 600;">${x.c.nome}</strong></span><span>${good ? 'Capacity ' + b.id + '<span class="sub">' + b.celula + '</span>' : '<span class="why">Não foi possível alterar. Permanece na Capacity ' + x.from + '.</span>'}</span></div>`; };
-      $('tv-result').innerHTML = `
+    function renderCapResult() {
+      const { ok, fail } = tc.result, part = fail.length > 0;
+      const row = (x, good) => { const b = capById(x.to); return `<div class="fb-row"><i class="fa-solid ${good ? 'fa-circle-check' : 'fa-circle-xmark'}"></i><span><strong style="font-weight: 600;">${esc(x.c.nome)}</strong></span><span>${good ? 'Capacity ' + b.id + '<span class="sub">' + esc(b.celula) + '</span>' : '<span class="why">Não foi possível alterar. Permanece na Capacity ' + x.from + '.</span>'}</span></div>`; };
+      $('tc-result').innerHTML = `
         <div class="fb-head"><div class="fb-ico ${part ? 'part' : 'ok'}"><i class="fa-solid ${part ? 'fa-triangle-exclamation' : 'fa-check'}"></i></div>
-          <div><strong>${part ? `${ok.length} de ${ok.length + fail.length} candidatos tiveram suas vagas alteradas` : plural(ok.length, 'candidato teve sua vaga alterada', 'candidatos tiveram suas vagas alteradas') + ' com sucesso.'}</strong>
-          <p>${part ? 'Os candidatos abaixo não foram alterados e continuam na vaga anterior.' : 'A tabela já mostra as novas vagas.'}</p></div></div>
+          <div><strong>${part ? `${ok.length} de ${ok.length + fail.length} candidatos tiveram a Capacity alterada` : plural(ok.length, 'candidato teve a Capacity alterada', 'candidatos tiveram a Capacity alterada') + ' com sucesso.'}</strong>
+          <p>${part ? 'Os candidatos abaixo não foram alterados e continuam na Capacity anterior.' : 'A tabela já mostra as novas Capacities.'}</p></div></div>
         <div class="rv-list">${fail.map(x => row(x, false)).join('')}${ok.map(x => row(x, true)).join('')}</div>`;
-      $('tv-footer').innerHTML = part
-        ? `<button class="btn btn-secondary" onclick="fecharTroca()">Fechar</button><button class="btn btn-primary" onclick="tentarNovamente()"><i class="fa-solid fa-rotate-right"></i> Tentar novamente (${fail.length})</button>`
-        : `<button class="btn btn-primary" onclick="fecharTroca(); showToast('${plural(ok.length, 'candidato teve sua vaga alterada', 'candidatos tiveram suas vagas alteradas')} com sucesso.', 'success')">Concluir</button>`;
+      $('tc-footer').innerHTML = part
+        ? `<button class="btn btn-secondary" onclick="fecharCap()">Fechar</button><button class="btn btn-primary" onclick="tentarNovamenteCap()"><i class="fa-solid fa-rotate-right"></i> Tentar novamente (${fail.length})</button>`
+        : `<button class="btn btn-primary" onclick="fecharCap(); showToast('${plural(ok.length, 'candidato teve a Capacity alterada', 'candidatos tiveram a Capacity alterada')} com sucesso.', 'success')">Concluir</button>`;
     }
-    function tentarNovamente() {
-      const { fail } = tv.result;
-      Object.assign(tv, { ids: fail.map(x => x.c.id), mode: 'ind', ind: {}, step: 'review', result: null });
-      fail.forEach(x => tv.ind[x.c.id] = String(x.to));
-      renderTroca();
+    function tentarNovamenteCap() {
+      const { fail } = tc.result;
+      Object.assign(tc, { ids: fail.map(x => x.c.id), mode: 'ind', ind: {}, step: 'review', result: null });
+      fail.forEach(x => tc.ind[x.c.id] = String(x.to));
+      renderCap();
+    }
+
+    // ---------- Troca de Sala de Treinamento ----------
+    const ts = { ids: [], capId: null, salaSel: null, msg: null };
+    function abrirSala(ids) {
+      if (!ids.length) return;
+      if (!mesmaCap(ids)) { showToast('Troca de sala disponível apenas para candidatos da mesma Capacity (ID).', 'error'); return; }
+      Object.assign(ts, { ids: [...ids], capId: candById(ids[0]).capId, salaSel: null, msg: null });
+      renderSala(); openModal('modal-sala');
+    }
+    function renderSala() {
+      const cap = capById(ts.capId), salas = SALAS.filter(s => s.capId === ts.capId), cands = ts.ids.map(candById);
+      $('sl-sub').innerHTML = `<span>Capacity <b>${cap.id}</b> · ${esc(capLabel(cap))} · ${esc(cap.celula)}</span>`;
+      $('sl-info').innerHTML = `<strong>${plural(cands.length, 'candidato selecionado', 'candidatos selecionados')}</strong>: ${cands.map(c => esc(c.nome) + (c.matricula ? ' <span class="st ok" style="font-size: 11px; padding: 0 7px;">matrícula ' + c.matricula + '</span>' : '')).join(', ')}. Selecione a sala de destino.`;
+      $('sl-msg').innerHTML = ts.msg ? `<div class="rv-note ${ts.msg.type === 'err' ? 'err' : ''} top"><i class="fa-solid ${ts.msg.type === 'err' ? 'fa-circle-xmark' : 'fa-triangle-exclamation'}" style="margin-top: 2px;"></i><span>${ts.msg.html}</span></div>` : '';
+      $('sl-table').innerHTML = `<thead><tr><th style="width: 36px;"></th><th style="width: 70px;">ID</th><th>Nome</th><th style="width: 100px;">Data início</th><th style="width: 90px;">Hora início</th><th style="width: 100px;">Data fim</th><th style="width: 90px;">Hora fim</th></tr></thead><tbody>` +
+        (salas.length ? salas.map(s => { const atuais = cands.filter(c => c.salaId === s.id).length; return `<tr class="${ts.salaSel === s.id ? 'on' : ''}"><td><input type="radio" name="sl-pick" value="${s.id}" ${ts.salaSel === s.id ? 'checked' : ''} aria-label="Selecionar sala ${s.id}"></td><td>${s.id}</td><td>${esc(s.nome)}${atuais ? ` <span class="muted" style="font-size: 11px;">(atual de ${atuais})</span>` : ''}</td><td>${s.dtIni}</td><td>${s.hIni}</td><td>${s.dtFim}</td><td>${s.hFim}</td></tr>`; }).join('') : `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma sala de treinamento vinculada a esta Capacity.</td></tr>`) + '</tbody>';
+      $('sl-footer').innerHTML = `<button class="btn btn-secondary" onclick="closeModal('modal-sala')">Fechar</button><button class="btn btn-primary" ${ts.salaSel ? '' : 'disabled'} onclick="movimentar()"><i class="fa-solid fa-people-arrows"></i> Movimentar</button>`;
+    }
+    $('sl-table').addEventListener('change', e => { if (e.target.name === 'sl-pick') { ts.salaSel = +e.target.value; ts.msg = null; renderSala(); } });
+    function movimentar() {
+      const sala = salaById(ts.salaSel); if (!sala) return;
+      const cands = ts.ids.map(candById), ja = cands.filter(c => c.salaId === sala.id), mover = cands.filter(c => c.salaId !== sala.id);
+      if (!mover.length) { ts.msg = { type: 'warn', html: 'Todos os candidatos selecionados já estão nesta sala.' }; renderSala(); return; }
+      const incons = mover.filter(c => c.matricula && salaById(c.salaId) && salaById(c.salaId).dtIni !== sala.dtIni);
+      if (incons.length) {
+        ts.msg = { type: 'err', html: `<strong>Movimentação não realizada.</strong> ${plural(incons.length, 'candidato contratado (com matrícula) só pode', 'candidatos contratados (com matrícula) só podem')} ser movimentado${incons.length === 1 ? '' : 's'} para salas com a mesma data de início da sala atual:<ul>${incons.map(c => `<li>${esc(c.nome)} — matrícula ${c.matricula}, sala atual ${c.salaId} com início em <strong>${salaById(c.salaId).dtIni}</strong> (destino: ${sala.dtIni})</li>`).join('')}</ul>Nenhum candidato foi movimentado.` };
+        renderSala(); return;
+      }
+      mover.forEach(c => { c.salaId = sala.id; });
+      flashIds = mover.map(c => c.id); sel.clear(); closeModal('modal-sala'); render();
+      showToast(plural(mover.length, 'candidato movimentado', 'candidatos movimentados') + ' para a sala ' + sala.id + ' · ' + sala.nome + (ja.length ? ' (' + plural(ja.length, 'candidato já estava', 'candidatos já estavam') + ' na sala)' : '') + '.', 'success');
+    }
+
+    // ---------- Trocar de vaga (pesquisa + match) ----------
+    const vg = { ids: [], bloq: [], results: null, nova: null, an: [], sel: new Set(), step: 'main', result: null };
+    if (window.TPVagas) { fill('vs-tipo', TPVagas.OPTIONS.tipos); fill('vs-gestao', TPVagas.OPTIONS.gestaoRS); }
+    function analisarCand(c, nova) {
+      const req = reqOf(nova), atual = vagaById(c.vagaId), cur = atual ? reqOf(atual) : { etapas: E_STD };
+      const motivos = [];
+      if (c.vagaId === nova.id) motivos.push('Candidato já está vinculado a esta vaga.');
+      if (req.pcd && !c.pcd) motivos.push('Candidato não atende ao requisito da vaga (vaga exclusiva para pessoas com deficiência).');
+      if (req.idioma && !c.idiomas.includes(req.idioma)) motivos.push('Candidato não atende aos critérios de idioma (' + cap1(req.idioma) + ').');
+      if (req.exp && EXP_N[c.exp] < EXP_N[req.exp]) motivos.push('Candidato não atende aos critérios de experiência (mínimo ' + req.exp + '; candidato ' + c.exp + ').');
+      if (req.municipio && c.municipio !== req.municipio) motivos.push('Candidato não atende ao critério de residência (município: ' + req.municipio + '; candidato reside em ' + c.municipio + ').');
+      if (motivos.length) return { c, ok: false, obs: motivos.join(' '), reaprov: [], fazer: [], reaprovEtapas: [] };
+      const reaprov = [], fazer = [], reaprovEtapas = [], parcial = [];
+      ETAPAS.forEach(e => {
+        const novo = req.etapas[e]; if (!novo) return;
+        const feito = c.etapasConcluidas.includes(e) ? (cur.etapas[e] || []) : [];
+        const iguais = novo.filter(t => feito.includes(t)), dif = novo.filter(t => !feito.includes(t));
+        if (!dif.length) { reaprov.push(e); reaprovEtapas.push(e); }
+        else if (iguais.length) { reaprov.push(e + ' (' + iguais.join(', ') + ')'); fazer.push(e + ' (' + dif.join(', ') + ')'); parcial.push(e); }
+        else fazer.push(e);
+      });
+      const obs = !fazer.length ? 'Todas as etapas iguais na nova vaga.'
+        : !reaprov.length ? (c.etapasConcluidas.length ? 'Testes diferentes na nova vaga; nenhuma etapa reaproveitada.' : 'Candidato em ' + c.etapaAtual + ' na vaga atual; seguirá o fluxo completo da nova vaga.')
+        : parcial.length ? 'Diferença apenas em testes específicos (' + parcial.join(', ') + '); demais etapas reaproveitadas.'
+        : (c.etapaAtual !== 'Concluído' ? 'Etapas já concluídas reaproveitadas; as posteriores seguem o fluxo da nova vaga.' : 'Etapas iguais reaproveitadas; demais deverão ser realizadas.');
+      return { c, ok: true, obs, reaprov, fazer, reaprovEtapas };
+    }
+    function abrirVaga(ids) {
+      if (!ids.length) return;
+      Object.assign(vg, { ids: ids.filter(id => !bloqueadoVaga(candById(id))), bloq: ids.filter(id => bloqueadoVaga(candById(id))), results: null, nova: null, an: [], sel: new Set(), step: 'main', result: null });
+      ['vs-id', 'vs-cod', 'vs-nome', 'vs-tipo', 'vs-gestao'].forEach(id => $(id).value = '');
+      renderVaga(); openModal('modal-vaga');
+    }
+    function fecharVaga() { closeModal('modal-vaga'); }
+    function renderVaga() {
+      const n = vg.ids.length;
+      $('vg-sub').innerHTML = n ? `<span>${plural(n, 'candidato será analisado', 'candidatos serão analisados')} para a nova vaga</span>` : '<span>Nenhum candidato elegível</span>';
+      ['main', 'result'].forEach(s => $('vg-' + s).classList.toggle('on', vg.step === s));
+      $('vg-block').style.display = vg.bloq.length ? '' : 'none';
+      $('vg-block').innerHTML = vg.bloq.length ? `<i class="fa-solid fa-lock" style="margin-top: 2px;"></i><span><strong>${plural(vg.bloq.length, 'candidato não pode', 'candidatos não podem')} trocar de vaga</strong> por ${vg.bloq.length === 1 ? 'estar contratado' : 'estarem contratados'} com treinamento confirmado: ${vg.bloq.map(id => esc(candById(id).nome)).join(', ')}. ${vg.bloq.length === 1 ? 'Ele não será analisado.' : 'Eles não serão analisados.'}</span>` : '';
+      if (vg.step === 'result') { renderVagaResult(); return; }
+      $('vg-empty').style.display = n ? 'none' : '';
+      $('vg-search').style.display = n ? '' : 'none';
+      $('vg-analysis').style.display = n && vg.nova ? '' : 'none';
+      if (!n) { $('vg-footer').innerHTML = `<button class="btn btn-secondary" onclick="fecharVaga()">Fechar</button>`; return; }
+      const r = vg.results;
+      $('vs-results').innerHTML = r === null ? `<div class="vs-hint"><i class="fa-solid fa-circle-info"></i> Informe um ou mais critérios e clique em Pesquisar. Somente vagas publicadas são apresentadas.</div>`
+        : !r.length ? `<div class="vs-hint"><i class="fa-solid fa-magnifying-glass"></i> Nenhuma vaga publicada encontrada para os critérios informados.</div>`
+        : `<div class="vs-res"><table class="mt-table"><thead><tr><th style="width: 36px;"></th><th style="width: 64px;">ID</th><th style="width: 150px;">Código</th><th>Nome da Vaga</th><th style="width: 200px;">Tipo</th><th style="width: 170px;">Gestão</th></tr></thead><tbody>${r.map(v => `<tr class="${vg.nova && vg.nova.id === v.id ? 'on' : ''}"><td><input type="radio" name="vs-pick" value="${v.id}" ${vg.nova && vg.nova.id === v.id ? 'checked' : ''} aria-label="Selecionar vaga ${v.id}"></td><td>${v.id}</td><td>${esc(v.codigo)}</td><td style="white-space: normal;">${esc(v.nome)}</td><td>${esc(v.tipo)}</td><td>${esc(gestaoOf(v))}</td></tr>`).join('')}</tbody></table></div><div class="vs-n">${plural(r.length, 'vaga encontrada', 'vagas encontradas')}. Selecione a Nova Vaga para iniciar a análise.</div>`;
+      $('vs-sel').innerHTML = vg.nova ? `<span><strong>${vg.nova.id}</strong> - ${esc(vg.nova.nome)} <span class="muted">| ${esc(gestaoOf(vg.nova))}</span></span><button class="ib" onclick="limparNovaVaga()" title="Limpar seleção"><i class="fa-solid fa-xmark"></i></button>` : '<span class="muted">Selecione uma vaga nos resultados da pesquisa</span>';
+      $('vs-sel').classList.toggle('has', !!vg.nova);
+      if (vg.nova) {
+        const ok = vg.an.filter(a => a.ok), no = vg.an.filter(a => !a.ok), novas = ok.filter(a => a.fazer.length);
+        const card = (cls, ico, v, l, l2) => `<div class="mt-card ${cls}"><div class="ico"><i class="fa-solid ${ico}"></i></div><div style="min-width: 0;"><b>${v}</b><small>${l}</small><span class="l2">${l2}</span></div></div>`;
+        $('mt-cards').innerHTML = card('ok', 'fa-check', ok.length, 'Deram match', 'Serão transferidos') + card('err', 'fa-xmark', no.length, 'Não deram match', 'Não serão transferidos') + card('info', 'fa-users', vg.an.length, 'Total de candidatos', 'Analisados') + card('warn', 'fa-hourglass-half', novas.length, 'Precisarão realizar novas etapas/testes', 'Entre os que deram match');
+        const steps = (arr, cls, ico) => arr.length ? arr.map(s => `<span class="mt-step ${cls}"><i class="fa-solid ${ico}"></i>${esc(s)}</span>`).join('') : '<span class="muted">–</span>';
+        const allOn = ok.length && ok.every(a => vg.sel.has(a.c.id));
+        $('mt-table').innerHTML = `<thead><tr><th style="width: 36px;"><input type="checkbox" id="mt-all" ${allOn ? 'checked' : ''} ${ok.length ? '' : 'disabled'} title="Selecionar todos com match"></th><th style="width: 110px;">Resultado</th><th style="width: 170px;">Candidato</th><th style="width: 120px;">CPF</th><th style="width: 130px;">Etapa na vaga atual</th><th>Etapas reaproveitadas</th><th>Etapas/testes que deverão realizar</th><th style="width: 24%;">Observação</th></tr></thead><tbody>` +
+          vg.an.map(a => `<tr class="${a.ok ? '' : 'no'}"><td><input type="checkbox" data-mt="${a.c.id}" ${a.ok ? '' : 'disabled title="Candidato sem match não pode ser transferido"'} ${vg.sel.has(a.c.id) ? 'checked' : ''} aria-label="Selecionar ${esc(a.c.nome)}"></td><td>${a.ok ? '<span class="mt-ok"><i class="fa-solid fa-circle-check"></i> Match</span>' : '<span class="mt-no"><i class="fa-solid fa-circle-xmark"></i> Não Match</span>'}</td><td><strong style="font-weight: 600; color: var(--text-main);">${esc(a.c.nome)}</strong></td><td>${a.c.cpf}</td><td>${a.c.etapaAtual === 'Concluído' ? 'Etapas concluídas' : 'Em ' + a.c.etapaAtual}</td><td>${a.ok ? steps(a.reaprov, 'ok', 'fa-circle-check') : '<span class="muted">–</span>'}</td><td>${a.ok ? steps(a.fazer, 'todo', 'fa-circle') : '<span class="muted">–</span>'}</td><td style="white-space: normal;">${esc(a.obs)}</td></tr>`).join('') + '</tbody>';
+      }
+      const nSel = vg.an.filter(a => a.ok && vg.sel.has(a.c.id)).length;
+      $('vg-footer').innerHTML = `${vg.nova ? `<span style="margin-right: auto; font-size: 12px; color: var(--text-muted); align-self: center;">${plural(nSel, 'candidato selecionado', 'candidatos selecionados')} para transferência</span>` : ''}
+        <button class="btn btn-secondary" onclick="fecharVaga()">Cancelar</button>
+        <button class="btn btn-primary" ${vg.nova && nSel ? '' : 'disabled'} ${!vg.nova ? 'title="Selecione a Nova Vaga para analisar os candidatos"' : !nSel ? 'title="Selecione ao menos um candidato com match"' : ''} onclick="confirmarVaga()"><i class="fa-solid fa-check"></i> Confirmar troca de vaga</button>`;
+    }
+    function pesquisarVagas() {
+      const id = $('vs-id').value.trim(), cod = norm($('vs-cod').value.trim()), tipo = $('vs-tipo').value, nome = norm($('vs-nome').value.trim()), gestao = $('vs-gestao').value;
+      vg.results = VAGAS.filter(v => v.status === 'Publicada' && (!id || String(v.id) === id.replace(/\D/g, '')) && (!cod || norm(v.codigo).includes(cod)) && (!tipo || v.tipo === tipo) && (!nome || norm(v.nome).includes(nome)) && (!gestao || gestaoOf(v) === gestao)).sort((a, b) => a.id - b.id);
+      if (vg.nova && !vg.results.some(v => v.id === vg.nova.id)) limparNovaVaga(); else renderVaga();
+    }
+    $('vs-go').addEventListener('click', pesquisarVagas);
+    $('vs-clear').addEventListener('click', () => { ['vs-id', 'vs-cod', 'vs-nome', 'vs-tipo', 'vs-gestao'].forEach(id => $(id).value = ''); vg.results = null; limparNovaVaga(); });
+    ['vs-id', 'vs-cod', 'vs-nome'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); pesquisarVagas(); } }));
+    $('vs-results').addEventListener('change', e => { if (e.target.name === 'vs-pick') selecionarVaga(+e.target.value); });
+    $('mt-table').addEventListener('change', e => {
+      if (e.target.id === 'mt-all') { vg.an.filter(a => a.ok).forEach(a => e.target.checked ? vg.sel.add(a.c.id) : vg.sel.delete(a.c.id)); renderVaga(); return; }
+      const id = +e.target.dataset.mt; if (!id) return; e.target.checked ? vg.sel.add(id) : vg.sel.delete(id); renderVaga();
+    });
+    function selecionarVaga(id) {
+      vg.nova = vagaById(id); if (!vg.nova) return;
+      vg.an = vg.ids.map(cid => analisarCand(candById(cid), vg.nova));
+      vg.sel = new Set(vg.an.filter(a => a.ok).map(a => a.c.id));
+      renderVaga();
+    }
+    function limparNovaVaga() { vg.nova = null; vg.an = []; vg.sel = new Set(); renderVaga(); }
+    function confirmarVaga(simFalha) {
+      const list = vg.an.filter(a => a.ok && vg.sel.has(a.c.id)); if (!list.length) return;
+      const ok = [], fail = [];
+      list.forEach((a, i) => (simFalha && i === list.length - 1 && list.length > 1 ? fail : ok).push(a));
+      ok.forEach(a => {
+        const c = a.c, req = reqOf(vg.nova), pend = ETAPAS.filter(e => req.etapas[e] && !a.reaprovEtapas.includes(e));
+        c.vagaId = vg.nova.id; c.etapasConcluidas = [...a.reaprovEtapas]; c.etapaAtual = pend.length ? pend[0] : 'Concluído';
+      });
+      vg.result = { ok, fail, nova: vg.nova }; vg.step = 'result';
+      flashIds = ok.map(a => a.c.id); sel.clear(); render(); renderVaga();
+    }
+    function renderVagaResult() {
+      const { ok, fail, nova } = vg.result, part = fail.length > 0;
+      const row = (a, good) => `<div class="fb-row"><i class="fa-solid ${good ? 'fa-circle-check' : 'fa-circle-xmark'}"></i><span><strong style="font-weight: 600;">${esc(a.c.nome)}</strong><span class="sub">${a.c.cpf}</span></span><span>${good ? `Vaga ${nova.id}<span class="sub">${esc(nova.nome)}${a.fazer.length ? ' · pendente: ' + esc(a.fazer.join(', ')) : ' · todas as etapas reaproveitadas'}</span>` : '<span class="why">Erro ao criar a candidatura na nova vaga. Candidatura atual mantida.</span>'}</span></div>`;
+      $('vg-result').innerHTML = `
+        <div class="fb-head"><div class="fb-ico ${part ? 'part' : 'ok'}"><i class="fa-solid ${part ? 'fa-triangle-exclamation' : 'fa-check'}"></i></div>
+          <div><strong>${part ? `${ok.length} de ${ok.length + fail.length} candidatos foram transferidos para a vaga ${nova.id}` : plural(ok.length, 'candidato transferido', 'candidatos transferidos') + ' para a vaga ' + nova.id + ' com sucesso.'}</strong>
+          <p>${part ? 'Os candidatos abaixo não foram transferidos e continuam na vaga atual.' : 'A candidatura anterior foi reprovada e a nova candidatura criada com as etapas reaproveitadas. A tabela já mostra a nova vaga.'}</p></div></div>
+        <div class="rv-list">${fail.map(a => row(a, false)).join('')}${ok.map(a => row(a, true)).join('')}</div>`;
+      $('vg-footer').innerHTML = part
+        ? `<button class="btn btn-secondary" onclick="fecharVaga()">Fechar</button><button class="btn btn-primary" onclick="tentarNovamenteVaga()"><i class="fa-solid fa-rotate-right"></i> Tentar novamente (${fail.length})</button>`
+        : `<button class="btn btn-primary" onclick="fecharVaga(); showToast('${plural(ok.length, 'candidato transferido', 'candidatos transferidos')} para a vaga ${nova.id}.', 'success')">Concluir</button>`;
+    }
+    function tentarNovamenteVaga() {
+      const { fail, nova } = vg.result;
+      Object.assign(vg, { ids: fail.map(a => a.c.id), bloq: [], nova, an: fail, sel: new Set(fail.map(a => a.c.id)), step: 'main' });
+      confirmarVaga(false);
     }
 
     // ---------- Atalhos de estado ----------
     function resetAll() {
-      closePops(); closeDrawer('drawer-cand'); closeModal('modal-troca');
-      sel.clear(); state.f = { ...F0 }; state.kpi = ''; state.page = 1; state.sortKey = 'nome'; state.sortDir = 'asc';
+      closePops(); closeMS(); closeDrawer('drawer-cand'); ['modal-cap', 'modal-vaga', 'modal-sala', 'modal-pc', 'modal-fu', 'modal-cols', 'modal-del-view'].forEach(closeModal);
+      sel.clear(); draft = clone(F0); state.f = clone(F0); state.kpi = ''; state.page = 1; state.sortKey = 'nome'; state.sortDir = 'asc';
       $('cv-adv').classList.remove('open'); $('btn-more').classList.remove('on'); $('btn-more').querySelector('i').className = 'fa-solid fa-plus';
-      CANDS.forEach((c, i) => c.capId = c._cap0 ?? c.capId);
-      syncForm(); render(); scrollTo(0, 0);
+      CANDS.forEach(c => Object.assign(c, clone(c._0)));
+      resetColsUI(); syncForm(); render(); scrollTo(0, 0);
     }
-    CANDS.forEach(c => c._cap0 = c.capId);
     const pick3 = () => CANDS.filter(c => c.capId === 10856).slice(0, 3).map(c => c.id);
+    const vgIds = () => [0, 1, 3, 5, 6, 7, 8].map(i => CANDS[i].id);
+    const salaIds = () => [0, 1, 4].map(i => CANDS[i].id);
+    function ensureDemoFormat() {
+      let f = fmt.formats.find(x => norm(x.nome) === norm('Acompanhamento Exames'));
+      if (!f) { f = { id: 'f-demo-exames', nome: 'Acompanhamento Exames', cols: ['nome', 'capacity', 'exame', 'dtAgenda', 'doc', 'conv', 'trein'] }; fmt.formats.push(f); saveFmt(); }
+      return f;
+    }
     const STATES = {
       1: () => resetAll(),
-      2: () => { resetAll(); Object.assign(state.f, { capacity: 'EXTRA - 2026 outubro', operacao: 'AIRBNB - TPBR VILA PRUDENTE', status: 'Contratado' }); syncForm(); render(); },
-      3: () => { resetAll(); setTimeout(() => $('btn-cols').click(), 30); },
+      2: () => { resetAll(); setTimeout(() => MS['ms-versao'].btn.click(), 30); },
+      3: () => { resetAll(); Object.assign(draft, { versao: ['EXTRA', 'D55'], mes: ['out/26'], cliente: ['Airbnb', "L'Oréal"], status: 'Convocado' }); syncForm(); aplicarFiltros(); },
       4: () => { resetAll(); abrirDrawer(CANDS[0].id); },
       5: () => { resetAll(); CANDS.filter(c => c.capId === 10856).slice(0, 4).forEach(c => sel.add(c.id)); render(); },
-      6: () => { resetAll(); pick3().forEach(id => sel.add(id)); render(); abrirTroca(pick3()); },
-      7: () => { STATES[6](); setMode('massa'); tv.massa = '10922'; renderTroca(); },
-      8: () => { STATES[6](); const ids = pick3(); tv.ind = { [ids[0]]: '10922', [ids[1]]: '10922', [ids[2]]: '11031' }; setMode('ind'); },
-      9: () => { STATES[8](); tv.step = 'review'; renderTroca(); },
-      10: () => { STATES[9](); confirmarTroca(false); },
-      11: () => { STATES[9](); confirmarTroca(true); }
+      6: () => { resetAll(); openCols(); },
+      7: () => { resetAll(); fmt.activeId = 'default'; fmt.cols = normCols(['nome', ...COLS.map(c => c.k)]); applyCols(); openCols(); },
+      8: () => { resetAll(); openCols(ensureDemoFormat().id); },
+      9: () => { STATES[8](); if (!fmt.cols.includes('dtDoc')) fmt.cols.push('dtDoc'); applyCols(); },
+      10: () => { resetAll(); const f = ensureDemoFormat(); selectFormat(f.id); pedirExclusao(f.id); },
+      11: () => { resetAll(); fmt.activeId = 'default'; fmt.cols = ['nome', 'cpf', 'conv', 'capacity', 'operacao', 'doc', 'exame', 'trein', 'dtAdmissao']; applyCols(); openCols(); },
+      12: () => { resetAll(); vgIds().forEach(id => sel.add(id)); render(); abrirVaga(vgIds()); },
+      13: () => { STATES[12](); $('vs-tipo').value = 'VAGA EXTERNA EXPERT'; pesquisarVagas(); },
+      14: () => { STATES[13](); selecionarVaga(2880); },
+      15: () => { STATES[14](); confirmarVaga(false); },
+      16: () => { STATES[14](); confirmarVaga(true); },
+      17: () => { resetAll(); const ids = [CANDS[4].id, CANDS[10].id, CANDS[0].id]; ids.forEach(id => sel.add(id)); render(); abrirVaga(ids); },
+      18: () => { resetAll(); abrirCap([CANDS[0].id]); tc.massa = '10922'; renderCap(); },
+      19: () => { resetAll(); pick3().forEach(id => sel.add(id)); render(); abrirCap(pick3()); setModeCap('massa'); tc.massa = '10922'; renderCap(); },
+      20: () => { STATES[19](); tc.step = 'review'; renderCap(); },
+      21: () => { STATES[20](); confirmarCap(false); },
+      22: () => { STATES[20](); confirmarCap(true); },
+      23: () => { resetAll(); salaIds().forEach(id => sel.add(id)); render(); abrirSala(salaIds()); },
+      24: () => { STATES[23](); ts.salaSel = 12628; movimentar(); },
+      25: () => { STATES[23](); ts.salaSel = 12630; movimentar(); },
+      26: () => { resetAll(); [CANDS[0].id, CANDS[14].id].forEach(id => sel.add(id)); render(); }
     };
     document.querySelectorAll('[data-st]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); $('proto-states').classList.remove('open'); STATES[b.dataset.st](); }));
 
+    syncForm();
     render();
   </script>
 </body>
